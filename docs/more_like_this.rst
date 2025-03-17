@@ -13,8 +13,8 @@ Sample document
     from django.conf import settings
 
     from django_elasticsearch_dsl import Document, Index, fields
-    from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
-    from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
+    from django_elasticsearch_dsl_drf_alt.compat import KeywordField, StringField
+    from django_elasticsearch_dsl_drf_alt.analyzers import edge_ngram_completion
 
     from books.models import Book
 
@@ -80,14 +80,14 @@ Sample view
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         FilteringFilterBackend,
         IdsFilterBackend,
         OrderingFilterBackend,
         PostFilterFilteringFilterBackend,
         SearchFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.viewsets import (
+    from django_elasticsearch_dsl_drf_alt.viewsets import (
         DocumentViewSet,
         MoreLikeThisMixin,
     )

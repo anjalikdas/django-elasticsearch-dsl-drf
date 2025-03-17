@@ -7,7 +7,7 @@ Submodules
 django\_elasticsearch\_dsl\_drf.filter\_backends.suggester.functional module
 ----------------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.filter_backends.suggester.functional
+.. automodule:: django_elasticsearch_dsl_drf_alt.filter_backends.suggester.functional
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ django\_elasticsearch\_dsl\_drf.filter\_backends.suggester.functional module
 django\_elasticsearch\_dsl\_drf.filter\_backends.suggester.native module
 ------------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.filter_backends.suggester.native
+.. automodule:: django_elasticsearch_dsl_drf_alt.filter_backends.suggester.native
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ django\_elasticsearch\_dsl\_drf.filter\_backends.suggester.native module
 Module contents
 ---------------
 
-.. automodule:: django_elasticsearch_dsl_drf.filter_backends.suggester
+.. automodule:: django_elasticsearch_dsl_drf_alt.filter_backends.suggester
    :members:
    :undoc-members:
    :show-inheritance:

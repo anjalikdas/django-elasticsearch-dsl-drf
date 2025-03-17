@@ -190,7 +190,7 @@ Or:
 
 .. code-block:: sh
 
-    ./manage.py test django_elasticsearch_dsl_drf.tests.test_ordering
+    ./manage.py test django_elasticsearch_dsl_drf_alt.tests.test_ordering
 
 To run a single test class in a given test module in your working environment
 type:

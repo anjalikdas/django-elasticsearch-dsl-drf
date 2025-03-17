@@ -28,7 +28,7 @@ instead of 2.
 
     # ...
 
-    from django_elasticsearch_dsl_drf.pagination import QueryFriendlyPageNumberPagination
+    from django_elasticsearch_dsl_drf_alt.pagination import QueryFriendlyPageNumberPagination
 
     # ...
 
@@ -53,7 +53,7 @@ In order to use a different ``pagination_class``, for instance the
 
     # ...
 
-    from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
+    from django_elasticsearch_dsl_drf_alt.pagination import LimitOffsetPagination
 
     # ...
 
@@ -82,7 +82,7 @@ modifications in the ``get_paginated_response_context`` method as follows:
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
+    from django_elasticsearch_dsl_drf_alt.pagination import PageNumberPagination
 
 
     class CustomPageNumberPagination(PageNumberPagination):

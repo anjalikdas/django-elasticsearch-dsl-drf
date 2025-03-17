@@ -146,7 +146,7 @@ Sample serializer
 
     import json
 
-    from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+    from django_elasticsearch_dsl_drf_alt.serializers import DocumentSerializer
 
     class PublisherDocumentSerializer(DocumentSerializer):
         """Serializer for Publisher document."""
@@ -185,15 +185,15 @@ Sample view
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.constants import (
+    from django_elasticsearch_dsl_drf_alt.constants import (
         LOOKUP_FILTER_GEO_DISTANCE,
     )
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         FilteringFilterBackend,
         OrderingFilterBackend,
         SearchFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+    from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
 
     # Example app models
     from search_indexes.documents.publisher import PublisherDocument

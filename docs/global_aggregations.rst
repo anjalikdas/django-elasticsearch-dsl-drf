@@ -8,13 +8,13 @@ Sample view
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         CompoundSearchFilterBackend,
         DefaultOrderingFilterBackend,
         FacetedSearchFilterBackend,
         OrderingFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+    from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
 
     from .documents import BookDocument
     from .serializers import BookDocumentSerializer

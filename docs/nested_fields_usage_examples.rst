@@ -171,7 +171,7 @@ Sample models
 .. code-block:: python
 
     from django.db import models
-    from django_elasticsearch_dsl_drf.wrappers import dict_to_obj
+    from django_elasticsearch_dsl_drf_alt.wrappers import dict_to_obj
 
     class Address(models.Model):
         """Address."""
@@ -328,7 +328,7 @@ Document index
     from django.conf import settings
 
     from django_elasticsearch_dsl import Document, Index, fields
-    from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
+    from django_elasticsearch_dsl_drf_alt.compat import KeywordField, StringField
 
     from books.models import Address
 
@@ -484,7 +484,7 @@ Sample serializer
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+    from django_elasticsearch_dsl_drf_alt.serializers import DocumentSerializer
 
     from ..documents import AddressDocument
 
@@ -515,13 +515,13 @@ Sample view
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.constants import (
+    from django_elasticsearch_dsl_drf_alt.constants import (
         LOOKUP_FILTER_GEO_DISTANCE,
         LOOKUP_FILTER_GEO_POLYGON,
         LOOKUP_FILTER_GEO_BOUNDING_BOX,
         SUGGESTER_COMPLETION,
     )
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         DefaultOrderingFilterBackend,
         FacetedSearchFilterBackend,
         FilteringFilterBackend,
@@ -532,8 +532,8 @@ Sample view
         SearchFilterBackend,
         SuggesterFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
-    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+    from django_elasticsearch_dsl_drf_alt.pagination import LimitOffsetPagination
+    from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
 
     from ..documents import AddressDocument
     from ..serializers import AddressDocumentSerializer
@@ -752,7 +752,7 @@ Sample document
     from django.conf import settings
 
     from django_elasticsearch_dsl import Document, Index, fields
-    from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
+    from django_elasticsearch_dsl_drf_alt.compat import KeywordField, StringField
 
     from books.models import City
 
@@ -842,13 +842,13 @@ Sample view
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.constants import (
+    from django_elasticsearch_dsl_drf_alt.constants import (
         LOOKUP_FILTER_GEO_DISTANCE,
         LOOKUP_FILTER_GEO_POLYGON,
         LOOKUP_FILTER_GEO_BOUNDING_BOX,
         SUGGESTER_COMPLETION,
     )
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         FilteringFilterBackend,
         DefaultOrderingFilterBackend,
         OrderingFilterBackend,
@@ -857,8 +857,8 @@ Sample view
         GeoSpatialFilteringFilterBackend,
         GeoSpatialOrderingFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
-    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+    from django_elasticsearch_dsl_drf_alt.pagination import LimitOffsetPagination
+    from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
 
     from ..documents import CityDocument
     from ..serializers import CityDocumentSerializer
@@ -1029,7 +1029,7 @@ with minimal efforts. Consider the following example.
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.filter_backends.mixins import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends.mixins import (
         FilterBackendMixin,
     )
     from rest_framework.filters import BaseFilterBackend
@@ -1096,13 +1096,13 @@ The view will look as follows:
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.constants import (
+    from django_elasticsearch_dsl_drf_alt.constants import (
         LOOKUP_FILTER_GEO_DISTANCE,
         LOOKUP_FILTER_GEO_POLYGON,
         LOOKUP_FILTER_GEO_BOUNDING_BOX,
         SUGGESTER_COMPLETION,
     )
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         DefaultOrderingFilterBackend,
         FacetedSearchFilterBackend,
         FilteringFilterBackend,
@@ -1113,8 +1113,8 @@ The view will look as follows:
         SearchFilterBackend,
         SuggesterFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
-    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+    from django_elasticsearch_dsl_drf_alt.pagination import LimitOffsetPagination
+    from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
 
     from ..backends import NestedContinentsBackend
     from ..documents import AddressDocument

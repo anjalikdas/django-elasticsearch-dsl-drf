@@ -7,7 +7,7 @@ Submodules
 django\_elasticsearch\_dsl\_drf.management.commands.elasticsearch\_remove\_indexes module
 -----------------------------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.management.commands.elasticsearch_remove_indexes
+.. automodule:: django_elasticsearch_dsl_drf_alt.management.commands.elasticsearch_remove_indexes
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ django\_elasticsearch\_dsl\_drf.management.commands.elasticsearch\_remove\_index
 Module contents
 ---------------
 
-.. automodule:: django_elasticsearch_dsl_drf.management.commands
+.. automodule:: django_elasticsearch_dsl_drf_alt.management.commands
    :members:
    :undoc-members:
    :show-inheritance:

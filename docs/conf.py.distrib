@@ -26,9 +26,9 @@ sys.path.insert(0, os.path.abspath(os.path.join('..', 'examples', 'simple')))
 try:
     import django_elasticsearch_dsl_drf
     from simple import settings as example_settings
-    version = django_elasticsearch_dsl_drf.__version__
-    project = django_elasticsearch_dsl_drf.__title__
-    copyright = django_elasticsearch_dsl_drf.__copyright__
+    version = django_elasticsearch_dsl_drf_alt.__version__
+    project = django_elasticsearch_dsl_drf_alt.__title__
+    copyright = django_elasticsearch_dsl_drf_alt.__copyright__
 except Exception as e:
     version = '0.1'
     project = u'django-elasticsearch-dsl-drf'

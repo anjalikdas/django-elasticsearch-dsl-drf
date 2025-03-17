@@ -703,7 +703,7 @@ Required imports
     import json
 
     from rest_framework import serializers
-    from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+    from django_elasticsearch_dsl_drf_alt.serializers import DocumentSerializer
 
     from .documents import BookDocument
 
@@ -812,7 +812,7 @@ Required imports
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.constants import (
+    from django_elasticsearch_dsl_drf_alt.constants import (
         LOOKUP_FILTER_TERMS,
         LOOKUP_FILTER_RANGE,
         LOOKUP_FILTER_PREFIX,
@@ -824,15 +824,15 @@ Required imports
         LOOKUP_QUERY_LTE,
         LOOKUP_QUERY_EXCLUDE,
     )
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         FilteringFilterBackend,
         IdsFilterBackend,
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,
         SearchFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.viewsets import BaseDocumentViewSet
-    from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
+    from django_elasticsearch_dsl_drf_alt.viewsets import BaseDocumentViewSet
+    from django_elasticsearch_dsl_drf_alt.pagination import PageNumberPagination
 
     from .documents import BookDocument, PublisherDocument
     from .serializers import BookDocumentSerializer

@@ -400,7 +400,7 @@ Sample view
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.constants import (
+    from django_elasticsearch_dsl_drf_alt.constants import (
         LOOKUP_FILTER_TERMS,
         LOOKUP_FILTER_RANGE,
         LOOKUP_FILTER_PREFIX,
@@ -408,13 +408,13 @@ Sample view
         LOOKUP_QUERY_IN,
         LOOKUP_QUERY_EXCLUDE,
     )
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         FilteringFilterBackend,
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,
         SearchFilterBackend,
     )
-    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+    from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
 
     # Example app models
     from search_indexes.documents.book import BookDocument
@@ -685,7 +685,7 @@ view set in the following way:
 
     # ...
 
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         # ...
         FacetedSearchFilterBackend,
     )
@@ -772,7 +772,7 @@ as the two backends it replaces.
 
     # ...
 
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         # ...
         FacetedFilterSearchFilterBackend,
     )
@@ -835,7 +835,7 @@ Sample view
 
     # ...
 
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         # ...
         PostFilterFilteringFilterBackend,
     )
@@ -1186,7 +1186,7 @@ This is how publisher serializer would look like.
 
     import json
 
-    from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+    from django_elasticsearch_dsl_drf_alt.serializers import DocumentSerializer
 
     class PublisherDocumentSerializer(DocumentSerializer):
         """Serializer for Publisher document."""
@@ -1223,8 +1223,8 @@ the following way:
 
     # ...
 
-    from django_elasticsearch_dsl_drf.constants import SUGGESTER_COMPLETION
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.constants import SUGGESTER_COMPLETION
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         # ...
         SuggesterFilterBackend,
     )
@@ -1805,7 +1805,7 @@ Example for ``phrase`` suggester:
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.constants import (
+    from django_elasticsearch_dsl_drf_alt.constants import (
         LOOKUP_FILTER_PREFIX,
         LOOKUP_FILTER_RANGE,
         LOOKUP_FILTER_TERMS,
@@ -1822,7 +1822,7 @@ Example for ``phrase`` suggester:
         SUGGESTER_PHRASE,
         SUGGESTER_TERM,
     )
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         # ...
         SuggesterFilterBackend,
     )
@@ -2288,12 +2288,12 @@ functionality). Thus, it might be written as short as:
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.constants import (
+    from django_elasticsearch_dsl_drf_alt.constants import (
         # ...
         FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
         FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
     )
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         # ...
         SuggesterFilterBackend,
     )
@@ -2352,8 +2352,8 @@ in your search results so you can show users where the query matches are.
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
-    from django_elasticsearch_dsl_drf.filter_backends import (
+    from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
+    from django_elasticsearch_dsl_drf_alt.filter_backends import (
         # ...
         HighlightBackend,
     )
@@ -2488,7 +2488,7 @@ In order to use a different ``pagination_class``, for instance the
 
     # ...
 
-    from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
+    from django_elasticsearch_dsl_drf_alt.pagination import LimitOffsetPagination
 
     # ...
 
@@ -2517,7 +2517,7 @@ modifications in the ``get_paginated_response_context`` method as follows:
 
 .. code-block:: python
 
-    from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
+    from django_elasticsearch_dsl_drf_alt.pagination import PageNumberPagination
 
 
     class CustomPageNumberPagination(PageNumberPagination):

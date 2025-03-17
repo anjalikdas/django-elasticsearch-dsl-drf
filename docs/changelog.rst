@@ -526,11 +526,11 @@ are used for versioning (schema follows below):
           ``suggest`` functionality) has been renamed to ``DocumentViewSet``
           (which does contain ``suggest`` functionality).
     - (2) You should no longer import from
-          ``django_elasticsearch_dsl_drf.views``. Instead, import from
-          ``django_elasticsearch_dsl_drf.viewsets``.
+          ``django_elasticsearch_dsl_drf_alt.views``. Instead, import from
+          ``django_elasticsearch_dsl_drf_alt.viewsets``.
 
-- Deprecated ``django_elasticsearch_dsl_drf.views`` in favour
-  of ``django_elasticsearch_dsl_drf.viewsets``.
+- Deprecated ``django_elasticsearch_dsl_drf_alt.views`` in favour
+  of ``django_elasticsearch_dsl_drf_alt.viewsets``.
 - Suggest action/method has been moved to ``SuggestMixin`` class.
 - ``FunctionalSuggestMixin`` class introduced which resembled functionality
   of the ``SuggestMixin`` with several improvements/additions, such as
@@ -620,7 +620,7 @@ are used for versioning (schema follows below):
 
     This release contains changes that might be backwards incompatible
     for your project. If you have used dynamic document serializer
-    ``django_elasticsearch_dsl_drf.serializers.DocumentSerializer``
+    ``django_elasticsearch_dsl_drf_alt.serializers.DocumentSerializer``
     with customisations (with use of ``serializers.SerializerMethodField``,
     having the value parsed to JSON), just remove the custom parts.
 

@@ -10,10 +10,10 @@ You can turn off `_source` retrieval by using the `source` parameter:
 
 .. code-block:: python
 
-        from django_elasticsearch_dsl_drf.filter_backends import (
+        from django_elasticsearch_dsl_drf_alt.filter_backends import (
             SourceBackend
         )
-        from django_elasticsearch_dsl_drf.viewsets import (
+        from django_elasticsearch_dsl_drf_alt.viewsets import (
             BaseDocumentViewSet,
         )
 

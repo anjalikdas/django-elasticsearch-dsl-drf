@@ -7,7 +7,7 @@ Submodules
 django\_elasticsearch\_dsl\_drf.tests.base module
 -------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.base
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.base
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,7 +15,7 @@ django\_elasticsearch\_dsl\_drf.tests.base module
 django\_elasticsearch\_dsl\_drf.tests.data\_mixins module
 ---------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.data_mixins
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.data_mixins
    :members:
    :undoc-members:
    :show-inheritance:
@@ -23,7 +23,7 @@ django\_elasticsearch\_dsl\_drf.tests.data\_mixins module
 django\_elasticsearch\_dsl\_drf.tests.test\_faceted\_search module
 ------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_faceted_search
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_faceted_search
    :members:
    :undoc-members:
    :show-inheritance:
@@ -31,7 +31,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_faceted\_search module
 django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_common module
 --------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_filtering_common
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_filtering_common
    :members:
    :undoc-members:
    :show-inheritance:
@@ -39,7 +39,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_common module
 django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_geo\_spatial module
 --------------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_filtering_geo_spatial
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_filtering_geo_spatial
    :members:
    :undoc-members:
    :show-inheritance:
@@ -47,7 +47,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_geo\_spatial module
 django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_global\_aggregations module
 ----------------------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_filtering_global_aggregations
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_filtering_global_aggregations
    :members:
    :undoc-members:
    :show-inheritance:
@@ -55,7 +55,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_global\_aggregations modu
 django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_nested module
 --------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_filtering_nested
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_filtering_nested
    :members:
    :undoc-members:
    :show-inheritance:
@@ -63,7 +63,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_nested module
 django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_post\_filter module
 --------------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_filtering_post_filter
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_filtering_post_filter
    :members:
    :undoc-members:
    :show-inheritance:
@@ -71,7 +71,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_filtering\_post\_filter module
 django\_elasticsearch\_dsl\_drf.tests.test\_functional\_suggesters module
 -------------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_functional_suggesters
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_functional_suggesters
    :members:
    :undoc-members:
    :show-inheritance:
@@ -79,7 +79,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_functional\_suggesters module
 django\_elasticsearch\_dsl\_drf.tests.test\_helpers module
 ----------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_helpers
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_helpers
    :members:
    :undoc-members:
    :show-inheritance:
@@ -87,7 +87,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_helpers module
 django\_elasticsearch\_dsl\_drf.tests.test\_highlight module
 ------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_highlight
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_highlight
    :members:
    :undoc-members:
    :show-inheritance:
@@ -95,7 +95,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_highlight module
 django\_elasticsearch\_dsl\_drf.tests.test\_more\_like\_this module
 -------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_more_like_this
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_more_like_this
    :members:
    :undoc-members:
    :show-inheritance:
@@ -103,7 +103,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_more\_like\_this module
 django\_elasticsearch\_dsl\_drf.tests.test\_ordering\_common module
 -------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_ordering_common
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_ordering_common
    :members:
    :undoc-members:
    :show-inheritance:
@@ -111,7 +111,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_ordering\_common module
 django\_elasticsearch\_dsl\_drf.tests.test\_ordering\_geo\_spatial module
 -------------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_ordering_geo_spatial
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_ordering_geo_spatial
    :members:
    :undoc-members:
    :show-inheritance:
@@ -119,7 +119,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_ordering\_geo\_spatial module
 django\_elasticsearch\_dsl\_drf.tests.test\_pagination module
 -------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_pagination
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_pagination
    :members:
    :undoc-members:
    :show-inheritance:
@@ -127,7 +127,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_pagination module
 django\_elasticsearch\_dsl\_drf.tests.test\_pip\_helpers module
 ---------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_pip_helpers
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_pip_helpers
    :members:
    :undoc-members:
    :show-inheritance:
@@ -135,7 +135,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_pip\_helpers module
 django\_elasticsearch\_dsl\_drf.tests.test\_query\_friendly\_pagination module
 ------------------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_query_friendly_pagination
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_query_friendly_pagination
    :members:
    :undoc-members:
    :show-inheritance:
@@ -143,7 +143,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_query\_friendly\_pagination module
 django\_elasticsearch\_dsl\_drf.tests.test\_search module
 ---------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_search
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_search
    :members:
    :undoc-members:
    :show-inheritance:
@@ -151,7 +151,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_search module
 django\_elasticsearch\_dsl\_drf.tests.test\_search\_multi\_match module
 -----------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_search_multi_match
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_search_multi_match
    :members:
    :undoc-members:
    :show-inheritance:
@@ -159,7 +159,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_search\_multi\_match module
 django\_elasticsearch\_dsl\_drf.tests.test\_search\_simple\_query\_string module
 --------------------------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_search_simple_query_string
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_search_simple_query_string
    :members:
    :undoc-members:
    :show-inheritance:
@@ -167,7 +167,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_search\_simple\_query\_string module
 django\_elasticsearch\_dsl\_drf.tests.test\_serializers module
 --------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_serializers
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_serializers
    :members:
    :undoc-members:
    :show-inheritance:
@@ -175,7 +175,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_serializers module
 django\_elasticsearch\_dsl\_drf.tests.test\_source module
 ---------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_source
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_source
    :members:
    :undoc-members:
    :show-inheritance:
@@ -183,7 +183,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_source module
 django\_elasticsearch\_dsl\_drf.tests.test\_suggesters module
 -------------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_suggesters
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_suggesters
    :members:
    :undoc-members:
    :show-inheritance:
@@ -191,7 +191,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_suggesters module
 django\_elasticsearch\_dsl\_drf.tests.test\_versions module
 -----------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_versions
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_versions
    :members:
    :undoc-members:
    :show-inheritance:
@@ -199,7 +199,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_versions module
 django\_elasticsearch\_dsl\_drf.tests.test\_views module
 --------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_views
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_views
    :members:
    :undoc-members:
    :show-inheritance:
@@ -207,7 +207,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_views module
 django\_elasticsearch\_dsl\_drf.tests.test\_wrappers module
 -----------------------------------------------------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests.test_wrappers
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests.test_wrappers
    :members:
    :undoc-members:
    :show-inheritance:
@@ -215,7 +215,7 @@ django\_elasticsearch\_dsl\_drf.tests.test\_wrappers module
 Module contents
 ---------------
 
-.. automodule:: django_elasticsearch_dsl_drf.tests
+.. automodule:: django_elasticsearch_dsl_drf_alt.tests
    :members:
    :undoc-members:
    :show-inheritance:

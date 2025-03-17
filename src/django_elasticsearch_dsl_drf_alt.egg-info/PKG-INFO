@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: django-elasticsearch-dsl-drf-alt
-Version: 0.22.7
+Version: 0.22.7.2
 Summary: Custom version of django-elasticsearch-dsl-drf.
 Home-page: https://github.com/anjalikdas/django-elasticsearch-dsl-drf
 Author: Anjali
@@ -91,32 +91,32 @@ Prerequisites
 Main features and highlights
 ============================
 
-- `Dynamic serializer for Documents <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/basic_usage_examples.html#sample-serializer>`_.
-- `Search filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#search>`_.
-- `Ordering filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#ordering>`_.
-- `Filtering filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#filtering>`_ (big variety of
+- `Dynamic serializer for Documents <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/basic_usage_examples.html#sample-serializer>`_.
+- `Search filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#search>`_.
+- `Ordering filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#ordering>`_.
+- `Filtering filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#filtering>`_ (big variety of
   native- and functional- query lookups, such as ``gt``, ``gte``, ``lt``,
   ``lte``, ``endswith``, ``contains``, ``wildcard``, ``exists``, ``exclude``,
   ``isnull``, ``range``, ``in``, ``prefix`` (same as ``startswith``), ``term``
   and ``terms`` is implemented.
-- `Geo-spatial filtering filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#geo-spatial-features>`_ (the
+- `Geo-spatial filtering filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#geo-spatial-features>`_ (the
   following filters implemented: ``geo_distance``, ``geo_polygon`` and
   ``geo_bounding_box``).
-- `Geo-spatial ordering filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#geo-spatial-features>`_ (the
+- `Geo-spatial ordering filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#geo-spatial-features>`_ (the
   following filters implemented: ``geo_distance``).
-- `Faceted search filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#faceted-search>`_.
-- `Post-filter filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#post-filter>`_.
-- `Nested filtering filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/nested_fields_usage_examples.html#nested-filtering>`_.
-- `Highlight backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#highlighting>`_.
-- `Suggester filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#suggestions>`_.
-- `Functional suggester filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#functional-suggestions>`_.
-- `Pagination (Page number and limit/offset pagination) <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#pagination>`_.
-- `Ids filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/advanced_usage_examples.html#ids-filter>`_.
-- `Multi match search filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/search_backends.html#multi-match-search-filter-backend>`_.
-- `Simple search query filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/search_backends.html#simple-query-string-filter-backend>`_.
-- `More-like-this support (detail action) <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/more_like_this.html>`_.
-- `Global aggregations support <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/global_aggregations.html>`_.
-- `Source filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/source_backend.html>`_.
+- `Faceted search filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#faceted-search>`_.
+- `Post-filter filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#post-filter>`_.
+- `Nested filtering filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/nested_fields_usage_examples.html#nested-filtering>`_.
+- `Highlight backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#highlighting>`_.
+- `Suggester filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#suggestions>`_.
+- `Functional suggester filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#functional-suggestions>`_.
+- `Pagination (Page number and limit/offset pagination) <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#pagination>`_.
+- `Ids filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/advanced_usage_examples.html#ids-filter>`_.
+- `Multi match search filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/search_backends.html#multi-match-search-filter-backend>`_.
+- `Simple search query filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/search_backends.html#simple-query-string-filter-backend>`_.
+- `More-like-this support (detail action) <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/more_like_this.html>`_.
+- `Global aggregations support <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/global_aggregations.html>`_.
+- `Source filter backend <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/source_backend.html>`_.
 
 Do you need a similar tool for GraphQL? Check `graphene-elastic
 <https://github.com/barseghyanartur/graphene-elastic>`__.
@@ -182,7 +182,7 @@ Installation
 Quick start
 ===========
 Perhaps the easiest way to get acquainted with ``django-elasticsearch-dsl-drf``
-is to read the `quick start tutorial <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7/quick_start.html>`_.
+is to read the `quick start tutorial <http://django-elasticsearch-dsl-drf.readthedocs.io/en/0.22.7.2/quick_start.html>`_.
 
 See it as a guide of diving into integration of Elasticsearch with Django
 with very low knowledge entry level.
@@ -219,7 +219,7 @@ Or:
 
 .. code-block:: sh
 
-    ./manage.py test django_elasticsearch_dsl_drf.tests.test_ordering
+    ./manage.py test django_elasticsearch_dsl_drf_alt.tests.test_ordering
 
 To run a single test class in a given test module in your working environment
 type:
