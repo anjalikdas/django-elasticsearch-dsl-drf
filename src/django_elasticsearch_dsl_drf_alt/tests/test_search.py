@@ -26,13 +26,13 @@ from .base import (
     CORE_API_AND_CORE_SCHEMA_MISSING_MSG,
 )
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_search'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
+__title__ = "django_elasticsearch_dsl_drf_alt.tests.test_search"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
 __all__ = (
-    'TestSearch',
-    'TestSearchCustomCases',
+    "TestSearch",
+    "TestSearchCustomCases",
 )
 
 
@@ -51,16 +51,14 @@ class TestSearch(BaseRestFrameworkTestCase):
         cls.special = factories.BookWithUniqueTitleFactory.create_batch(
             cls.special_count,
             **{
-                'summary': 'Delusional Insanity, fine art photography',
-                'state': constants.BOOK_PUBLISHING_STATUS_PUBLISHED,
+                "summary": "Delusional Insanity, fine art photography",
+                "state": constants.BOOK_PUBLISHING_STATUS_PUBLISHED,
             }
         )
 
         # Lorem ipsum book factories
         cls.lorem_count = 10
-        cls.lorem = factories.BookWithUniqueTitleFactory.create_batch(
-            cls.lorem_count
-        )
+        cls.lorem = factories.BookWithUniqueTitleFactory.create_batch(cls.lorem_count)
 
         # Book factories with title, description and summary that actually
         # make sense
@@ -77,9 +75,7 @@ class TestSearch(BaseRestFrameworkTestCase):
             factories.BookChapter112Factory(),
         ]
 
-        cls.all_count = (
-            cls.special_count + cls.lorem_count + cls.non_lorem_count
-        )
+        cls.all_count = cls.special_count + cls.lorem_count + cls.non_lorem_count
 
         cls.cities = list(set(factories.DutchCityFactory.create_batch(100)))
         cls.cities_count = len(cls.cities)
@@ -90,14 +86,13 @@ class TestSearch(BaseRestFrameworkTestCase):
         # fails. Before there's a better approach, this would stay so. The
         # create_batch part (below) will remain commented out, until there's a
         # better solution.
-        cls.switzerland = factories.CountryFactory.create(name='Wonderland')
+        cls.switzerland = factories.CountryFactory.create(name="Wonderland")
         cls.switz_cities_names = factories.SWISS_CITIES
 
         cls.switz_cities = list(
             set(
                 factories.SwissCityFactory.create_batch(
-                    size=100,
-                    country=cls.switzerland
+                    size=100, country=cls.switzerland
                 )
             )
         )
@@ -109,52 +104,41 @@ class TestSearch(BaseRestFrameworkTestCase):
         cls.all_cities_count = cls.cities_count + cls.switz_cities_count
 
         cls.sleep()
-        call_command('search_index', '--rebuild', '-f')
+        call_command("search_index", "--rebuild", "-f")
 
         # Testing coreapi and coreschema
         cls.backend = SearchFilterBackend()
         cls.view = BookDocumentViewSet()
 
-    def _search_by_field(self,
-                         search_term,
-                         num_results,
-                         url=None,
-                         search_field='search'):
+    def _search_by_field(
+        self, search_term, num_results, url=None, search_field="search"
+    ):
         """Search by field."""
         self.authenticate()
 
         if url is None:
-            url = reverse('bookdocument-list', kwargs={})
+            url = reverse("bookdocument-list", kwargs={})
         data = {}
 
         # Should contain 20 results
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), self.all_count)
+        self.assertEqual(len(response.data["results"]), self.all_count)
 
         if isinstance(search_term, (list, tuple)):
             _query_string = []
             for _search_term in search_term:
-                _query_string.append(
-                    '{}={}'.format(search_field, _search_term)
-                )
-            filtered_url = url + '?' + '&'.join(_query_string)
+                _query_string.append("{}={}".format(search_field, _search_term))
+            filtered_url = url + "?" + "&".join(_query_string)
         else:
             # Should contain only `num_results` results
-            filtered_url = url + '?search={}'.format(search_term)
+            filtered_url = url + "?search={}".format(search_term)
 
         filtered_response = self.client.get(filtered_url, data)
         self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(filtered_response.data['results']),
-            num_results
-        )
+        self.assertEqual(len(filtered_response.data["results"]), num_results)
 
-    def _search_boost(self,
-                      search_term,
-                      ordering,
-                      url=None,
-                      search_field='search'):
+    def _search_boost(self, search_term, ordering, url=None, search_field="search"):
         """Search boost.
 
         In our book view, we have the following defined:
@@ -180,20 +164,19 @@ class TestSearch(BaseRestFrameworkTestCase):
         self.authenticate()
 
         if url is None:
-            url = reverse('bookdocument_ordered_by_score-list', kwargs={})
+            url = reverse("bookdocument_ordered_by_score-list", kwargs={})
         data = {}
 
         filtered_response = self.client.get(
-            url + '?{}={}'.format(search_field, search_term),
-            data
+            url + "?{}={}".format(search_field, search_term), data
         )
         self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
-        self.assertIn('results', filtered_response.data)
+        self.assertIn("results", filtered_response.data)
         for counter, item_id in enumerate(ordering):
-            result_item = filtered_response.data['results'][counter]
-            self.assertEqual(result_item['id'], item_id)
+            result_item = filtered_response.data["results"][counter]
+            self.assertEqual(result_item["id"], item_id)
 
-    def test_search_boost(self, url=None, search_field='search'):
+    def test_search_boost(self, url=None, search_field="search"):
         """Search boost.
 
         :return:
@@ -207,7 +190,7 @@ class TestSearch(BaseRestFrameworkTestCase):
                 self.non_lorem[2].pk,
             ],
             url=url,
-            search_field=search_field
+            search_field=search_field,
         )
 
         # Search for "Pig and Pepper"
@@ -219,7 +202,7 @@ class TestSearch(BaseRestFrameworkTestCase):
                 self.non_lorem[5].pk,
             ],
             url=url,
-            search_field=search_field
+            search_field=search_field,
         )
 
         # Search for "Who Stole the Tarts"
@@ -231,118 +214,107 @@ class TestSearch(BaseRestFrameworkTestCase):
                 self.non_lorem[8].pk,
             ],
             url=url,
-            search_field=search_field
+            search_field=search_field,
         )
 
-    def test_search_boost_compound(self, search_field='search'):
+    def test_search_boost_compound(self, search_field="search"):
         url = reverse(
-            'bookdocument_compound_search_backend_ordered_by_score-list',
-            kwargs={}
+            "bookdocument_compound_search_backend_ordered_by_score-list", kwargs={}
         )
         return self.test_search_boost(url=url, search_field=search_field)
 
-    def _search_by_nested_field(self,
-                                search_term,
-                                url=None,
-                                search_field='search'):
+    def _search_by_nested_field(self, search_term, url=None, search_field="search"):
         """Search by field."""
         self.authenticate()
 
         if url is None:
-            url = reverse('citydocument-list', kwargs={})
+            url = reverse("citydocument-list", kwargs={})
 
         data = {}
 
         # Should contain 20 results
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), self.all_cities_count)
+        self.assertEqual(len(response.data["results"]), self.all_cities_count)
 
         # Should contain only 10 results
         filtered_response = self.client.get(
-            url + '?{}={}'.format(search_field, search_term),
-            data
+            url + "?{}={}".format(search_field, search_term), data
         )
         self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            len(filtered_response.data['results']),
-            self.switz_cities_count
+            len(filtered_response.data["results"]), self.switz_cities_count
         )
 
-    def test_search_by_field(self, url=None, search_field='search'):
+    def test_search_by_field(self, url=None, search_field="search"):
         """Search by field."""
         self._search_by_field(
-            search_term='photography',
+            search_term="photography",
             num_results=self.special_count,
             url=url,
-            search_field=search_field
+            search_field=search_field,
         )
         self._search_by_field(
-            search_term='summary{}photography'.format(SEPARATOR_LOOKUP_NAME),
+            search_term="summary{}photography".format(SEPARATOR_LOOKUP_NAME),
             num_results=self.special_count,
             url=url,
-            search_field=search_field
+            search_field=search_field,
         )
 
-    def test_search_by_field_multi_terms(self,
-                                         url=None,
-                                         search_field='search'):
+    def test_search_by_field_multi_terms(self, url=None, search_field="search"):
         """Search by field, multiple terms."""
         self._search_by_field(
-            search_term=['photography', 'art'],
+            search_term=["photography", "art"],
             num_results=self.special_count,
             url=url,
-            search_field=search_field
+            search_field=search_field,
         )
         self._search_by_field(
             search_term=[
-                'summary{}photography'.format(SEPARATOR_LOOKUP_NAME),
-                'summary{}art'.format(SEPARATOR_LOOKUP_NAME)
+                "summary{}photography".format(SEPARATOR_LOOKUP_NAME),
+                "summary{}art".format(SEPARATOR_LOOKUP_NAME),
             ],
             num_results=self.special_count,
             url=url,
-            search_field=search_field
+            search_field=search_field,
         )
 
     def test_compound_search_by_field(self):
-        url = reverse('bookdocument_compound_search_backend-list', kwargs={})
+        url = reverse("bookdocument_compound_search_backend-list", kwargs={})
         self.test_search_by_field(url=url)
 
     def test_compound_search_boost_by_field(self):
-        url = reverse(
-            'bookdocument_compound_search_boost_backend-list', kwargs={}
-        )
+        url = reverse("bookdocument_compound_search_boost_backend-list", kwargs={})
         self.test_search_by_field(url=url)
 
     def test_compound_search_by_field_multi_terms(self):
-        url = reverse('bookdocument_compound_search_backend-list', kwargs={})
+        url = reverse("bookdocument_compound_search_backend-list", kwargs={})
         return self.test_search_by_field_multi_terms(url=url)
 
     def test_search_by_nested_field(self, url=None):
         """Search by field."""
-        self._search_by_nested_field(
-            'Wonderland',
-            url=url
-        )
+        self._search_by_nested_field("Wonderland", url=url)
         # self._search_by_nested_field(
         #     'name{}Wonderland'.format(SEPARATOR_LOOKUP_NAME),
         #     url=url
         # )
 
     def test_compound_search_by_nested_field(self):
-        url = reverse('citydocument_compound_search_backend-list', kwargs={})
+        url = reverse("citydocument_compound_search_backend-list", kwargs={})
         return self.test_search_by_nested_field(url=url)
 
-    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
-                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
+    @unittest.skipIf(
+        not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED, CORE_API_AND_CORE_SCHEMA_MISSING_MSG
+    )
     def test_schema_fields_with_filter_fields_list(self):
         """Test schema field generator"""
         fields = self.backend.get_schema_fields(self.view)
         fields = [f.name for f in fields]
-        self.assertEqual(fields, ['search'])
+        self.assertEqual(fields, ["search"])
 
-    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
-                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
+    @unittest.skipIf(
+        not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED, CORE_API_AND_CORE_SCHEMA_MISSING_MSG
+    )
     def test_schema_field_not_required(self):
         """Test schema fields always not required"""
         fields = self.backend.get_schema_fields(self.view)
@@ -358,34 +330,30 @@ class TestSearchCustomCases(BaseRestFrameworkTestCase):
     pytestmark = pytest.mark.django_db
 
     def _reindex(self):
-        call_command('search_index', '--rebuild', '-f')
+        call_command("search_index", "--rebuild", "-f")
 
-    def _test_search_any_word_in_indexed_fields(self,
-                                                search_term,
-                                                url,
-                                                expected_num_results,
-                                                title_match=None,
-                                                create_factory=False):
+    def _test_search_any_word_in_indexed_fields(
+        self,
+        search_term,
+        url,
+        expected_num_results,
+        title_match=None,
+        create_factory=False,
+    ):
         if create_factory:
             factories.BookWithUniqueTitleFactory(
-                title='This is a short indexed description'
+                title="This is a short indexed description"
             )
             factories.BookWithUniqueTitleFactory.create_batch(100)
             self._reindex()
 
         self.authenticate()
-        filtered_url = url + '?search={}'.format(search_term)
+        filtered_url = url + "?search={}".format(search_term)
         filtered_response = self.client.get(filtered_url)
         self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(filtered_response.data['results']),
-            expected_num_results
-        )
+        self.assertEqual(len(filtered_response.data["results"]), expected_num_results)
         if title_match:
-            self.assertEqual(
-                filtered_response.data['results'][0]['title'],
-                title_match
-            )
+            self.assertEqual(filtered_response.data["results"][0]["title"], title_match)
 
     def test_search_any_word_in_indexed_fields(self):
         """Test search any word in indexed fields.
@@ -394,36 +362,36 @@ class TestSearchCustomCases(BaseRestFrameworkTestCase):
         """
         # Create some data to test
         book = factories.BookWithUniqueTitleFactory(
-            title='This is a short indexed description'
+            title="This is a short indexed description"
         )
         factories.BookWithUniqueTitleFactory.create_batch(100)
         self._reindex()
         sleep(3)  # Wait until indexed
-        url = reverse('bookdocument-list', kwargs={})
+        url = reverse("bookdocument-list", kwargs={})
 
         self._test_search_any_word_in_indexed_fields(
-            search_term='short indexed description',
+            search_term="short indexed description",
             url=url,
             expected_num_results=1,
             title_match=book.title,
-            create_factory=False
+            create_factory=False,
         )
         self._test_search_any_word_in_indexed_fields(
-            search_term='a description',
+            search_term="a description",
             url=url,
             expected_num_results=1,
             title_match=book.title,
-            create_factory=False
+            create_factory=False,
         )
 
         self._test_search_any_word_in_indexed_fields(
-            search_term='short description',
+            search_term="short description",
             url=url,
             expected_num_results=1,
             title_match=book.title,
-            create_factory=False
+            create_factory=False,
         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

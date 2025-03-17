@@ -1,9 +1,9 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django_elasticsearch_dsl_drf.wrappers import dict_to_obj
+from django_elasticsearch_dsl_drf_alt.wrappers import dict_to_obj
 
-__all__ = ('Address',)
+__all__ = ("Address",)
 
 
 class Address(models.Model):
@@ -13,25 +13,16 @@ class Address(models.Model):
     house_number = models.CharField(max_length=60)
     appendix = models.CharField(max_length=30, null=True, blank=True)
     zip_code = models.CharField(max_length=60)
-    city = models.ForeignKey('books.City', on_delete=models.CASCADE)
+    city = models.ForeignKey("books.City", on_delete=models.CASCADE)
     latitude = models.DecimalField(
-        null=True,
-        blank=True,
-        decimal_places=15,
-        max_digits=19,
-        default=0
+        null=True, blank=True, decimal_places=15, max_digits=19, default=0
     )
     longitude = models.DecimalField(
-        null=True,
-        blank=True,
-        decimal_places=15,
-        max_digits=19,
-        default=0
+        null=True, blank=True, decimal_places=15, max_digits=19, default=0
     )
-    planet = models.ForeignKey('books.Planet',
-                               null=True,
-                               blank=True,
-                               on_delete=models.CASCADE)
+    planet = models.ForeignKey(
+        "books.Planet", null=True, blank=True, on_delete=models.CASCADE
+    )
 
     class Meta:
         """Meta options."""
@@ -40,10 +31,7 @@ class Address(models.Model):
 
     def __str__(self):
         return "{} {} {} {}".format(
-            self.street,
-            self.house_number,
-            self.appendix,
-            self.zip_code
+            self.street, self.house_number, self.appendix, self.zip_code
         )
 
     @property
@@ -53,8 +41,8 @@ class Address(models.Model):
         Used in Elasticsearch indexing/tests of `geo_distance` native filter.
         """
         return {
-            'lat': self.latitude,
-            'lon': self.longitude,
+            "lat": self.latitude,
+            "lon": self.longitude,
         }
 
     @property
@@ -74,12 +62,9 @@ class Address(models.Model):
 
         :return:
         """
-        wrapper = dict_to_obj({
-            'name': self.city.country.name,
-            'city': {
-                'name': self.city.name
-            }
-        })
+        wrapper = dict_to_obj(
+            {"name": self.city.country.name, "city": {"name": self.city.name}}
+        )
 
         return wrapper
 
@@ -106,18 +91,20 @@ class Address(models.Model):
 
         :return:
         """
-        wrapper = dict_to_obj({
-            'id': self.city.country.continent.id,
-            'name': self.city.country.continent.name,
-            'country': {
-                'id': self.city.country.id,
-                'name': self.city.country.name,
-                'city': {
-                    'id': self.city.id,
-                    'name': self.city.name,
-                }
+        wrapper = dict_to_obj(
+            {
+                "id": self.city.country.continent.id,
+                "name": self.city.country.continent.name,
+                "country": {
+                    "id": self.city.country.id,
+                    "name": self.city.country.name,
+                    "city": {
+                        "id": self.city.id,
+                        "name": self.city.name,
+                    },
+                },
             }
-        })
+        )
 
         return wrapper
 
@@ -140,13 +127,15 @@ class Address(models.Model):
 
         :return:
         """
-        wrapper = dict_to_obj({
-            'id': self.planet.galaxy.id,
-            'name': self.planet.galaxy.name,
-            'planet': {
-                'id': self.planet.id,
-                'name': self.planet.name,
+        wrapper = dict_to_obj(
+            {
+                "id": self.planet.galaxy.id,
+                "name": self.planet.galaxy.name,
+                "planet": {
+                    "id": self.planet.id,
+                    "name": self.planet.name,
+                },
             }
-        })
+        )
 
         return wrapper

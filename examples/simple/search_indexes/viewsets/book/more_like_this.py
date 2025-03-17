@@ -1,24 +1,23 @@
-from django_elasticsearch_dsl_drf.filter_backends import (
+from django_elasticsearch_dsl_drf_alt.filter_backends import (
     FilteringFilterBackend,
     IdsFilterBackend,
     OrderingFilterBackend,
     PostFilterFilteringFilterBackend,
     SearchFilterBackend,
 )
-from django_elasticsearch_dsl_drf.viewsets import (
+from django_elasticsearch_dsl_drf_alt.viewsets import (
     MoreLikeThisMixin,
 )
 
 from .base import BaseBookDocumentViewSet
 
 __all__ = (
-    'BookMoreLikeThisDocumentViewSet',
-    'BookMoreLikeThisNoOptionsDocumentViewSet',
+    "BookMoreLikeThisDocumentViewSet",
+    "BookMoreLikeThisNoOptionsDocumentViewSet",
 )
 
 
-class BookMoreLikeThisDocumentViewSet(BaseBookDocumentViewSet,
-                                      MoreLikeThisMixin):
+class BookMoreLikeThisDocumentViewSet(BaseBookDocumentViewSet, MoreLikeThisMixin):
     """Same as BookDocumentViewSet, with more-like-this and no facets."""
 
     filter_backends = [
@@ -32,10 +31,10 @@ class BookMoreLikeThisDocumentViewSet(BaseBookDocumentViewSet,
 
     # More-like-this options
     more_like_this_options = {
-        'fields': (
-            'title.mlt',
-            'summary.mlt',
-            'description.mlt',
+        "fields": (
+            "title.mlt",
+            "summary.mlt",
+            "description.mlt",
             # 'title.raw',
             # 'summary.raw',
             # 'description.raw',
@@ -48,8 +47,9 @@ class BookMoreLikeThisDocumentViewSet(BaseBookDocumentViewSet,
     }
 
 
-class BookMoreLikeThisNoOptionsDocumentViewSet(BaseBookDocumentViewSet,
-                                               MoreLikeThisMixin):
+class BookMoreLikeThisNoOptionsDocumentViewSet(
+    BaseBookDocumentViewSet, MoreLikeThisMixin
+):
     """Same as BookDocumentViewSet, with more-like-this and no facets."""
 
     filter_backends = [

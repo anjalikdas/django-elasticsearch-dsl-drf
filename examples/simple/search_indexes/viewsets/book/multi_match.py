@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl_drf.filter_backends import (
+from django_elasticsearch_dsl_drf_alt.filter_backends import (
     DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
@@ -12,14 +12,10 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 
 from .default import BookDocumentViewSet
 
-__all__ = (
-    'BookMultiMatchSearchFilterBackendDocumentViewSet',
-)
+__all__ = ("BookMultiMatchSearchFilterBackendDocumentViewSet",)
 
 
-class BookMultiMatchSearchFilterBackendDocumentViewSet(
-    BookDocumentViewSet
-):
+class BookMultiMatchSearchFilterBackendDocumentViewSet(BookDocumentViewSet):
     """Same as BookDocumentViewSet, but multi match."""
 
     filter_backends = [
@@ -35,12 +31,17 @@ class BookMultiMatchSearchFilterBackendDocumentViewSet(
     ]
 
     search_fields = (
-        'title',
-        'summary',
-        'description',
+        "title",
+        "summary",
+        "description",
     )
-    ordering = ('_score', 'id', 'title', 'price',)
+    ordering = (
+        "_score",
+        "id",
+        "title",
+        "price",
+    )
 
     multi_match_options = {
-        'type': 'phrase',
+        "type": "phrase",
     }

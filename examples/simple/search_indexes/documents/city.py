@@ -1,14 +1,14 @@
 from django.conf import settings
 
 from django_elasticsearch_dsl import Document, Index, fields
-from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
+from django_elasticsearch_dsl_drf_alt.compat import KeywordField, StringField
 
 from books.models import City
 
 from .analyzers import html_strip
 
 
-__all__ = ('CityDocument',)
+__all__ = ("CityDocument",)
 
 INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 
@@ -16,7 +16,7 @@ INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 INDEX.settings(
     number_of_shards=1,
     number_of_replicas=1,
-    blocks={'read_only_allow_delete': False},
+    blocks={"read_only_allow_delete": False},
     # read_only_allow_delete=False
 )
 
@@ -34,7 +34,7 @@ class CityDocument(Document):
     # functionality where all of the fields are used.
 
     # ID
-    id = fields.IntegerField(attr='id')
+    id = fields.IntegerField(attr="id")
 
     # ********************************************************************
     # ********************** Main data fields for search *****************
@@ -43,9 +43,9 @@ class CityDocument(Document):
     name = StringField(
         analyzer=html_strip,
         fields={
-            'raw': KeywordField(),
-            'suggest': fields.CompletionField(),
-        }
+            "raw": KeywordField(),
+            "suggest": fields.CompletionField(),
+        },
     )
 
     info = StringField(analyzer=html_strip)
@@ -57,44 +57,36 @@ class CityDocument(Document):
     # City object
     country = fields.NestedField(
         properties={
-            'name': StringField(
+            "name": StringField(
                 analyzer=html_strip,
                 fields={
-                    'raw': KeywordField(),
-                    'suggest': fields.CompletionField(),
-                }
+                    "raw": KeywordField(),
+                    "suggest": fields.CompletionField(),
+                },
             ),
-            'info': StringField(analyzer=html_strip),
-            'location': fields.GeoPointField(attr='location_field_indexing'),
+            "info": StringField(analyzer=html_strip),
+            "location": fields.GeoPointField(attr="location_field_indexing"),
         }
     )
 
-    location = fields.GeoPointField(attr='location_field_indexing')
+    location = fields.GeoPointField(attr="location_field_indexing")
 
     # ********************************************************************
     # ********** Other complex fields for search and filtering ***********
     # ********************************************************************
 
-    boolean_list = fields.ListField(
-        StringField(attr='boolean_list_indexing')
-    )
+    boolean_list = fields.ListField(StringField(attr="boolean_list_indexing"))
     # boolean_dict_indexing = fields.ObjectField(
     #     properties={
     #         'true': fields.BooleanField(),
     #         'false': fields.BooleanField(),
     #     }
     # )
-    datetime_list = fields.ListField(
-        StringField(attr='datetime_list_indexing')
-    )
+    datetime_list = fields.ListField(StringField(attr="datetime_list_indexing"))
     # datetime_dict_indexing
-    float_list = fields.ListField(
-        StringField(attr='float_list_indexing')
-    )
+    float_list = fields.ListField(StringField(attr="float_list_indexing"))
     # float_dict_indexing
-    integer_list = fields.ListField(
-        StringField(attr='integer_list_indexing')
-    )
+    integer_list = fields.ListField(StringField(attr="integer_list_indexing"))
     # integer_dict_indexing
 
     class Django(object):

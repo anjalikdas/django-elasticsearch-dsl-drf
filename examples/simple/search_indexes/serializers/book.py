@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+from django_elasticsearch_dsl_drf_alt.serializers import DocumentSerializer
 
 from ..documents import BookDocument
 
 __all__ = (
-    'BookDocumentSerializer',
-    'BookDocumentSimpleSerializer',
-    'BookDocumentSourceSerializer',
+    "BookDocumentSerializer",
+    "BookDocumentSimpleSerializer",
+    "BookDocumentSourceSerializer",
 )
 
 
@@ -30,28 +30,26 @@ class BookDocumentSerializer(serializers.Serializer):
     tags = serializers.SerializerMethodField()
 
     # Used in testing of `isnull` functional filter.
-    null_field = serializers.CharField(read_only=True,
-                                       required=False,
-                                       allow_blank=True)
+    null_field = serializers.CharField(read_only=True, required=False, allow_blank=True)
 
     class Meta:
         """Meta options."""
 
         fields = (
-            'id',
-            'title',
-            'description',
-            'summary',
-            'publisher',
-            'publication_date',
-            'state',
-            'isbn',
-            'price',
-            'pages',
-            'stock_count',
-            'tags',
-            'created',
-            'null_field',  # Used in testing of `isnull` functional filter.
+            "id",
+            "title",
+            "description",
+            "summary",
+            "publisher",
+            "publication_date",
+            "state",
+            "isbn",
+            "price",
+            "pages",
+            "stock_count",
+            "tags",
+            "created",
+            "null_field",  # Used in testing of `isnull` functional filter.
         )
         read_only_fields = fields
 
@@ -96,31 +94,31 @@ class BookDocumentSimpleSerializer(DocumentSerializer):
 
         document = BookDocument
         fields = (
-            'id',
-            'title',
-            'description',
-            'summary',
-            'authors',
-            'publisher',
-            'publication_date',
-            'state',
-            'isbn',
-            'price',
-            'pages',
-            'stock_count',
-            'tags',
-            'created',
-            'highlight',  # Used in highlight tests
-            'null_field',  # Used in testing of `isnull` functional filter.
+            "id",
+            "title",
+            "description",
+            "summary",
+            "authors",
+            "publisher",
+            "publication_date",
+            "state",
+            "isbn",
+            "price",
+            "pages",
+            "stock_count",
+            "tags",
+            "created",
+            "highlight",  # Used in highlight tests
+            "null_field",  # Used in testing of `isnull` functional filter.
         )
 
     def get_highlight(self, obj):
-        if hasattr(obj.meta, 'highlight'):
-            return obj.meta.highlight.__dict__['_d_']
+        if hasattr(obj.meta, "highlight"):
+            return obj.meta.highlight.__dict__["_d_"]
         return {}
 
     def get_score(self, obj):
-        if hasattr(obj.meta, 'score'):
+        if hasattr(obj.meta, "score"):
             return obj.meta.score
         return None
 
@@ -133,6 +131,6 @@ class BookDocumentSourceSerializer(DocumentSerializer):
 
         document = BookDocument
         fields = (
-            'id',
-            'title',
+            "id",
+            "title",
         )

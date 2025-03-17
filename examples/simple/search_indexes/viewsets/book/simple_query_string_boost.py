@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl_drf.filter_backends import (
+from django_elasticsearch_dsl_drf_alt.filter_backends import (
     DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
@@ -12,14 +12,10 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 
 from .default import BookDocumentViewSet
 
-__all__ = (
-    'BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet',
-)
+__all__ = ("BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet",)
 
 
-class BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet(
-    BookDocumentViewSet
-):
+class BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet(BookDocumentViewSet):
     """Same as BookDocumentViewSet, but simple query string and boost."""
 
     filter_backends = [
@@ -36,11 +32,16 @@ class BookSimpleQueryStringBoostSearchFilterBackendDocumentViewSet(
 
     # Using dedicated search fields here
     simple_query_string_search_fields = {
-        'title': None,
-        'summary': None,
-        'description': None,
+        "title": None,
+        "summary": None,
+        "description": None,
     }
-    ordering = ('_score', 'id', 'title', 'price',)
+    ordering = (
+        "_score",
+        "id",
+        "title",
+        "price",
+    )
 
     simple_query_string_options = {
         "default_operator": "and",

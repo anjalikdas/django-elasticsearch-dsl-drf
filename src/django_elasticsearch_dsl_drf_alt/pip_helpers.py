@@ -1,16 +1,17 @@
 """
 Pip helpers module.
 """
+
 import subprocess
 import sys
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.pip_helpers'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
+__title__ = "django_elasticsearch_dsl_drf_alt.tests.pip_helpers"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
 __all__ = (
-    'check_if_installed',
-    'get_installed_packages',
+    "check_if_installed",
+    "get_installed_packages",
 )
 
 
@@ -22,11 +23,11 @@ def get_installed_packages(with_versions=False):
     :return:
     :rtype: list
     """
-    reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'])
+    reqs = subprocess.check_output([sys.executable, "-m", "pip", "freeze"])
     if with_versions:
-        return set([tuple(r.decode().split('==')) for r in reqs.split()])
+        return set([tuple(r.decode().split("==")) for r in reqs.split()])
     else:
-        return set([r.decode().split('==')[0] for r in reqs.split()])
+        return set([r.decode().split("==")[0] for r in reqs.split()])
 
 
 def check_if_installed(package, installed_packages=None):

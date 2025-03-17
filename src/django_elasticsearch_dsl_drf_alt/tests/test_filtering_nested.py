@@ -24,13 +24,11 @@ from .base import (
 )
 from .data_mixins import AddressesMixin
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering_nested'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = (
-    'TestFilteringNested',
-)
+__title__ = "django_elasticsearch_dsl_drf_alt.tests.test_filtering_nested"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("TestFilteringNested",)
 
 
 @pytest.mark.django_db
@@ -47,44 +45,40 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         cls.created_addresses()
 
         cls.all_addresses = (
-            cls.addresses_in_yerevan +
-            cls.addresses_in_amsterdam +
-            cls.addresses_in_dublin +
-            cls.addresses_in_yeovil +
-            cls.addresses_in_buenos_aires
+            cls.addresses_in_yerevan
+            + cls.addresses_in_amsterdam
+            + cls.addresses_in_dublin
+            + cls.addresses_in_yeovil
+            + cls.addresses_in_buenos_aires
         )
-        cls.all_addresses_ids = sorted(
-            set([obj.id for obj in cls.all_addresses])
-        )
-        cls.all_cities_ids = sorted(
-            set([obj.city.id for obj in cls.all_addresses])
-        )
+        cls.all_addresses_ids = sorted(set([obj.id for obj in cls.all_addresses]))
+        cls.all_cities_ids = sorted(set([obj.city.id for obj in cls.all_addresses]))
         cls.add_addresses_dict = {
             cls.addresses_in_yerevan[0].city.id: {
-                'count': len(cls.addresses_in_yerevan),
-                'objects': cls.addresses_in_yerevan
+                "count": len(cls.addresses_in_yerevan),
+                "objects": cls.addresses_in_yerevan,
             },
             cls.addresses_in_amsterdam[0].city.id: {
-                'count': len(cls.addresses_in_amsterdam),
-                'objects': cls.addresses_in_amsterdam
+                "count": len(cls.addresses_in_amsterdam),
+                "objects": cls.addresses_in_amsterdam,
             },
             cls.addresses_in_dublin[0].city.id: {
-                'count': len(cls.addresses_in_dublin),
-                'objects': cls.addresses_in_dublin
+                "count": len(cls.addresses_in_dublin),
+                "objects": cls.addresses_in_dublin,
             },
             cls.addresses_in_yeovil[0].city.id: {
-                'count': len(cls.addresses_in_yeovil),
-                'objects': cls.addresses_in_yeovil
+                "count": len(cls.addresses_in_yeovil),
+                "objects": cls.addresses_in_yeovil,
             },
             cls.addresses_in_buenos_aires[0].city.id: {
-                'count': len(cls.addresses_in_buenos_aires),
-                'objects': cls.addresses_in_buenos_aires,
-            }
+                "count": len(cls.addresses_in_buenos_aires),
+                "objects": cls.addresses_in_buenos_aires,
+            },
         }
 
         cls.sleep()
         # Update the Elasticsearch index
-        call_command('search_index', '--rebuild', '-f')
+        call_command("search_index", "--rebuild", "-f")
 
         # Testing coreapi and coreschema
         cls.backend = NestedFilteringFilterBackend()
@@ -111,22 +105,14 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         """
         url = self.base_url[:]
         data = {}
-        response = self.client.get(
-            url + '?{}={}'.format(field_name, value),
-            data
-        )
+        response = self.client.get(url + "?{}={}".format(field_name, value), data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(response.data['results']),
-            count
-        )
+        self.assertEqual(len(response.data["results"]), count)
 
-    def _field_filter_term(self,
-                           field_name,
-                           filter_value,
-                           total_num_results,
-                           filtered_num_results):
+    def _field_filter_term(
+        self, field_name, filter_value, total_num_results, filtered_num_results
+    ):
         """Field filter term.
 
         Example:
@@ -141,35 +127,31 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         # Should contain `total_num_results` results
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), total_num_results)
+        self.assertEqual(len(response.data["results"]), total_num_results)
 
         # Should contain only `filtered_num_results` results
         filtered_response = self.client.get(
-            url + '?{}={}'.format(field_name, filter_value),
-            data
+            url + "?{}={}".format(field_name, filter_value), data
         )
         self.assertEqual(filtered_response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(filtered_response.data['results']),
-            filtered_num_results
-        )
+        self.assertEqual(len(filtered_response.data["results"]), filtered_num_results)
 
     def test_field_filter_term(self):
         """Field filter term."""
         return self._field_filter_term(
-            'continent_country_city',
-            'Yerevan',
+            "continent_country_city",
+            "Yerevan",
             self.all_addresses_count,
-            self.addresses_in_yerevan_count
+            self.addresses_in_yerevan_count,
         )
 
     def test_field_filter_term_explicit(self):
         """Field filter term."""
         return self._field_filter_term(
-            'continent_country_city__term',
-            'Yerevan',
+            "continent_country_city__term",
+            "Yerevan",
             self.all_addresses_count,
-            self.addresses_in_yerevan_count
+            self.addresses_in_yerevan_count,
         )
 
     def test_field_filter_range(self):
@@ -182,21 +164,17 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         # Pick the first and the last elements from the list
         lower_id = self.all_cities_ids[1]
         upper_id = self.all_cities_ids[3]
-        value = '{lower_id}{sep}{upper_id}'.format(
-            lower_id=lower_id,
-            upper_id=upper_id,
-            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
+        value = "{lower_id}{sep}{upper_id}".format(
+            lower_id=lower_id, upper_id=upper_id, sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
         )
         # Calculate expected number of items
         count = (
-            self.add_addresses_dict[lower_id]['count'] +
-            self.add_addresses_dict[lower_id + 1]['count'] +
-            self.add_addresses_dict[upper_id]['count']
+            self.add_addresses_dict[lower_id]["count"]
+            + self.add_addresses_dict[lower_id + 1]["count"]
+            + self.add_addresses_dict[upper_id]["count"]
         )
         return self._field_filter_value(
-            'continent_country_city_id__range',
-            value,
-            count
+            "continent_country_city_id__range", value, count
         )
 
     def test_field_filter_range_with_boost(self):
@@ -208,22 +186,20 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         """
         lower_id = self.all_cities_ids[2]
         upper_id = self.all_cities_ids[4]
-        value = '{lower_id}{sep}{upper_id}{sep}{boost}'.format(
+        value = "{lower_id}{sep}{upper_id}{sep}{boost}".format(
             lower_id=lower_id,
             upper_id=upper_id,
-            boost='2.0',
-            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
+            boost="2.0",
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE,
         )
         # Calculate expected number of items
         count = (
-                self.add_addresses_dict[lower_id]['count'] +
-                self.add_addresses_dict[lower_id + 1]['count'] +
-                self.add_addresses_dict[upper_id]['count']
+            self.add_addresses_dict[lower_id]["count"]
+            + self.add_addresses_dict[lower_id + 1]["count"]
+            + self.add_addresses_dict[upper_id]["count"]
         )
         return self._field_filter_value(
-            'continent_country_city_id__range',
-            value,
-            count
+            "continent_country_city_id__range", value, count
         )
 
     def test_field_filter_prefix(self):
@@ -234,9 +210,9 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
             http://localhost:8000/api/articles/?tags__prefix=bio
         """
         return self._field_filter_value(
-            'continent_country_city__prefix',
-            'Ye',  # Matches Yerevan and Yeovil
-            self.addresses_in_yeovil_count + self.addresses_in_yerevan_count
+            "continent_country_city__prefix",
+            "Ye",  # Matches Yerevan and Yeovil
+            self.addresses_in_yeovil_count + self.addresses_in_yerevan_count,
         )
 
     def test_field_filter_in(self):
@@ -251,9 +227,9 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
             self.addresses_in_amsterdam[0].city.id,
         ]
         return self._field_filter_value(
-            'continent_country_city_id__in',
+            "continent_country_city_id__in",
             SEPARATOR_LOOKUP_COMPLEX_VALUE.join([str(_id) for _id in ids]),
-            self.addresses_in_amsterdam_count + self.addresses_in_yerevan_count
+            self.addresses_in_amsterdam_count + self.addresses_in_yerevan_count,
         )
 
     def _field_filter_terms_list(self, field_name, in_values, count):
@@ -265,24 +241,18 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
         """
         url = self.base_url[:]
         data = {}
-        url_parts = ['{}={}'.format(field_name, val) for val in in_values]
-        response = self.client.get(
-            url + '?{}'.format('&'.join(url_parts)),
-            data
-        )
+        url_parts = ["{}={}".format(field_name, val) for val in in_values]
+        response = self.client.get(url + "?{}".format("&".join(url_parts)), data)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            len(response.data['results']),
-            count
-        )
+        self.assertEqual(len(response.data["results"]), count)
 
     def test_field_filter_terms_list(self):
         """Test filter terms."""
         return self._field_filter_terms_list(
-            'continent_country_city',
-            ['Yerevan', 'Amsterdam'],
-            self.addresses_in_amsterdam_count + self.addresses_in_yerevan_count
+            "continent_country_city",
+            ["Yerevan", "Amsterdam"],
+            self.addresses_in_amsterdam_count + self.addresses_in_yerevan_count,
         )
 
     def test_field_filter_terms_string(self):
@@ -293,9 +263,9 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
             http://localhost:8000/api/articles/?id__terms=1__2__3
         """
         return self._field_filter_value(
-            'continent_country_city__terms',
-            SEPARATOR_LOOKUP_COMPLEX_VALUE.join(['Yerevan', 'Dublin']),
-            self.addresses_in_dublin_count + self.addresses_in_yerevan_count
+            "continent_country_city__terms",
+            SEPARATOR_LOOKUP_COMPLEX_VALUE.join(["Yerevan", "Dublin"]),
+            self.addresses_in_dublin_count + self.addresses_in_yerevan_count,
         )
 
     def test_field_filter_exists_true(self):
@@ -306,9 +276,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
             http://localhost:8000/api/articles/?tags__exists=true
         """
         return self._field_filter_value(
-            'continent_country_city__exists',
-            'true',
-            self.all_addresses_count
+            "continent_country_city__exists", "true", self.all_addresses_count
         )
 
     def test_field_filter_exists_false(self):
@@ -319,9 +287,7 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
             http://localhost:8000/api/articles/?non_existent__exists=false
         """
         return self._field_filter_value(
-            'non_existent_field__exists',
-            'false',
-            self.all_addresses_count
+            "non_existent_field__exists", "false", self.all_addresses_count
         )
 
     def test_field_filter_wildcard(self):
@@ -332,15 +298,15 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
             http://localhost:8000/api/articles/?title__wildcard=*elusional*
         """
         self._field_filter_value(
-            'continent_country_city__wildcard',
-            '*{}*'.format('ere'),  # Matches Yerevan
-            self.addresses_in_yerevan_count
+            "continent_country_city__wildcard",
+            "*{}*".format("ere"),  # Matches Yerevan
+            self.addresses_in_yerevan_count,
         )
 
         return self._field_filter_value(
-            'continent_country_city__wildcard',
-            '*{}*'.format('ire'),  # Matches Buenos Aires
-            self.addresses_in_buenos_aires_count
+            "continent_country_city__wildcard",
+            "*{}*".format("ire"),  # Matches Buenos Aires
+            self.addresses_in_buenos_aires_count,
         )
 
     def test_field_filter_exclude(self):
@@ -351,9 +317,9 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
             http://localhost:8000/api/articles/?tags__exclude=children
         """
         return self._field_filter_value(
-            'continent_country_city__exclude',
-            'Yeovil',
-            self.all_addresses_count - self.addresses_in_yeovil_count
+            "continent_country_city__exclude",
+            "Yeovil",
+            self.all_addresses_count - self.addresses_in_yeovil_count,
         )
 
     # def test_field_filter_isnull_true(self):
@@ -400,14 +366,14 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
             http://localhost:8000/api/articles/?state__endswith=lished
         """
         self._field_filter_value(
-            'continent_country_city__endswith',
-            'dam',  # Matches Amsterdam
-            self.addresses_in_amsterdam_count
+            "continent_country_city__endswith",
+            "dam",  # Matches Amsterdam
+            self.addresses_in_amsterdam_count,
         )
         return self._field_filter_value(
-            'continent_country_city__endswith',
-            'van',  # Matches Yerevan
-            self.addresses_in_yerevan_count
+            "continent_country_city__endswith",
+            "van",  # Matches Yerevan
+            self.addresses_in_yerevan_count,
         )
 
     def test_field_filter_contains(self):
@@ -418,15 +384,15 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
             http://localhost:8000/api/articles/?state__contains=lishe
         """
         self._field_filter_value(
-            'continent_country_city__contains',
-            'ster',  # Matches Amsterdam
-            self.addresses_in_amsterdam_count
+            "continent_country_city__contains",
+            "ster",  # Matches Amsterdam
+            self.addresses_in_amsterdam_count,
         )
 
         return self._field_filter_value(
-            'continent_country_city__contains',
-            'bli',  # Matches Dublin
-            self.addresses_in_dublin_count
+            "continent_country_city__contains",
+            "bli",  # Matches Dublin
+            self.addresses_in_dublin_count,
         )
 
     # def _field_filter_gte_lte(self, field_name, value, lookup, boost=None):
@@ -564,16 +530,18 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
     # ******************** Core api and core schema *************************
     # ***********************************************************************
 
-    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
-                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
+    @unittest.skipIf(
+        not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED, CORE_API_AND_CORE_SCHEMA_MISSING_MSG
+    )
     def test_schema_fields_with_filter_fields_list(self):
         """Test schema field generator"""
         fields = self.backend.get_schema_fields(self.view)
         fields = [f.name for f in fields]
         self.assertEqual(fields, list(self.view.nested_filter_fields.keys()))
 
-    @unittest.skipIf(not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED,
-                     CORE_API_AND_CORE_SCHEMA_MISSING_MSG)
+    @unittest.skipIf(
+        not CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED, CORE_API_AND_CORE_SCHEMA_MISSING_MSG
+    )
     def test_schema_field_not_required(self):
         """Test schema fields always not required"""
         fields = self.backend.get_schema_fields(self.view)
@@ -582,5 +550,5 @@ class TestFilteringNested(BaseRestFrameworkTestCase, AddressesMixin):
             self.assertFalse(field)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

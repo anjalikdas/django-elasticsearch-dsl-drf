@@ -1,11 +1,9 @@
-from django_elasticsearch_dsl_drf.pagination import (
-    QueryFriendlyPageNumberPagination
+from django_elasticsearch_dsl_drf_alt.pagination import (
+    QueryFriendlyPageNumberPagination,
 )
 from .default import BookDocumentViewSet
 
-__all__ = (
-    'QueryFriendlyPaginationBookDocumentViewSet',
-)
+__all__ = ("QueryFriendlyPaginationBookDocumentViewSet",)
 
 
 class QueryFriendlyPaginationBookDocumentViewSet(BookDocumentViewSet):

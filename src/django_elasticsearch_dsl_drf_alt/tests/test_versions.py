@@ -1,5 +1,6 @@
 import unittest
 import mock
+
 # For Python3 >= 3.4
 try:
     from importlib import reload
@@ -10,26 +11,28 @@ except ImportError as err:
     except ImportError as err:
         pass
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_versions'
-__author__ = 'Artur Barseghyan'
-__copyright__ = 'Copyright (c) 2017-2020 Artur Barseghyan'
-__license__ = 'GPL-2.0-only OR LGPL-2.1-or-later'
-__all__ = ('VersionsTest',)
+__title__ = "django_elasticsearch_dsl_drf_alt.tests.test_versions"
+__author__ = "Artur Barseghyan"
+__copyright__ = "Copyright (c) 2017-2020 Artur Barseghyan"
+__license__ = "GPL-2.0-only OR LGPL-2.1-or-later"
+__all__ = ("VersionsTest",)
 
 
 class VersionsTest(unittest.TestCase):
     """
-    Tests of ``django_elasticsearch_dsl_drf.versions`` module.
+    Tests of ``django_elasticsearch_dsl_drf_alt.versions`` module.
     """
+
     def setUp(self):
         pass
 
-    @mock.patch('elasticsearch_dsl.__version__', [6, 3, 0])
+    @mock.patch("elasticsearch_dsl.__version__", [6, 3, 0])
     def test_elasticsearch_dsl_6_3_0(self):
         """
         Tests as if we were using elasticsearch_dsl==6.3.0.
         """
         from django_elasticsearch_dsl_drf import versions
+
         reload(versions)
 
         # Exact version matching
@@ -60,12 +63,13 @@ class VersionsTest(unittest.TestCase):
         self.assertFalse(versions.ELASTICSEARCH_GTE_7_0)
         self.assertFalse(versions.ELASTICSEARCH_GTE_8_0)
 
-    @mock.patch('elasticsearch_dsl.__version__', [7, 0, 0])
+    @mock.patch("elasticsearch_dsl.__version__", [7, 0, 0])
     def test_elasticsearch_dsl_7_0_0(self):
         """
         Tests as if we were using elasticsearch_dsl==7.0.0.
         """
         from django_elasticsearch_dsl_drf import versions
+
         reload(versions)
 
         # Exact version matching

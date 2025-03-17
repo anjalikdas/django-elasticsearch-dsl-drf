@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl_drf.constants import (
+from django_elasticsearch_dsl_drf_alt.constants import (
     LOOKUP_FILTER_TERMS,
     LOOKUP_FILTER_RANGE,
     LOOKUP_FILTER_PREFIX,
@@ -15,8 +15,8 @@ from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_TERM,
     FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
 )
-from django_elasticsearch_dsl_drf.constants import SUGGESTER_COMPLETION
-from django_elasticsearch_dsl_drf.filter_backends import (
+from django_elasticsearch_dsl_drf_alt.constants import SUGGESTER_COMPLETION
+from django_elasticsearch_dsl_drf_alt.filter_backends import (
     FilteringFilterBackend,
     OrderingFilterBackend,
     DefaultOrderingFilterBackend,
@@ -25,7 +25,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     SuggesterFilterBackend,
     FunctionalSuggesterFilterBackend,
 )
-from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
 
 from ..documents import LocationDocument
 from ..serializers import LocationDocumentSerializer
@@ -35,6 +35,7 @@ class LocationDocumentViewSet(DocumentViewSet):
     """
     Location Document View
     """
+
     document = LocationDocument
     serializer_class = LocationDocumentSerializer
     lookup_field = "slug"
@@ -60,13 +61,13 @@ class LocationDocumentViewSet(DocumentViewSet):
             "field": "category.raw",
             "lookups": [
                 LOOKUP_FILTER_TERMS,
-            ]
+            ],
         },
         "occupied": {
             "field": "occupied.raw",
             "lookups": [
                 LOOKUP_FILTER_TERMS,
-            ]
+            ],
         },
         "size": {
             "field": "size",
@@ -95,12 +96,9 @@ class LocationDocumentViewSet(DocumentViewSet):
                 LOOKUP_QUERY_GTE,
                 LOOKUP_QUERY_LTE,
             ],
-        }
+        },
     }
-    ordering_fields = {
-        "full": "full.raw",
-        "postcode": "postcode.raw"
-    }
+    ordering_fields = {"full": "full.raw", "postcode": "postcode.raw"}
 
     # Functional suggester fields
     functional_suggester_fields = {
@@ -121,21 +119,21 @@ class LocationDocumentViewSet(DocumentViewSet):
             "field": "full.suggest",
             "default_suggester": SUGGESTER_COMPLETION,
             "options": {
-                'size': 4,  # By default, number of results is 5.
+                "size": 4,  # By default, number of results is 5.
             },
         },
         "partial": {
             "field": "partial.suggest",
             "default_suggester": SUGGESTER_COMPLETION,
             "options": {
-                'size': 10,  # By default, number of results is 5.
+                "size": 10,  # By default, number of results is 5.
             },
         },
         "postcode": {
             "field": "postcode.suggest",
             "default_suggester": SUGGESTER_COMPLETION,
             "options": {
-                'size': 10,  # By default, number of results is 5.
+                "size": 10,  # By default, number of results is 5.
             },
         },
         "full_context": {
@@ -148,7 +146,7 @@ class LocationDocumentViewSet(DocumentViewSet):
                 },
             },
             "options": {
-                'size': 4,  # By default, number of results is 5.
+                "size": 4,  # By default, number of results is 5.
             },
         },
         "partial_context": {
@@ -161,7 +159,7 @@ class LocationDocumentViewSet(DocumentViewSet):
                 },
             },
             "options": {
-                'size': 10,  # By default, number of results is 5.
+                "size": 10,  # By default, number of results is 5.
             },
         },
         "postcode_context": {
@@ -174,7 +172,7 @@ class LocationDocumentViewSet(DocumentViewSet):
                 },
             },
             "options": {
-                'size': 10,  # By default, number of results is 5.
+                "size": 10,  # By default, number of results is 5.
             },
         },
     }

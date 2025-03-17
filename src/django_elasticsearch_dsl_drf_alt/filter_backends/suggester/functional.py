@@ -73,14 +73,14 @@ try:
 except ImportError:
     from elasticsearch_dsl.search_base import AggsProxy
 
-from django_elasticsearch_dsl_drf.constants import (
+from django_elasticsearch_dsl_drf_alt.constants import (
     FUNCTIONAL_SUGGESTER_TERM_MATCH,
     FUNCTIONAL_SUGGESTER_PHRASE_MATCH,
     FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
     FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
     ALL_FUNCTIONAL_SUGGESTERS,
 )
-from django_elasticsearch_dsl_drf.utils import EmptySearch
+from django_elasticsearch_dsl_drf_alt.utils import EmptySearch
 
 from rest_framework.exceptions import ValidationError
 from rest_framework.filters import BaseFilterBackend
@@ -89,7 +89,7 @@ from six import string_types
 
 from ..mixins import FilterBackendMixin
 
-__title__ = "django_elasticsearch_dsl_drf.filter_backends.suggester." "functional"
+__title__ = "django_elasticsearch_dsl_drf_alt.filter_backends.suggester." "functional"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2017-2020 Artur Barseghyan"
 __license__ = "GPL 2.0/LGPL 2.1"
@@ -106,17 +106,17 @@ class FunctionalSuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     Example:
 
-        >>> from django_elasticsearch_dsl_drf.constants import (
+        >>> from django_elasticsearch_dsl_drf_alt.constants import (
         >>>     FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
         >>>     FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
         >>>     FUNCTIONAL_SUGGESTER_PHRASE_MATCH,
         >>>     FUNCTIONAL_SUGGESTER_PHRASE_MATCH,
         >>>     FUNCTIONAL_SUGGESTER_TERM_MATCH,
         >>> )
-        >>> from django_elasticsearch_dsl_drf.filter_backends import (
+        >>> from django_elasticsearch_dsl_drf_alt.filter_backends import (
         >>>     FunctionalSuggesterFilterBackend
         >>> )
-        >>> from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+        >>> from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
         >>>
         >>> # Local PublisherDocument definition
         >>> from .documents import PublisherDocument

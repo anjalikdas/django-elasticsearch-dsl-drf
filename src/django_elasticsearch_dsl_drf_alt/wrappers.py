@@ -1,13 +1,13 @@
 import json
 
-__title__ = 'django_elasticsearch_dsl_drf.wrappers'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
+__title__ = "django_elasticsearch_dsl_drf_alt.wrappers"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
 __all__ = (
-    'dict_to_obj',
-    'obj_to_dict',
-    'Wrapper',
+    "dict_to_obj",
+    "obj_to_dict",
+    "Wrapper",
 )
 
 
@@ -15,7 +15,7 @@ class Wrapper(object):
     """Wrapper.
 
     Example:
-    >>> from django_elasticsearch_dsl_drf.wrappers import dict_to_obj
+    >>> from django_elasticsearch_dsl_drf_alt.wrappers import dict_to_obj
     >>>
     >>> mapping = {
     >>>     'country': {

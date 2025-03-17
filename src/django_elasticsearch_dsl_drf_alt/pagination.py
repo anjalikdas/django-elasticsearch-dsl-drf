@@ -19,17 +19,17 @@ import six
 
 from .versions import ELASTICSEARCH_GTE_6_0
 
-__title__ = 'django_elasticsearch_dsl_drf.pagination'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
+__title__ = "django_elasticsearch_dsl_drf_alt.pagination"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
 __all__ = (
-    'LimitOffsetPagination',
-    'Page',
-    'PageNumberPagination',
-    'Paginator',
-    'QueryFriendlyPageNumberPagination',
-    'QueryFriendlyPaginator',
+    "LimitOffsetPagination",
+    "Page",
+    "PageNumberPagination",
+    "Paginator",
+    "QueryFriendlyPageNumberPagination",
+    "QueryFriendlyPaginator",
 )
 
 
@@ -67,7 +67,7 @@ class Paginator(django_paginator.Paginator):
         if top + self.orphans >= self.count:
             top = self.count
         object_list = self.object_list[bottom:top].execute()
-        __facets = getattr(object_list, 'aggregations', None)
+        __facets = getattr(object_list, "aggregations", None)
         return self._get_page(object_list, number, self, facets=__facets)
 
     def _get_page(self, *args, **kwargs):
@@ -96,12 +96,11 @@ class QueryFriendlyPaginator(Paginator, GetCountMixin):
         self.count = int(self.get_es_count(object_list))
         if self.count > top and self.count - top <= self.orphans:
             # Fetch the additional orphaned nodes
-            object_list = (
-                list(object_list) +
-                list(self.object_list[top:self.count].execute())
+            object_list = list(object_list) + list(
+                self.object_list[top : self.count].execute()
             )
         number = self.validate_number(number)
-        __facets = getattr(object_list, 'aggregations', None)
+        __facets = getattr(object_list, "aggregations", None)
         return self._get_page(object_list, number, self, facets=__facets)
 
 
@@ -140,7 +139,7 @@ class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
         if page is None:
             page = self.page
 
-        if hasattr(page, 'facets') and hasattr(page.facets, '_d_'):
+        if hasattr(page, "facets") and hasattr(page.facets, "_d_"):
             return page.facets._d_
 
     def paginate_queryset(self, queryset, request, view=None):
@@ -161,15 +160,15 @@ class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
         # ``execute`` method and results shall be returned back immediately.
         # Placing this code at the very start of ``paginate_queryset`` method
         # saves us unnecessary queries.
-        is_suggest = getattr(queryset, '_suggest', False)
+        is_suggest = getattr(queryset, "_suggest", False)
         if is_suggest:
             if ELASTICSEARCH_GTE_6_0:
-                return queryset.execute().to_dict().get('suggest')
+                return queryset.execute().to_dict().get("suggest")
             return queryset.execute_suggest().to_dict()
 
         # Check if we're using paginate queryset from `functional_suggest`
         # backend.
-        if view.action == 'functional_suggest':
+        if view.action == "functional_suggest":
             return queryset
 
         # If we got to this point, it means it's not a suggest or functional
@@ -212,18 +211,18 @@ class PageNumberPagination(pagination.PageNumberPagination, GetCountMixin):
         :return:
         """
         __data = [
-            ('count', self.page.count),
+            ("count", self.page.count),
             # ('count', self.count),
-            ('next', self.get_next_link()),
-            ('previous', self.get_previous_link()),
+            ("next", self.get_next_link()),
+            ("previous", self.get_previous_link()),
         ]
         __facets = self.get_facets()
         if __facets is not None:
             __data.append(
-                ('facets', __facets),
+                ("facets", __facets),
             )
         __data.append(
-            ('results', data),
+            ("results", data),
         )
         return __data
 
@@ -249,8 +248,8 @@ class QueryFriendlyPageNumberPagination(PageNumberPagination):
     """
 
     django_paginator_class = QueryFriendlyPaginator
-    page_size_query_param = 'page_size'
-    orphans_query_param = 'orphans'
+    page_size_query_param = "page_size"
+    orphans_query_param = "orphans"
 
     def paginate_queryset(self, queryset, request, view=None):
         """Paginate a queryset.
@@ -270,15 +269,15 @@ class QueryFriendlyPageNumberPagination(PageNumberPagination):
         # ``execute`` method and results shall be returned back immediately.
         # Placing this code at the very start of ``paginate_queryset`` method
         # saves us unnecessary queries.
-        is_suggest = getattr(queryset, '_suggest', False)
+        is_suggest = getattr(queryset, "_suggest", False)
         if is_suggest:
             if ELASTICSEARCH_GTE_6_0:
-                return queryset.execute().to_dict().get('suggest')
+                return queryset.execute().to_dict().get("suggest")
             return queryset.execute_suggest().to_dict()
 
         # Check if we're using paginate queryset from `functional_suggest`
         # backend.
-        if view.action == 'functional_suggest':
+        if view.action == "functional_suggest":
             return queryset
 
         # If we got to this point, it means it's not a suggest or functional
@@ -289,12 +288,9 @@ class QueryFriendlyPageNumberPagination(PageNumberPagination):
             return None
 
         orphans = min(
-            int(request.query_params.get(self.orphans_query_param, 0)),
-            page_size
+            int(request.query_params.get(self.orphans_query_param, 0)), page_size
         )
-        paginator = self.django_paginator_class(
-            queryset, page_size, orphans=orphans
-        )
+        paginator = self.django_paginator_class(queryset, page_size, orphans=orphans)
         page_number = int(request.query_params.get(self.page_query_param, 1))
         if page_number in self.last_page_strings:
             page_number = paginator.num_pages
@@ -349,15 +345,15 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
         # ``execute`` method and results shall be returned back immediately.
         # Placing this code at the very start of ``paginate_queryset`` method
         # saves us unnecessary queries.
-        is_suggest = getattr(queryset, '_suggest', False)
+        is_suggest = getattr(queryset, "_suggest", False)
         if is_suggest:
             if ELASTICSEARCH_GTE_6_0:
-                return queryset.execute().to_dict().get('suggest')
+                return queryset.execute().to_dict().get("suggest")
             return queryset.execute_suggest().to_dict()
 
         # Check if we're using paginate queryset from `functional_suggest`
         # backend.
-        if view.action == 'functional_suggest':
+        if view.action == "functional_suggest":
             return queryset
 
         # If we got to this point, it means it's not a suggest or functional
@@ -376,8 +372,8 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
         self.offset = self.get_offset(request)
         self.request = request
 
-        resp = queryset[self.offset:self.offset + self.limit].execute()
-        self.facets = getattr(resp, 'aggregations', None)
+        resp = queryset[self.offset : self.offset + self.limit].execute()
+        self.facets = getattr(resp, "aggregations", None)
 
         self.count = self.get_es_count(resp)
 
@@ -400,7 +396,7 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
         if facets is None:
             return None
 
-        if hasattr(facets, '_d_'):
+        if hasattr(facets, "_d_"):
             return facets._d_
 
     def get_paginated_response_context(self, data):
@@ -410,17 +406,17 @@ class LimitOffsetPagination(pagination.LimitOffsetPagination, GetCountMixin):
         :return:
         """
         __data = [
-            ('count', self.count),
-            ('next', self.get_next_link()),
-            ('previous', self.get_previous_link()),
+            ("count", self.count),
+            ("next", self.get_next_link()),
+            ("previous", self.get_previous_link()),
         ]
         __facets = self.get_facets()
         if __facets is not None:
             __data.append(
-                ('facets', __facets),
+                ("facets", __facets),
             )
         __data.append(
-            ('results', data),
+            ("results", data),
         )
         return __data
 

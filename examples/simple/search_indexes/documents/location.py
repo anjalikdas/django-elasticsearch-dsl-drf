@@ -1,8 +1,8 @@
 from django.conf import settings
 from django_elasticsearch_dsl import Document, Index, fields
-from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
-from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
-from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
+from django_elasticsearch_dsl_drf_alt.compat import KeywordField, StringField
+from django_elasticsearch_dsl_drf_alt.analyzers import edge_ngram_completion
+from django_elasticsearch_dsl_drf_alt.versions import ELASTICSEARCH_GTE_5_0
 from elasticsearch_dsl import analyzer
 
 from books.models import Location
@@ -16,7 +16,7 @@ INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 INDEX.settings(
     number_of_shards=1,
     number_of_replicas=1,
-    blocks={'read_only_allow_delete': False},
+    blocks={"read_only_allow_delete": False},
 )
 
 
@@ -25,14 +25,13 @@ class LocationDocument(Document):
     """
     Location document.
     """
+
     # Full fields
     __full_fields = {
-            "raw": KeywordField(),
-            # edge_ngram_completion
-            "q": StringField(
-                analyzer=edge_ngram_completion
-            ),
-        }
+        "raw": KeywordField(),
+        # edge_ngram_completion
+        "q": StringField(analyzer=edge_ngram_completion),
+    }
 
     if ELASTICSEARCH_GTE_5_0:
         __full_fields.update(
@@ -52,22 +51,16 @@ class LocationDocument(Document):
                         },
                     ]
                 ),
-
             }
         )
 
-    full = StringField(
-        analyzer=html_strip,
-        fields=__full_fields
-    )
+    full = StringField(analyzer=html_strip, fields=__full_fields)
 
     # Partial fields
     __partial_fields = {
         "raw": KeywordField(),
         # edge_ngram_completion
-        "q": StringField(
-            analyzer=edge_ngram_completion
-            ),
+        "q": StringField(analyzer=edge_ngram_completion),
     }
     if ELASTICSEARCH_GTE_5_0:
         __partial_fields.update(
@@ -89,10 +82,7 @@ class LocationDocument(Document):
                 ),
             }
         )
-    partial = StringField(
-        analyzer=html_strip,
-        fields=__partial_fields
-    )
+    partial = StringField(analyzer=html_strip, fields=__partial_fields)
 
     # Postcode
     __postcode_fields = {
@@ -118,10 +108,7 @@ class LocationDocument(Document):
                 ),
             }
         )
-    postcode = StringField(
-        analyzer=html_strip,
-        fields=__postcode_fields
-    )
+    postcode = StringField(analyzer=html_strip, fields=__postcode_fields)
 
     # Number
     number = StringField(
@@ -129,7 +116,7 @@ class LocationDocument(Document):
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
-        }
+        },
     )
 
     # Address
@@ -138,7 +125,7 @@ class LocationDocument(Document):
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
-        }
+        },
     )
 
     # Town
@@ -147,7 +134,7 @@ class LocationDocument(Document):
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
-        }
+        },
     )
 
     # Authority
@@ -156,7 +143,7 @@ class LocationDocument(Document):
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
-        }
+        },
     )
 
     # URL fields /geocode/slug
@@ -164,7 +151,7 @@ class LocationDocument(Document):
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
-        }
+        },
     )
 
     # Slug
@@ -172,7 +159,7 @@ class LocationDocument(Document):
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
-        }
+        },
     )
 
     # ********************* Filter fields **********************
@@ -182,7 +169,7 @@ class LocationDocument(Document):
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
-        }
+        },
     )
 
     # Occupied
@@ -191,7 +178,7 @@ class LocationDocument(Document):
         analyzer=html_strip,
         fields={
             "raw": KeywordField(),
-        }
+        },
     )
     size = fields.FloatField(attr="floor_area")
     staff = fields.FloatField(attr="employee_count")
@@ -205,4 +192,4 @@ class LocationDocument(Document):
     class Meta:
         parallel_indexing = True
         queryset_pagination = 50  # This will split the queryset
-                                  # into parts while indexing
+        # into parts while indexing

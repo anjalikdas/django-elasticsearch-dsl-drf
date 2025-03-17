@@ -17,11 +17,11 @@ from ...compat import coreapi
 from ...compat import coreschema
 from .common import FilteringFilterBackend
 
-__title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering.nested'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('NestedFilteringFilterBackend',)
+__title__ = "django_elasticsearch_dsl_drf_alt.filter_backends.filtering.nested"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("NestedFilteringFilterBackend",)
 
 
 class NestedFilteringFilterBackend(FilteringFilterBackend):
@@ -29,17 +29,17 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
 
     Example:
 
-        >>> from django_elasticsearch_dsl_drf.constants import (
+        >>> from django_elasticsearch_dsl_drf_alt.constants import (
         >>>     LOOKUP_FILTER_TERM,
         >>>     LOOKUP_FILTER_PREFIX,
         >>>     LOOKUP_FILTER_WILDCARD,
         >>>     LOOKUP_QUERY_EXCLUDE,
         >>>     LOOKUP_QUERY_ISNULL,
         >>> )
-        >>> from django_elasticsearch_dsl_drf.filter_backends import (
+        >>> from django_elasticsearch_dsl_drf_alt.filter_backends import (
         >>>     NestedFilteringFilterBackend
         >>> )
-        >>> from django_elasticsearch_dsl_drf.viewsets import (
+        >>> from django_elasticsearch_dsl_drf_alt.viewsets import (
         >>>     BaseDocumentViewSet,
         >>> )
         >>>
@@ -79,7 +79,7 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
         :return: Filtering options.
         :rtype: dict
         """
-        if not hasattr(view, 'nested_filter_fields'):
+        if not hasattr(view, "nested_filter_fields"):
             raise ImproperlyConfigured(
                 "You need to define `nested_filter_fields` in your `{}` view "
                 "when using `{}` filter backend."
@@ -90,16 +90,12 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
 
         for field, options in filter_fields.items():
             if options is None or isinstance(options, string_types):
-                filter_fields[field] = {
-                    'field': options or field
-                }
-            elif 'field' not in filter_fields[field]:
-                filter_fields[field]['field'] = field
+                filter_fields[field] = {"field": options or field}
+            elif "field" not in filter_fields[field]:
+                filter_fields[field]["field"] = field
 
-            if 'lookups' not in filter_fields[field]:
-                filter_fields[field]['lookups'] = tuple(
-                    ALL_LOOKUP_FILTERS_AND_QUERIES
-                )
+            if "lookups" not in filter_fields[field]:
+                filter_fields[field]["lookups"] = tuple(ALL_LOOKUP_FILTERS_AND_QUERIES)
 
         return filter_fields
 
@@ -110,8 +106,8 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
         :param field_name:
         :return:
         """
-        if 'path' in filter_fields[field_name]:
-            return filter_fields[field_name]['path']
+        if "path" in filter_fields[field_name]:
+            return filter_fields[field_name]["path"]
         return field_name
 
     def get_filter_query_params(self, request, view):
@@ -129,10 +125,7 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
         filter_query_params = {}
         filter_fields = self.prepare_filter_fields(view)
         for query_param in query_params:
-            query_param_list = self.split_lookup_filter(
-                query_param,
-                maxsplit=1
-            )
+            query_param_list = self.split_lookup_filter(query_param, maxsplit=1)
             field_name = query_param_list[0]
 
             if field_name in filter_fields:
@@ -140,30 +133,25 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
                 if len(query_param_list) > 1:
                     lookup_param = query_param_list[1]
 
-                valid_lookups = filter_fields[field_name]['lookups']
+                valid_lookups = filter_fields[field_name]["lookups"]
                 nested_path = self.get_filter_field_nested_path(
-                    filter_fields,
-                    field_name
+                    filter_fields, field_name
                 )
 
                 if lookup_param is None or lookup_param in valid_lookups:
                     values = [
                         __value.strip()
-                        for __value
-                        in query_params.getlist(query_param)
-                        if __value.strip() != ''
+                        for __value in query_params.getlist(query_param)
+                        if __value.strip() != ""
                     ]
 
                     if values:
                         filter_query_params[query_param] = {
-                            'lookup': lookup_param,
-                            'values': values,
-                            'field': filter_fields[field_name].get(
-                                'field',
-                                field_name
-                            ),
-                            'type': view.mapping,
-                            'path': nested_path,
+                            "lookup": lookup_param,
+                            "values": values,
+                            "field": filter_fields[field_name].get("field", field_name),
+                            "type": view.mapping,
+                            "path": nested_path,
                         }
         return filter_query_params
 
@@ -177,7 +165,7 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
         :param kwargs:
         :return:
         """
-        if options is None or 'path' not in options:
+        if options is None or "path" not in options:
             raise ImproperlyConfigured(
                 "You should provide an `path` argument in the field options."
             )
@@ -188,9 +176,7 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
             kwargs = {}
 
         return queryset.query(
-            'nested',
-            path=options.get('path'),
-            query=Q(*args, **kwargs)
+            "nested", path=options.get("path"), query=Q(*args, **kwargs)
         )
 
     @classmethod
@@ -208,18 +194,14 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
                 "You should provide an `path` argument in the field options."
             )
 
-        path = options.pop('path')
+        path = options.pop("path")
 
         if args is None:
             args = []
         if kwargs is None:
             kwargs = {}
 
-        return queryset.query(
-            'nested',
-            path=path,
-            query=Q(*args, **kwargs)
-        )
+        return queryset.query("nested", path=path, query=Q(*args, **kwargs))
 
     def get_coreschema_field(self, field):
         if isinstance(field, fields.IntegerField):
@@ -229,21 +211,25 @@ class NestedFilteringFilterBackend(FilteringFilterBackend):
         return field_cls()
 
     def get_schema_fields(self, view):
-        assert coreapi is not None, 'coreapi must be installed to ' \
-                                    'use `get_schema_fields()`'
-        assert coreschema is not None, 'coreschema must be installed to ' \
-                                       'use `get_schema_fields()`'
-        filter_fields = getattr(view, 'nested_filter_fields', None)
-        document = getattr(view, 'document', None)
+        assert coreapi is not None, (
+            "coreapi must be installed to " "use `get_schema_fields()`"
+        )
+        assert coreschema is not None, (
+            "coreschema must be installed to " "use `get_schema_fields()`"
+        )
+        filter_fields = getattr(view, "nested_filter_fields", None)
+        document = getattr(view, "document", None)
 
-        return [] if not filter_fields else [
-            coreapi.Field(
-                name=field_name,
-                required=False,
-                location='query',
-                schema=self.get_coreschema_field(
-                    document._fields.get(field_name)
+        return (
+            []
+            if not filter_fields
+            else [
+                coreapi.Field(
+                    name=field_name,
+                    required=False,
+                    location="query",
+                    schema=self.get_coreschema_field(document._fields.get(field_name)),
                 )
-            )
-            for field_name in filter_fields
-        ]
+                for field_name in filter_fields
+            ]
+        )

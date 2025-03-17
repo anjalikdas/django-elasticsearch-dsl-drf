@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl_drf.filter_backends import (
+from django_elasticsearch_dsl_drf_alt.filter_backends import (
     CompoundSearchFilterBackend,
     DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
@@ -12,9 +12,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 
 from .default import BookDocumentViewSet
 
-__all__ = (
-    'BookCompoundSearchBoostSearchBackendDocumentViewSet',
-)
+__all__ = ("BookCompoundSearchBoostSearchBackendDocumentViewSet",)
 
 
 class BookCompoundSearchBoostSearchBackendDocumentViewSet(BookDocumentViewSet):
@@ -34,7 +32,7 @@ class BookCompoundSearchBoostSearchBackendDocumentViewSet(BookDocumentViewSet):
 
     # Define search fields
     search_fields = {
-        'title': {'boost': 2},
-        'description': None,
-        'summary': None,
+        "title": {"boost": 2},
+        "description": None,
+        "summary": None,
     }

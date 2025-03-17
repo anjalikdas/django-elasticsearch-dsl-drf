@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl_drf.filter_backends import (
+from django_elasticsearch_dsl_drf_alt.filter_backends import (
     DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
@@ -12,9 +12,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 
 from .multi_match import BookMultiMatchSearchFilterBackendDocumentViewSet
 
-__all__ = (
-    'BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet',
-)
+__all__ = ("BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet",)
 
 
 class BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet(
@@ -38,12 +36,17 @@ class BookMultiMatchOptionsPhasePrefixSearchFilterBackendDocumentViewSet(
     ]
 
     multi_match_search_fields = {
-        'title': {'boost': 4},
-        'summary': {'boost': 2},
-        'description': None,
+        "title": {"boost": 4},
+        "summary": {"boost": 2},
+        "description": None,
     }
-    ordering = ('_score', 'id', 'title', 'price',)
+    ordering = (
+        "_score",
+        "id",
+        "title",
+        "price",
+    )
 
     multi_match_options = {
-        'type': 'phrase_prefix',
+        "type": "phrase_prefix",
     }

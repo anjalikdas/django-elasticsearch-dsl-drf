@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl_drf.filter_backends import (
+from django_elasticsearch_dsl_drf_alt.filter_backends import (
     CompoundSearchFilterBackend,
     DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
@@ -12,14 +12,10 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 
 from .default import BookDocumentViewSet
 
-__all__ = (
-    'BookOrderingByScoreCompoundSearchBackendDocumentViewSet',
-)
+__all__ = ("BookOrderingByScoreCompoundSearchBackendDocumentViewSet",)
 
 
-class BookOrderingByScoreCompoundSearchBackendDocumentViewSet(
-    BookDocumentViewSet
-):
+class BookOrderingByScoreCompoundSearchBackendDocumentViewSet(BookDocumentViewSet):
     """Same as BookDocumentViewSet, but sorted by _score."""
 
     filter_backends = [
@@ -35,8 +31,13 @@ class BookOrderingByScoreCompoundSearchBackendDocumentViewSet(
     ]
 
     search_fields = {
-        'title': {'boost': 4},
-        'summary': {'boost': 2},
-        'description': None,
+        "title": {"boost": 4},
+        "summary": {"boost": 2},
+        "description": None,
     }
-    ordering = ('_score', 'id', 'title', 'price',)
+    ordering = (
+        "_score",
+        "id",
+        "title",
+        "price",
+    )

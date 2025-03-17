@@ -13,30 +13,31 @@ import factories
 
 from ..pip_helpers import get_installed_packages
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.base'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
+__title__ = "django_elasticsearch_dsl_drf_alt.tests.base"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
 __all__ = (
-    'BaseRestFrameworkTestCase',
-    'BaseTestCase',
-    'CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED',
-    'CORE_API_AND_CORE_SCHEMA_MISSING_MSG',
-    'CORE_API_IS_INSTALLED',
-    'CORE_SCHEMA_IS_INSTALLED',
-    'INSTALLED_PACKAGES',
-    'SleepMixin',
+    "BaseRestFrameworkTestCase",
+    "BaseTestCase",
+    "CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED",
+    "CORE_API_AND_CORE_SCHEMA_MISSING_MSG",
+    "CORE_API_IS_INSTALLED",
+    "CORE_SCHEMA_IS_INSTALLED",
+    "INSTALLED_PACKAGES",
+    "SleepMixin",
 )
 
 LOGGER = logging.getLogger(__name__)
 INSTALLED_PACKAGES = get_installed_packages()
-CORE_API_IS_INSTALLED = 'coreapi' in INSTALLED_PACKAGES
-CORE_SCHEMA_IS_INSTALLED = 'coreschema' in INSTALLED_PACKAGES
+CORE_API_IS_INSTALLED = "coreapi" in INSTALLED_PACKAGES
+CORE_SCHEMA_IS_INSTALLED = "coreschema" in INSTALLED_PACKAGES
 CORE_API_AND_CORE_SCHEMA_ARE_INSTALLED = (
     CORE_API_IS_INSTALLED and CORE_SCHEMA_IS_INSTALLED
 )
-CORE_API_AND_CORE_SCHEMA_MISSING_MSG = "Skipped because coreapi or " \
-                                       "coreschema are not installed!"
+CORE_API_AND_CORE_SCHEMA_MISSING_MSG = (
+    "Skipped because coreapi or " "coreschema are not installed!"
+)
 
 
 WAIT_FOR_INDEX = 2
@@ -77,7 +78,7 @@ class BaseRestFrameworkTestCase(TransactionTestCase, SleepMixin):
         """
         self.client.login(
             username=factories.auth_user.TEST_USERNAME,
-            password=factories.auth_user.TEST_PASSWORD
+            password=factories.auth_user.TEST_PASSWORD,
         )
 
 

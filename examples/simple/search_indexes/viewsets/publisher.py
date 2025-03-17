@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl_drf.constants import (
+from django_elasticsearch_dsl_drf_alt.constants import (
     FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
     FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
     LOOKUP_FILTER_GEO_BOUNDING_BOX,
@@ -9,7 +9,7 @@ from django_elasticsearch_dsl_drf.constants import (
     SUGGESTER_PHRASE,
     SUGGESTER_TERM,
 )
-from django_elasticsearch_dsl_drf.filter_backends import (
+from django_elasticsearch_dsl_drf_alt.filter_backends import (
     FilteringFilterBackend,
     DefaultOrderingFilterBackend,
     OrderingFilterBackend,
@@ -19,15 +19,13 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     GeoSpatialFilteringFilterBackend,
     GeoSpatialOrderingFilterBackend,
 )
-from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
-from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+from django_elasticsearch_dsl_drf_alt.pagination import LimitOffsetPagination
+from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
 
 from ..documents import PublisherDocument
 from ..serializers import PublisherDocumentSerializer
 
-__all__ = (
-    'PublisherDocumentViewSet',
-)
+__all__ = ("PublisherDocumentViewSet",)
 
 
 class PublisherDocumentViewSet(DocumentViewSet):
@@ -35,7 +33,7 @@ class PublisherDocumentViewSet(DocumentViewSet):
 
     document = PublisherDocument
     serializer_class = PublisherDocumentSerializer
-    lookup_field = 'id'
+    lookup_field = "id"
     filter_backends = [
         FilteringFilterBackend,
         # OrderingFilterBackend,
@@ -49,123 +47,126 @@ class PublisherDocumentViewSet(DocumentViewSet):
     pagination_class = LimitOffsetPagination
     # Define search fields
     search_fields = (
-        'name',
-        'info',
-        'address',
-        'city',
-        'state_province',
-        'country',
+        "name",
+        "info",
+        "address",
+        "city",
+        "state_province",
+        "country",
     )
     # Define filtering fields
     filter_fields = {
-        'id': None,
-        'name': 'name.raw',
-        'city': 'city.raw',
-        'state_province': 'state_province.raw',
-        'country': 'country.raw',
+        "id": None,
+        "name": "name.raw",
+        "city": "city.raw",
+        "state_province": "state_province.raw",
+        "country": "country.raw",
     }
     # Define geo-spatial filtering fields
     geo_spatial_filter_fields = {
-        'location': {
-            'lookups': [
+        "location": {
+            "lookups": [
                 LOOKUP_FILTER_GEO_BOUNDING_BOX,
                 LOOKUP_FILTER_GEO_DISTANCE,
                 LOOKUP_FILTER_GEO_POLYGON,
             ],
         },
-        'location_2': 'location',
-        'location_point': {
-            'lookups': [
+        "location_2": "location",
+        "location_point": {
+            "lookups": [
                 LOOKUP_FILTER_GEO_SHAPE,
             ]
         },
-        'location_circle': {
-            'lookups': [
+        "location_circle": {
+            "lookups": [
                 LOOKUP_FILTER_GEO_SHAPE,
             ]
         },
     }
     # Define ordering fields
     ordering_fields = {
-        'id': None,
-        'name': None,
-        'city': None,
-        'country': None,
+        "id": None,
+        "name": None,
+        "city": None,
+        "country": None,
     }
     # Define ordering fields
     geo_spatial_ordering_fields = {
-        'location': None,
+        "location": None,
     }
     # Specify default ordering
-    ordering = ('id', 'name',)
+    ordering = (
+        "id",
+        "name",
+    )
 
     # Suggester fields
     suggester_fields = {
-        'name_suggest': {
-            'field': 'name.suggest',
-            'suggesters': [
+        "name_suggest": {
+            "field": "name.suggest",
+            "suggesters": [
                 SUGGESTER_TERM,
                 SUGGESTER_PHRASE,
                 SUGGESTER_COMPLETION,
             ],
-            'default_suggester': SUGGESTER_COMPLETION,
+            "default_suggester": SUGGESTER_COMPLETION,
         },
-        'city_suggest': {
-            'field': 'city.suggest',
-            'suggesters': [
+        "city_suggest": {
+            "field": "city.suggest",
+            "suggesters": [
                 SUGGESTER_COMPLETION,
             ],
         },
-        'state_province_suggest': 'state_province.suggest',
-        'country_suggest': {
-            'field': 'country.suggest',
-            'suggesters': [
+        "state_province_suggest": "state_province.suggest",
+        "country_suggest": {
+            "field": "country.suggest",
+            "suggesters": [
                 SUGGESTER_COMPLETION,
             ],
-            'default_suggester': SUGGESTER_COMPLETION,
+            "default_suggester": SUGGESTER_COMPLETION,
         },
     }
 
     # Functional suggester fields
     functional_suggester_fields = {
-        'name_suggest': {
-            'field': 'name.raw',
-            'suggesters': [
+        "name_suggest": {
+            "field": "name.raw",
+            "suggesters": [
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
-            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            "default_suggester": FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             # 'serializer_field': 'name',
         },
-        'name_match_suggest': {
-            'field': 'name',
-            'suggesters': [
+        "name_match_suggest": {
+            "field": "name",
+            "suggesters": [
                 FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
             ],
-            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
+            "default_suggester": FUNCTIONAL_SUGGESTER_COMPLETION_MATCH,
             # 'serializer_field': 'name',
         },
-        'city_suggest': {
-            'field': 'city.raw',
-            'suggesters': [
+        "city_suggest": {
+            "field": "city.raw",
+            "suggesters": [
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
-            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            "default_suggester": FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             # 'serializer_field': 'city',
         },
-        'state_province_suggest': {
-            'field': 'state_province.suggest',
-            'suggesters': [
+        "state_province_suggest": {
+            "field": "state_province.suggest",
+            "suggesters": [
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
-            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            "default_suggester": FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             # 'serializer_field': 'state_province',
         },
-        'country_suggest': {
-            'field': 'country.raw',
-            'suggesters': [
+        "country_suggest": {
+            "field": "country.raw",
+            "suggesters": [
                 FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             ],
-            'default_suggester': FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
+            "default_suggester": FUNCTIONAL_SUGGESTER_COMPLETION_PREFIX,
             # 'serializer_field': 'country',
         },
     }

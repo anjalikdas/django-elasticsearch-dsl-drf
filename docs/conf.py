@@ -20,19 +20,20 @@ from nine import versions
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 # sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(0, os.path.abspath(os.path.join('..', 'src')))
-sys.path.insert(0, os.path.abspath(os.path.join('..', 'examples')))
-sys.path.insert(0, os.path.abspath(os.path.join('..', 'examples', 'simple')))
+sys.path.insert(0, os.path.abspath(os.path.join("..", "src")))
+sys.path.insert(0, os.path.abspath(os.path.join("..", "examples")))
+sys.path.insert(0, os.path.abspath(os.path.join("..", "examples", "simple")))
 try:
     import django_elasticsearch_dsl_drf
     from simple import settings as example_settings
-    version = django_elasticsearch_dsl_drf.__version__
-    project = django_elasticsearch_dsl_drf.__title__
-    copyright = django_elasticsearch_dsl_drf.__copyright__
+
+    version = django_elasticsearch_dsl_drf_alt.__version__
+    project = django_elasticsearch_dsl_drf_alt.__title__
+    copyright = django_elasticsearch_dsl_drf_alt.__copyright__
 except Exception as e:
-    version = '0.1'
-    project = u'django-elasticsearch-dsl-drf'
-    copyright = u'2019, Artur Barseghyan <artur.barseghyan@gmail.com>'
+    version = "0.1"
+    project = "django-elasticsearch-dsl-drf"
+    copyright = "2019, Artur Barseghyan <artur.barseghyan@gmail.com>"
 
 # -- Django configuration ------------------------------------------------------
 os.environ["DJANGO_SETTINGS_MODULE"] = "settings.docs"
@@ -48,18 +49,18 @@ django.setup()
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.viewcode',
+    "sphinx.ext.autodoc",
+    "sphinx.ext.viewcode",
     # 'rst2pdf.pdfbuilder',
-    'rinoh.frontend.sphinx',
+    "rinoh.frontend.sphinx",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # The suffix of source filenames.
 source_suffix = {
-    '.rst': 'restructuredtext',
+    ".rst": "restructuredtext",
 }
 
 
@@ -67,7 +68,7 @@ source_suffix = {
 # source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # General information about the project.
 # project = u'django-elasticsearch-dsl-drf'
@@ -95,7 +96,7 @@ release = version
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build']
+exclude_patterns = ["_build"]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 # default_role = None
@@ -112,7 +113,7 @@ exclude_patterns = ['_build']
 # show_authors = False
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 # A list of ignored prefixes for module index sorting.
 # modindex_common_prefix = []
@@ -122,7 +123,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = "default"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -151,7 +152,7 @@ html_theme = 'default'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -195,29 +196,31 @@ html_static_path = ['_static']
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'django-elasticsearch-dsl-drfdoc'
+htmlhelp_basename = "django-elasticsearch-dsl-drfdoc"
 
 
 # -- Options for LaTeX output --------------------------------------------------
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
-    'papersize': 'letterpaper',
+    "papersize": "letterpaper",
     # The font size ('10pt', '11pt' or '12pt').
-    'pointsize': '10pt',
+    "pointsize": "10pt",
     # Additional stuff for the LaTeX preamble.
-    'preamble': '',
+    "preamble": "",
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass
 # [howto/manual]).
 latex_documents = [
-  ('index',
-   'django-elasticsearch-dsl-drf.tex',
-   u'django-elasticsearch-dsl-drf Documentation',
-   u'Artur Barseghyan \\textless{}artur.barseghyan@gmail.com\\textgreater{}',
-   'manual'),
+    (
+        "index",
+        "django-elasticsearch-dsl-drf.tex",
+        "django-elasticsearch-dsl-drf Documentation",
+        "Artur Barseghyan \\textless{}artur.barseghyan@gmail.com\\textgreater{}",
+        "manual",
+    ),
 ]
 
 # The name of an image file (relative to this directory) to place at the top
@@ -246,11 +249,13 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index',
-     'django-elasticsearch-dsl-drf',
-     u'django-elasticsearch-dsl-drf Documentation',
-     [u'Artur Barseghyan <artur.barseghyan@gmail.com>'],
-     1)
+    (
+        "index",
+        "django-elasticsearch-dsl-drf",
+        "django-elasticsearch-dsl-drf Documentation",
+        ["Artur Barseghyan <artur.barseghyan@gmail.com>"],
+        1,
+    )
 ]
 
 # If true, show URL addresses after external links.
@@ -263,12 +268,15 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'django-elasticsearch-dsl-drf',
-   u'django-elasticsearch-dsl-drf Documentation',
-   u'Artur Barseghyan <artur.barseghyan@gmail.com>',
-   'django-elasticsearch-dsl-drf',
-   "Integrate Elasticsearch DSL with Django REST framework.",
-   'Miscellaneous'),
+    (
+        "index",
+        "django-elasticsearch-dsl-drf",
+        "django-elasticsearch-dsl-drf Documentation",
+        "Artur Barseghyan <artur.barseghyan@gmail.com>",
+        "django-elasticsearch-dsl-drf",
+        "Integrate Elasticsearch DSL with Django REST framework.",
+        "Miscellaneous",
+    ),
 ]
 
 # Documents to append as an appendix to all manuals.
@@ -284,10 +292,10 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'django-elasticsearch-dsl-drf'
-epub_author = u'Artur Barseghyan <artur.barseghyan@gmail.com>'
-epub_publisher = u'Artur Barseghyan <artur.barseghyan@gmail.com>'
-epub_copyright = u'2017, Artur Barseghyan <artur.barseghyan@gmail.com>'
+epub_title = "django-elasticsearch-dsl-drf"
+epub_author = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+epub_publisher = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+epub_copyright = "2017, Artur Barseghyan <artur.barseghyan@gmail.com>"
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.
@@ -324,13 +332,15 @@ epub_copyright = u'2017, Artur Barseghyan <artur.barseghyan@gmail.com>'
 # epub_tocdup = True
 
 # -- Options for PDF output ---------------------------------------------------
-import sys; sys.setrecursionlimit(3000)
+import sys
+
+sys.setrecursionlimit(3000)
 rinoh_documents = [
     (
-        'index',
-        u'django-elasticsearch-dsl-drf Documentation',
-        u'django-elasticsearch-dsl-drf',
-        u'Artur Barseghyan <artur.barseghyan@gmail.com>',
+        "index",
+        "django-elasticsearch-dsl-drf Documentation",
+        "django-elasticsearch-dsl-drf",
+        "Artur Barseghyan <artur.barseghyan@gmail.com>",
     )
 ]
 # latex_paper_size = 'a4'

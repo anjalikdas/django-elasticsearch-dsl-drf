@@ -21,6 +21,7 @@ The queries in this group are:
 + geo_polygon query: Find documents with geo-points within the specified
   polygon.
 """
+
 import logging
 from elasticsearch_dsl.query import Q
 from rest_framework.filters import BaseFilterBackend
@@ -38,11 +39,11 @@ from ...constants import (
 )
 from ..mixins import FilterBackendMixin
 
-__title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering.common'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('GeoSpatialFilteringFilterBackend',)
+__title__ = "django_elasticsearch_dsl_drf_alt.filter_backends.filtering.common"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("GeoSpatialFilteringFilterBackend",)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -53,13 +54,13 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     Example:
 
-        >>> from django_elasticsearch_dsl_drf.constants import (
+        >>> from django_elasticsearch_dsl_drf_alt.constants import (
         >>>     LOOKUP_FILTER_GEO_DISTANCE,
         >>> )
-        >>> from django_elasticsearch_dsl_drf.filter_backends import (
+        >>> from django_elasticsearch_dsl_drf_alt.filter_backends import (
         >>>     GeoSpatialFilteringFilterBackend
         >>> )
-        >>> from django_elasticsearch_dsl_drf.viewsets import (
+        >>> from django_elasticsearch_dsl_drf_alt.viewsets import (
         >>>     BaseDocumentViewSet,
         >>> )
         >>>
@@ -98,14 +99,12 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         for field, options in filter_fields.items():
             if options is None or isinstance(options, string_types):
-                filter_fields[field] = {
-                    'field': options or field
-                }
-            elif 'field' not in filter_fields[field]:
-                filter_fields[field]['field'] = field
+                filter_fields[field] = {"field": options or field}
+            elif "field" not in filter_fields[field]:
+                filter_fields[field]["field"] = field
 
-            if 'lookups' not in filter_fields[field]:
-                filter_fields[field]['lookups'] = tuple(
+            if "lookups" not in filter_fields[field]:
+                filter_fields[field]["lookups"] = tuple(
                     ALL_GEO_SPATIAL_LOOKUP_FILTERS_AND_QUERIES
                 )
 
@@ -133,17 +132,17 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
             return {}
 
         params = {
-            'distance': __values[0],
+            "distance": __values[0],
             field: {
-                'lat': __values[1],
-                'lon': __values[2],
-            }
+                "lat": __values[1],
+                "lon": __values[2],
+            },
         }
 
         if __len_values == 4:
-            params['distance_type'] = __values[3]
+            params["distance_type"] = __values[3]
         else:
-            params['distance_type'] = 'arc'
+            params["distance_type"] = "arc"
 
         return params
 
@@ -204,30 +203,20 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         for __value in __values:
             if SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE in __value:
-                __split_value = __value.split(
-                    SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
-                )
+                __split_value = __value.split(SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE)
                 if len(__split_value) >= 2:
-                    if __split_value[0] in ('_name', 'validation_method'):
-                        __options.update(
-                            {
-                                __split_value[0]: __split_value[1]
-                            }
-                        )
+                    if __split_value[0] in ("_name", "validation_method"):
+                        __options.update({__split_value[0]: __split_value[1]})
                     else:
                         __points.append(
                             {
-                                'lat': float(__split_value[0]),
-                                'lon': float(__split_value[1]),
+                                "lat": float(__split_value[0]),
+                                "lon": float(__split_value[1]),
                             }
                         )
 
         if __points:
-            params = {
-                field: {
-                    'points': __points
-                }
-            }
+            params = {field: {"points": __points}}
             params.update(__options)
 
             return params
@@ -293,48 +282,40 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         __options = {}
 
         # Top left
-        __lat_lon = __values[0].split(
-            SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
-        )
+        __lat_lon = __values[0].split(SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE)
         if len(__lat_lon) >= 2:
-            __top_left_points.update({
-                'lat': float(__lat_lon[0]),
-                'lon': float(__lat_lon[1]),
-            })
+            __top_left_points.update(
+                {
+                    "lat": float(__lat_lon[0]),
+                    "lon": float(__lat_lon[1]),
+                }
+            )
 
         # Bottom right
-        __lat_lon = __values[1].split(
-            SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
-        )
+        __lat_lon = __values[1].split(SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE)
         if len(__lat_lon) >= 2:
-            __bottom_right_points.update({
-                'lat': float(__lat_lon[0]),
-                'lon': float(__lat_lon[1]),
-            })
+            __bottom_right_points.update(
+                {
+                    "lat": float(__lat_lon[0]),
+                    "lon": float(__lat_lon[1]),
+                }
+            )
 
         # Options
         for __value in __values[2:]:
             if SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE in __value:
-                __opt_name_val = __value.split(
-                    SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
-                )
+                __opt_name_val = __value.split(SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE)
                 if len(__opt_name_val) >= 2:
-                    if __opt_name_val[0] in ('_name',
-                                             'validation_method',
-                                             'type'):
-                        __options.update(
-                            {
-                                __opt_name_val[0]: __opt_name_val[1]
-                            }
-                        )
+                    if __opt_name_val[0] in ("_name", "validation_method", "type"):
+                        __options.update({__opt_name_val[0]: __opt_name_val[1]})
 
         if not __top_left_points or not __bottom_right_points:
             return {}
 
         params = {
             field: {
-                'top_left': __top_left_points,
-                'bottom_right': __bottom_right_points,
+                "top_left": __top_left_points,
+                "bottom_right": __bottom_right_points,
             }
         }
         params.update(__options)
@@ -401,9 +382,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         # Parse coordinates (can be x points)
         for value in __values:
-            __lat_lon = value.split(
-                SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
-            )
+            __lat_lon = value.split(SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE)
             if len(__lat_lon) >= 2:
                 try:
                     __point = [
@@ -417,32 +396,28 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                             SEPARATOR_LOOKUP_COMPLEX_MULTIPLE_VALUE
                         )
                         if len(__opt_name_val) >= 2:
-                            if __opt_name_val[0] in ('relation',
-                                                     'type',
-                                                     'radius'):
-                                __options.update(
-                                    {
-                                        __opt_name_val[0]: __opt_name_val[1]
-                                    }
-                                )
+                            if __opt_name_val[0] in ("relation", "type", "radius"):
+                                __options.update({__opt_name_val[0]: __opt_name_val[1]})
 
-        __type = __options.pop('type', None)
-        __relation = __options.pop('relation', None)
+        __type = __options.pop("type", None)
+        __relation = __options.pop("relation", None)
         if not __coordinates or not __type or not __relation:
             return {}
 
         params = {
             field: {
-                'shape': {
-                    'type': __type,
-                    'coordinates': __coordinates if len(__coordinates) > 1 else __coordinates[0],
+                "shape": {
+                    "type": __type,
+                    "coordinates": (
+                        __coordinates if len(__coordinates) > 1 else __coordinates[0]
+                    ),
                 },
-                'relation': __relation,
+                "relation": __relation,
             }
         }
-        radius = __options.pop('radius', None)
+        radius = __options.pop("radius", None)
         if radius:
-            params[field]['shape'].update({'radius': radius})
+            params[field]["shape"].update({"radius": radius})
         params.update(__options)
 
         return params
@@ -461,10 +436,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return queryset.query(
-            Q(
-                'geo_distance',
-                **cls.get_geo_distance_params(value, options['field'])
-            )
+            Q("geo_distance", **cls.get_geo_distance_params(value, options["field"]))
         )
 
     @classmethod
@@ -481,10 +453,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return queryset.query(
-            Q(
-                'geo_polygon',
-                **cls.get_geo_polygon_params(value, options['field'])
-            )
+            Q("geo_polygon", **cls.get_geo_polygon_params(value, options["field"]))
         )
 
     @classmethod
@@ -502,8 +471,8 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         """
         return queryset.query(
             Q(
-                'geo_bounding_box',
-                **cls.get_geo_bounding_box_params(value, options['field'])
+                "geo_bounding_box",
+                **cls.get_geo_bounding_box_params(value, options["field"])
             )
         )
 
@@ -521,10 +490,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return queryset.query(
-            Q(
-                'geo_shape',
-                **cls.get_geo_shape_params(value, options['field'])
-            )
+            Q("geo_shape", **cls.get_geo_shape_params(value, options["field"]))
         )
 
     def get_filter_query_params(self, request, view):
@@ -542,10 +508,7 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
         filter_query_params = {}
         filter_fields = self.prepare_filter_fields(view)
         for query_param in query_params:
-            query_param_list = self.split_lookup_filter(
-                query_param,
-                maxsplit=1
-            )
+            query_param_list = self.split_lookup_filter(query_param, maxsplit=1)
             field_name = query_param_list[0]
 
             if field_name in filter_fields:
@@ -553,25 +516,21 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 if len(query_param_list) > 1:
                     lookup_param = query_param_list[1]
 
-                valid_lookups = filter_fields[field_name]['lookups']
+                valid_lookups = filter_fields[field_name]["lookups"]
 
                 if lookup_param is None or lookup_param in valid_lookups:
                     values = [
                         __value.strip()
-                        for __value
-                        in query_params.getlist(query_param)
-                        if __value.strip() != ''
+                        for __value in query_params.getlist(query_param)
+                        if __value.strip() != ""
                     ]
 
                     if values:
                         filter_query_params[query_param] = {
-                            'lookup': lookup_param,
-                            'values': values,
-                            'field': filter_fields[field_name].get(
-                                'field',
-                                field_name
-                            ),
-                            'type': view.mapping
+                            "lookup": lookup_param,
+                            "values": values,
+                            "field": filter_fields[field_name].get("field", field_name),
+                            "type": view.mapping,
                         }
         return filter_query_params
 
@@ -592,38 +551,24 @@ class GeoSpatialFilteringFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
             # For all other cases, when we don't have multiple values,
             # we follow the normal flow.
-            for value in options['values']:
+            for value in options["values"]:
 
                 # `geo_distance` query lookup
-                if options['lookup'] == LOOKUP_FILTER_GEO_DISTANCE:
-                    queryset = self.apply_query_geo_distance(
-                        queryset,
-                        options,
-                        value
-                    )
+                if options["lookup"] == LOOKUP_FILTER_GEO_DISTANCE:
+                    queryset = self.apply_query_geo_distance(queryset, options, value)
 
                 # `geo_polygon` query lookup
-                elif options['lookup'] == LOOKUP_FILTER_GEO_POLYGON:
-                    queryset = self.apply_query_geo_polygon(
-                        queryset,
-                        options,
-                        value
-                    )
+                elif options["lookup"] == LOOKUP_FILTER_GEO_POLYGON:
+                    queryset = self.apply_query_geo_polygon(queryset, options, value)
 
                 # `geo_bounding_box` query lookup
-                elif options['lookup'] == LOOKUP_FILTER_GEO_BOUNDING_BOX:
+                elif options["lookup"] == LOOKUP_FILTER_GEO_BOUNDING_BOX:
                     queryset = self.apply_query_geo_bounding_box(
-                        queryset,
-                        options,
-                        value
+                        queryset, options, value
                     )
 
                 # `geo_shape` query lookup
-                elif options['lookup'] == LOOKUP_FILTER_GEO_SHAPE:
-                    queryset = self.apply_query_geo_shape(
-                        queryset,
-                        options,
-                        value
-                    )
+                elif options["lookup"] == LOOKUP_FILTER_GEO_SHAPE:
+                    queryset = self.apply_query_geo_shape(queryset, options, value)
 
         return queryset

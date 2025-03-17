@@ -1,16 +1,16 @@
 from django.conf import settings
 
 from django_elasticsearch_dsl import Document, Index, fields
-from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
-from django_elasticsearch_dsl_drf.analyzers import edge_ngram_completion
-from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
+from django_elasticsearch_dsl_drf_alt.compat import KeywordField, StringField
+from django_elasticsearch_dsl_drf_alt.analyzers import edge_ngram_completion
+from django_elasticsearch_dsl_drf_alt.versions import ELASTICSEARCH_GTE_5_0
 
 from books.models import Book
 
 from .analyzers import html_strip
 
 
-__all__ = ('BookDocument',)
+__all__ = ("BookDocument",)
 
 INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 
@@ -18,7 +18,7 @@ INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 INDEX.settings(
     number_of_shards=1,
     number_of_replicas=1,
-    blocks={'read_only_allow_delete': None},
+    blocks={"read_only_allow_delete": None},
     # read_only_allow_delete=False
 )
 
@@ -33,24 +33,22 @@ class BookDocument(Document):
     # functionality where all of the fields are used.
 
     # ID
-    id = fields.IntegerField(attr='id')
+    id = fields.IntegerField(attr="id")
 
     # ********************************************************************
     # *********************** Main data fields for search ****************
     # ********************************************************************
     __title_fields = {
-        'raw': KeywordField(),
-        'suggest': fields.CompletionField(),
-        'edge_ngram_completion': StringField(
-            analyzer=edge_ngram_completion
-        ),
-        'mlt': StringField(analyzer='english'),
+        "raw": KeywordField(),
+        "suggest": fields.CompletionField(),
+        "edge_ngram_completion": StringField(analyzer=edge_ngram_completion),
+        "mlt": StringField(analyzer="english"),
     }
 
     if ELASTICSEARCH_GTE_5_0:
         __title_fields.update(
             {
-                'suggest_context': fields.CompletionField(
+                "suggest_context": fields.CompletionField(
                     contexts=[
                         {
                             "name": "tag",
@@ -72,25 +70,22 @@ class BookDocument(Document):
             }
         )
 
-    title = StringField(
-        analyzer=html_strip,
-        fields=__title_fields
-    )
+    title = StringField(analyzer=html_strip, fields=__title_fields)
 
     description = StringField(
         analyzer=html_strip,
         fields={
-            'raw': KeywordField(),
-            'mlt': StringField(analyzer='english'),
-        }
+            "raw": KeywordField(),
+            "mlt": StringField(analyzer="english"),
+        },
     )
 
     summary = StringField(
         analyzer=html_strip,
         fields={
-            'raw': KeywordField(),
-            'mlt': StringField(analyzer='english'),
-        }
+            "raw": KeywordField(),
+            "mlt": StringField(analyzer="english"),
+        },
     )
 
     # ********************************************************************
@@ -101,19 +96,19 @@ class BookDocument(Document):
         StringField(
             analyzer=html_strip,
             fields={
-                'raw': KeywordField(),
-            }
+                "raw": KeywordField(),
+            },
         )
     )
 
     # Publisher
     publisher = StringField(
-        attr='publisher_indexing',
+        attr="publisher_indexing",
         analyzer=html_strip,
         fields={
-            'raw': KeywordField(),
-            'suggest': fields.CompletionField(),
-        }
+            "raw": KeywordField(),
+            "suggest": fields.CompletionField(),
+        },
     )
 
     # Publication date
@@ -123,16 +118,16 @@ class BookDocument(Document):
     state = StringField(
         analyzer=html_strip,
         fields={
-            'raw': KeywordField(),
-        }
+            "raw": KeywordField(),
+        },
     )
 
     # ISBN
     isbn = StringField(
         analyzer=html_strip,
         fields={
-            'raw': KeywordField(),
-        }
+            "raw": KeywordField(),
+        },
     )
 
     # Price
@@ -146,19 +141,19 @@ class BookDocument(Document):
 
     # Tags
     tags = StringField(
-        attr='tags_indexing',
+        attr="tags_indexing",
         analyzer=html_strip,
         fields={
-            'raw': KeywordField(multi=True),
-            'suggest': fields.CompletionField(multi=True),
+            "raw": KeywordField(multi=True),
+            "suggest": fields.CompletionField(multi=True),
         },
-        multi=True
+        multi=True,
     )
 
     # Date created
-    created = fields.DateField(attr='created_indexing')
+    created = fields.DateField(attr="created_indexing")
 
-    null_field = StringField(attr='null_field_indexing')
+    null_field = StringField(attr="null_field_indexing")
 
     class Django(object):
         model = Book  # The model associate with this Document

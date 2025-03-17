@@ -9,11 +9,11 @@ from ...constants import (
     GEO_DISTANCE_ORDERING_PARAM,
 )
 
-__title__ = 'django_elasticsearch_dsl_drf.filter_backends.ordering.common'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('GeoSpatialOrderingFilterBackend',)
+__title__ = "django_elasticsearch_dsl_drf_alt.filter_backends.ordering.common"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("GeoSpatialOrderingFilterBackend",)
 
 
 class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
@@ -21,10 +21,10 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     Example:
 
-        >>> from django_elasticsearch_dsl_drf.filter_backends import (
+        >>> from django_elasticsearch_dsl_drf_alt.filter_backends import (
         >>>     GeoSpatialOrderingFilterBackend
         >>> )
-        >>> from django_elasticsearch_dsl_drf.viewsets import (
+        >>> from django_elasticsearch_dsl_drf_alt.viewsets import (
         >>>     BaseDocumentViewSet,
         >>> )
         >>>
@@ -70,22 +70,22 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
             return {}
 
         params = {
-            '_geo_distance': {
+            "_geo_distance": {
                 field: {
-                    'lat': __values[0],
-                    'lon': __values[1],
+                    "lat": __values[0],
+                    "lon": __values[1],
                 }
             }
         }
 
         if __len_values > 2:
-            params['_geo_distance']['unit'] = __values[2]
+            params["_geo_distance"]["unit"] = __values[2]
         else:
-            params['_geo_distance']['unit'] = 'm'
+            params["_geo_distance"]["unit"] = "m"
         if __len_values > 3:
-            params['_geo_distance']['distance_type'] = __values[3]
+            params["_geo_distance"]["distance_type"] = __values[3]
         else:
-            params['_geo_distance']['distance_type'] = 'arc'
+            params["_geo_distance"]["distance_type"] = "arc"
 
         return params
 
@@ -123,8 +123,8 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
         if options is None:
             return name
         elif isinstance(options, dict):
-            if 'field' in options:
-                return options['field']
+            if "field" in options:
+                return options["field"]
         else:
             return options
 
@@ -146,7 +146,7 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
         for query_param in ordering_query_params:
             try:
                 __key, __value = FilterBackendMixin.split_lookup_complex_value(
-                    query_param.lstrip('-'),
+                    query_param.lstrip("-"),
                     maxsplit=1,
                 )
             # Probably using both
@@ -154,15 +154,11 @@ class GeoSpatialOrderingFilterBackend(BaseFilterBackend, FilterBackendMixin):
             # and GeoSpatialOrderingFilterBackend
             except ValueError:
                 break
-            __direction = 'desc' if query_param.startswith('-') else 'asc'
+            __direction = "desc" if query_param.startswith("-") else "asc"
             if __key in view.geo_spatial_ordering_fields:
-                __field_name = self.get_geo_spatial_field_name(
-                    request,
-                    view,
-                    __key
-                )
+                __field_name = self.get_geo_spatial_field_name(request, view, __key)
                 __params = self.get_geo_distance_params(__value, __field_name)
-                __params['_geo_distance']['order'] = __direction
+                __params["_geo_distance"]["order"] = __direction
                 __ordering_params.append(__params)
 
         return __ordering_params

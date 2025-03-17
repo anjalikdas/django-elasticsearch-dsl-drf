@@ -20,13 +20,11 @@ import factories
 from ..constants import SEPARATOR_LOOKUP_COMPLEX_VALUE
 from .base import BaseRestFrameworkTestCase
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_filtering_geo_spatial'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = (
-    'TestFilteringGeoSpatial',
-)
+__title__ = "django_elasticsearch_dsl_drf_alt.tests.test_filtering_geo_spatial"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("TestFilteringGeoSpatial",)
 
 
 @pytest.mark.django_db
@@ -39,7 +37,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
     def setUpClass(cls):
         """Set up."""
         super(TestFilteringGeoSpatial, cls).setUpClass()
-        cls.base_publisher_url = reverse('publisherdocument-list', kwargs={})
+        cls.base_publisher_url = reverse("publisherdocument-list", kwargs={})
 
     def _test_field_filter_geo_distance(self, distance_type=None):
         """Field filter geo-distance.
@@ -58,42 +56,41 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
 
         _geo_origin = factories.PublisherFactory.create(
             **{
-                'latitude': 48.8549,
-                'longitude': 2.3000,
+                "latitude": 48.8549,
+                "longitude": 2.3000,
             }
         )
 
         _geo_in_count = 5
-        _geo_distance = '1km'
+        _geo_distance = "1km"
         _geo_in = factories.PublisherFactory.create_batch(
             _geo_in_count,
             **{
-                'latitude': 48.8570,
-                'longitude': 2.3005,
+                "latitude": 48.8570,
+                "longitude": 2.3005,
             }
         )
 
-        call_command('search_index', '--rebuild', '-f')
+        call_command("search_index", "--rebuild", "-f")
         self.sleep()
 
-        __params = '{distance}{separator}{lat}{separator}{lon}{d_type}'.format(
+        __params = "{distance}{separator}{lat}{separator}{lon}{d_type}".format(
             distance=_geo_distance,
             lat=_geo_origin.latitude,
             lon=_geo_origin.longitude,
             separator=SEPARATOR_LOOKUP_COMPLEX_VALUE,
-            d_type='__{}'.format(distance_type) if distance_type else ''
+            d_type="__{}".format(distance_type) if distance_type else "",
         )
 
-        url = self.base_publisher_url[:] + '?{}={}'.format(
-            'location__geo_distance',
-            __params
+        url = self.base_publisher_url[:] + "?{}={}".format(
+            "location__geo_distance", __params
         )
 
         data = {}
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # Should contain only 6 results
-        self.assertEqual(len(response.data['results']), _geo_in_count + 1)
+        self.assertEqual(len(response.data["results"]), _geo_in_count + 1)
 
     @pytest.mark.webtest
     def test_field_filter_geo_distance(self):
@@ -119,7 +116,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
 
         :return:
         """
-        return self._test_field_filter_geo_distance(distance_type='arc')
+        return self._test_field_filter_geo_distance(distance_type="arc")
 
     @pytest.mark.webtest
     def test_field_filter_geo_distance_not_enough_args_fail(self):
@@ -135,31 +132,30 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         self.authenticate()
         _geo_origin = factories.PublisherFactory.create(
             **{
-                'latitude': 48.8549,
-                'longitude': 2.3000,
+                "latitude": 48.8549,
+                "longitude": 2.3000,
             }
         )
         _geo_in_count = 5
-        _geo_distance = '1km'
+        _geo_distance = "1km"
         _geo_in = factories.PublisherFactory.create_batch(
             _geo_in_count,
             **{
-                'latitude': 48.8570,
-                'longitude': 2.3005,
+                "latitude": 48.8570,
+                "longitude": 2.3005,
             }
         )
 
-        call_command('search_index', '--rebuild', '-f')
+        call_command("search_index", "--rebuild", "-f")
         self.sleep()
 
-        __params = '{distance}{separator}{lat}'.format(
+        __params = "{distance}{separator}{lat}".format(
             distance=_geo_distance,
             lat=_geo_origin.latitude,
             separator=SEPARATOR_LOOKUP_COMPLEX_VALUE,
         )
-        url = self.base_publisher_url[:] + '?{}={}'.format(
-            'location__geo_distance',
-            __params
+        url = self.base_publisher_url[:] + "?{}={}".format(
+            "location__geo_distance", __params
         )
         data = {}
         with self.assertRaises(TransportError) as context:
@@ -183,22 +179,19 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         """
         self.authenticate()
 
-        __params = '{val1},{val2}{sep}{val3},{val4}{sep}{val5},{val6}'.format(
+        __params = "{val1},{val2}{sep}{val3},{val4}{sep}{val5},{val6}".format(
             val1=3.51,
             val2=71.46,
             val3=-47.63,
             val4=41.64,
             val5=62.05,
             val6=29.22,
-            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE,
         )
 
         publishers = []
 
-        url = self.base_publisher_url[:] + '?{}={}'.format(
-            field_name,
-            __params
-        )
+        url = self.base_publisher_url[:] + "?{}={}".format(field_name, __params)
         data = {}
 
         for __lat, __lon in points:
@@ -209,12 +202,12 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
                 )
             )
 
-        call_command('search_index', '--rebuild', '-f')
+        call_command("search_index", "--rebuild", "-f")
         self.sleep()
 
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), count)
+        self.assertEqual(len(response.data["results"]), count)
 
         return publishers
 
@@ -232,9 +225,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         ]
 
         return self._test_field_filter_geo_polygon(
-            field_name='location__geo_polygon',
-            points=valid_points,
-            count=4
+            field_name="location__geo_polygon", points=valid_points, count=4
         )
 
     @pytest.mark.webtest
@@ -251,9 +242,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         ]
 
         return self._test_field_filter_geo_polygon(
-            field_name='location__geo_polygon',
-            points=invalid_points,
-            count=0
+            field_name="location__geo_polygon", points=invalid_points, count=0
         )
 
     @pytest.mark.webtest
@@ -270,9 +259,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         ]
 
         return self._test_field_filter_geo_polygon(
-            field_name='location_2__geo_polygon',
-            points=valid_points,
-            count=4
+            field_name="location_2__geo_polygon", points=valid_points, count=4
         )
 
     @pytest.mark.webtest
@@ -289,9 +276,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         ]
 
         return self._test_field_filter_geo_polygon(
-            field_name='location_2__geo_polygon',
-            points=invalid_points,
-            count=0
+            field_name="location_2__geo_polygon", points=invalid_points, count=0
         )
 
     @pytest.mark.webtest
@@ -315,19 +300,18 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         """
         self.authenticate()
 
-        __params = '{val1},{val2}{sep}{val3},{val4}'.format(
+        __params = "{val1},{val2}{sep}{val3},{val4}".format(
             val1=44.87,
             val2=40.07,
             val3=43.87,
             val4=41.11,
-            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE,
         )
 
         publishers = []
 
-        url = self.base_publisher_url[:] + '?{}={}'.format(
-            'location__geo_bounding_box',
-            __params
+        url = self.base_publisher_url[:] + "?{}={}".format(
+            "location__geo_bounding_box", __params
         )
         data = {}
 
@@ -339,12 +323,12 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
                 )
             )
 
-        call_command('search_index', '--rebuild', '-f')
+        call_command("search_index", "--rebuild", "-f")
         self.sleep()
 
         response = self.client.get(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), count)
+        self.assertEqual(len(response.data["results"]), count)
 
         return publishers
 
@@ -361,10 +345,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             (44.60, 40.40),
         ]
 
-        return self._test_field_filter_geo_bounding_box(
-            points=valid_points,
-            count=4
-        )
+        return self._test_field_filter_geo_bounding_box(points=valid_points, count=4)
 
     @pytest.mark.webtest
     def test_field_filter_geo_bounding_box_fail_test(self):
@@ -381,10 +362,7 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             (43.71, 41.29),
         ]
 
-        return self._test_field_filter_geo_bounding_box(
-            points=invalid_points,
-            count=0
-        )
+        return self._test_field_filter_geo_bounding_box(points=invalid_points, count=0)
 
     @pytest.mark.webtest
     def _test_field_filter_geo_shape(self, points, count, gs_data):
@@ -427,26 +405,28 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
         """
         self.authenticate()
 
-        gs_coordinates = gs_data.get('coordinates')
-        __params = ','.join(gs_coordinates[0])
+        gs_coordinates = gs_data.get("coordinates")
+        __params = ",".join(gs_coordinates[0])
         for coord in gs_coordinates[1:]:
-            __params = '{}{}{}'.format(__params, SEPARATOR_LOOKUP_COMPLEX_VALUE, ','.join(coord))
+            __params = "{}{}{}".format(
+                __params, SEPARATOR_LOOKUP_COMPLEX_VALUE, ",".join(coord)
+            )
 
-        __params = '{}{sep}relation,{}{sep}type,{}'.format(
+        __params = "{}{sep}relation,{}{sep}type,{}".format(
             __params,
-            gs_data.get('relation'),
-            gs_data.get('type'),
-            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE
+            gs_data.get("relation"),
+            gs_data.get("type"),
+            sep=SEPARATOR_LOOKUP_COMPLEX_VALUE,
         )
 
-        gs_extra = gs_data.get('extra')
+        gs_extra = gs_data.get("extra")
         if gs_extra:
-            __params = '{}{}{}'.format(__params, SEPARATOR_LOOKUP_COMPLEX_VALUE, gs_extra)
+            __params = "{}{}{}".format(
+                __params, SEPARATOR_LOOKUP_COMPLEX_VALUE, gs_extra
+            )
 
-        url = self.base_publisher_url[:] + '?{field}{}={}'.format(
-            '__geo_shape',
-            __params,
-            field=gs_data.get('field')
+        url = self.base_publisher_url[:] + "?{field}{}={}".format(
+            "__geo_shape", __params, field=gs_data.get("field")
         )
 
         publishers = []
@@ -458,12 +438,12 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
                 )
             )
 
-        call_command('search_index', '--rebuild', '-f')
+        call_command("search_index", "--rebuild", "-f")
         self.sleep()
 
         response = self.client.get(url, {})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), count)
+        self.assertEqual(len(response.data["results"]), count)
 
         return publishers
 
@@ -486,11 +466,11 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             points=points,
             count=2,
             gs_data={
-                'field': 'location_point',
-                'coordinates': [['49.344809', '6.643982'], ['48.643798', '5.630493']],
-                'relation': 'within',
-                'type': 'envelope',
-            }
+                "field": "location_point",
+                "coordinates": [["49.344809", "6.643982"], ["48.643798", "5.630493"]],
+                "relation": "within",
+                "type": "envelope",
+            },
         )
 
     @pytest.mark.webtest
@@ -510,12 +490,12 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             points=points,
             count=2,
             gs_data={
-                'field': 'location_point',
-                'coordinates': [['49.119696', '6.176355']],
-                'relation': 'within',
-                'type': 'circle',
-                'extra': 'radius,10km',
-            }
+                "field": "location_point",
+                "coordinates": [["49.119696", "6.176355"]],
+                "relation": "within",
+                "type": "circle",
+                "extra": "radius,10km",
+            },
         )
 
     @pytest.mark.webtest
@@ -535,14 +515,14 @@ class TestFilteringGeoSpatial(BaseRestFrameworkTestCase):
             points=points,
             count=1,
             gs_data={
-                'field': 'location_circle',
-                'coordinates':  [['48.5728929', '7.8109768']],
-                'relation':  'intersects',
-                'type': 'circle',
-                'extra': 'radius,10km',
-            }
+                "field": "location_circle",
+                "coordinates": [["48.5728929", "7.8109768"]],
+                "relation": "intersects",
+                "type": "circle",
+                "extra": "radius,10km",
+            },
         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

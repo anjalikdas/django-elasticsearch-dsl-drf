@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl_drf.constants import (
+from django_elasticsearch_dsl_drf_alt.constants import (
     LOOKUP_FILTER_PREFIX,
     LOOKUP_FILTER_TERM,
     LOOKUP_FILTER_TERMS,
@@ -9,18 +9,16 @@ from django_elasticsearch_dsl_drf.constants import (
 
 from .default import BookDocumentViewSet
 
-__all__ = (
-    'BookDefaultFilterLookupDocumentViewSet',
-)
+__all__ = ("BookDefaultFilterLookupDocumentViewSet",)
 
 
 class BookDefaultFilterLookupDocumentViewSet(BookDocumentViewSet):
     """Same as parent, but with default filter lookups & no default facets."""
 
     filter_fields = {
-        'authors': {
-            'field': 'authors.raw',
-            'lookups': [
+        "authors": {
+            "field": "authors.raw",
+            "lookups": [
                 LOOKUP_FILTER_TERM,
                 LOOKUP_FILTER_TERMS,
                 LOOKUP_FILTER_PREFIX,
@@ -28,15 +26,15 @@ class BookDefaultFilterLookupDocumentViewSet(BookDocumentViewSet):
                 LOOKUP_QUERY_IN,
                 LOOKUP_QUERY_EXCLUDE,
             ],
-            'default_lookup': LOOKUP_FILTER_TERM,
+            "default_lookup": LOOKUP_FILTER_TERM,
         },
-        'publisher': 'publisher.raw',
+        "publisher": "publisher.raw",
     }
 
     faceted_search_fields = {
-        'state': 'state.raw',
-        'publisher': {
-            'field': 'publisher.raw',
-            'enabled': False,
+        "state": "state.raw",
+        "publisher": {
+            "field": "publisher.raw",
+            "enabled": False,
         },
     }

@@ -67,9 +67,10 @@ Example:
     >>>
     >>>         model = Publisher  # The model associate with this Document
 """
+
 from collections import defaultdict
 
-from django_elasticsearch_dsl_drf.constants import (
+from django_elasticsearch_dsl_drf_alt.constants import (
     SUGGESTER_TERM,
     SUGGESTER_PHRASE,
     SUGGESTER_COMPLETION,
@@ -82,11 +83,11 @@ from six import string_types
 
 from ..mixins import FilterBackendMixin
 
-__title__ = 'django_elasticsearch_dsl_drf.filter_backends.suggester'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('SuggesterFilterBackend',)
+__title__ = "django_elasticsearch_dsl_drf_alt.filter_backends.suggester"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("SuggesterFilterBackend",)
 
 
 class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
@@ -99,15 +100,15 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     Example:
 
-        >>> from django_elasticsearch_dsl_drf.constants import (
+        >>> from django_elasticsearch_dsl_drf_alt.constants import (
         >>>     SUGGESTER_TERM,
         >>>     SUGGESTER_PHRASE,
         >>>     SUGGESTER_COMPLETION,
         >>> )
-        >>> from django_elasticsearch_dsl_drf.filter_backends import (
+        >>> from django_elasticsearch_dsl_drf_alt.filter_backends import (
         >>>     SuggesterFilterBackend
         >>> )
-        >>> from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+        >>> from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
         >>>
         >>> # Local PublisherDocument definition
         >>> from .documents import PublisherDocument
@@ -167,16 +168,12 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
         for field, options in filter_fields.items():
             if options is None or isinstance(options, string_types):
-                filter_fields[field] = {
-                    'field': options or field
-                }
-            elif 'field' not in filter_fields[field]:
-                filter_fields[field]['field'] = field
+                filter_fields[field] = {"field": options or field}
+            elif "field" not in filter_fields[field]:
+                filter_fields[field]["field"] = field
 
-            if 'suggesters' not in filter_fields[field]:
-                filter_fields[field]['suggesters'] = tuple(
-                    ALL_SUGGESTERS
-                )
+            if "suggesters" not in filter_fields[field]:
+                filter_fields[field]["suggesters"] = tuple(ALL_SUGGESTERS)
 
         return filter_fields
 
@@ -275,90 +272,89 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         query_params = request.query_params.copy()
 
         # Processing `category` filters:
-        for query_param, context_field \
-                in field['completion_options'].get('category_filters',
-                                                   {}).items():
+        for query_param, context_field in (
+            field["completion_options"].get("category_filters", {}).items()
+        ):
             context_field_query = defaultdict(list)
             for context_field_value in query_params.getlist(query_param, []):
                 context_field_value_parts = cls.split_lookup_filter(
-                    context_field_value,
-                    maxsplit=2
+                    context_field_value, maxsplit=2
                 )
                 # Case `&title_suggest_tag=Documentary__2.0__prefix`
                 if len(context_field_value_parts) == 3:
                     context_field_query[context_field].append(
                         {
-                            'context': context_field_value_parts[0],
-                            'boost': context_field_value_parts[1],
-                            'prefix': True,
+                            "context": context_field_value_parts[0],
+                            "boost": context_field_value_parts[1],
+                            "prefix": True,
                         }
                     )
                 # Case `&title_suggest_tag=Documentary__2.0` or
                 # `&title_suggest_tag=Documentary__prefix`.
                 elif len(context_field_value_parts) == 2:
-                    if context_field_value_parts[1] == 'prefix':
+                    if context_field_value_parts[1] == "prefix":
                         context_field_query[context_field].append(
                             {
-                                'context': context_field_value_parts[0],
-                                'prefix': True,
+                                "context": context_field_value_parts[0],
+                                "prefix": True,
                             }
                         )
                     else:
                         context_field_query[context_field].append(
                             {
-                                'context': context_field_value_parts[0],
-                                'boost': context_field_value_parts[1],
+                                "context": context_field_value_parts[0],
+                                "boost": context_field_value_parts[1],
                             }
                         )
                 # Case `&title_suggest_tag=Documentary`.
                 elif len(context_field_value_parts) == 1:
                     context_field_query[context_field].append(
                         {
-                            'context': context_field_value_parts[0],
+                            "context": context_field_value_parts[0],
                         }
                     )
 
             contexts.update(context_field_query)
 
         # Processing `geo` filters:
-        for query_param, context_field \
-                in field['completion_options'].get('geo_filters', {}).items():
+        for query_param, context_field in (
+            field["completion_options"].get("geo_filters", {}).items()
+        ):
             context_field_query = defaultdict(list)
             for context_field_value in query_params.getlist(query_param, []):
                 context_field_value_parts = cls.split_lookup_filter(
-                    context_field_value,
-                    maxsplit=3
+                    context_field_value, maxsplit=3
                 )
                 # Case `&street_suggest_loc=43.66__-79.22__2.0__10000km`
                 if len(context_field_value_parts) == 4:
                     context_field_query[context_field].append(
                         {
-                            'context': {
-                                'lat': context_field_value_parts[0],
-                                'lon': context_field_value_parts[1],
+                            "context": {
+                                "lat": context_field_value_parts[0],
+                                "lon": context_field_value_parts[1],
                             },
-                            'precision': context_field_value_parts[2],
-                            'boost': context_field_value_parts[3],
+                            "precision": context_field_value_parts[2],
+                            "boost": context_field_value_parts[3],
                         }
                     )
                 # Case `&street_suggest_loc=43.66__-79.22__10000km`.
                 elif len(context_field_value_parts) == 3:
                     context_field_query[context_field].append(
                         {
-                            'context': {
-                                'lat': context_field_value_parts[0],
-                                'lon': context_field_value_parts[1],
+                            "context": {
+                                "lat": context_field_value_parts[0],
+                                "lon": context_field_value_parts[1],
                             },
-                            'precision': context_field_value_parts[2],
+                            "precision": context_field_value_parts[2],
                         }
                     )
                 # Case `&street_suggest_loc=43.66__-79.22`.
                 elif len(context_field_value_parts) == 2:
                     context_field_query[context_field].append(
                         {
-                            'context': {
-                                'lat': context_field_value_parts[0],
-                                'lon': context_field_value_parts[1],
+                            "context": {
+                                "lat": context_field_value_parts[0],
+                                "lon": context_field_value_parts[1],
                             },
                         }
                     )
@@ -382,11 +378,7 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :return: Modified queryset.
         :rtype: elasticsearch_dsl.search.Search
         """
-        return queryset.suggest(
-            suggester_name,
-            value,
-            term={'field': options['field']}
-        )
+        return queryset.suggest(suggester_name, value, term={"field": options["field"]})
 
     @classmethod
     def apply_suggester_phrase(cls, suggester_name, queryset, options, value):
@@ -404,17 +396,11 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         return queryset.suggest(
-            suggester_name,
-            value,
-            phrase={'field': options['field']}
+            suggester_name, value, phrase={"field": options["field"]}
         )
 
     @classmethod
-    def apply_suggester_completion(cls,
-                                   suggester_name,
-                                   queryset,
-                                   options,
-                                   value):
+    def apply_suggester_completion(cls, suggester_name, queryset, options, value):
         """Apply `completion` suggester.
 
         :param suggester_name:
@@ -429,19 +415,15 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         :rtype: elasticsearch_dsl.search.Search
         """
         completion_kwargs = {
-            'field': options['field'],
+            "field": options["field"],
         }
-        if 'size' in options:
-            completion_kwargs['size'] = options['size']
-        if 'contexts' in options:
-            completion_kwargs['contexts'] = options['contexts']
-        if 'skip_duplicates' in options:
-            completion_kwargs['skip_duplicates'] = options['skip_duplicates']
-        return queryset.suggest(
-            suggester_name,
-            value,
-            completion=completion_kwargs
-        )
+        if "size" in options:
+            completion_kwargs["size"] = options["size"]
+        if "contexts" in options:
+            completion_kwargs["contexts"] = options["contexts"]
+        if "skip_duplicates" in options:
+            completion_kwargs["skip_duplicates"] = options["skip_duplicates"]
+        return queryset.suggest(suggester_name, value, completion=completion_kwargs)
 
     def get_suggester_query_params(self, request, view):
         """Get query params to be for suggestions.
@@ -458,10 +440,7 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         suggester_query_params = {}
         suggester_fields = self.prepare_suggester_fields(view)
         for query_param in query_params:
-            query_param_list = self.split_lookup_filter(
-                query_param,
-                maxsplit=1
-            )
+            query_param_list = self.split_lookup_filter(query_param, maxsplit=1)
             field_name = query_param_list[0]
 
             if field_name in suggester_fields:
@@ -469,70 +448,70 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
                 if len(query_param_list) > 1:
                     suggester_param = query_param_list[1]
 
-                valid_suggesters = suggester_fields[field_name]['suggesters']
+                valid_suggesters = suggester_fields[field_name]["suggesters"]
 
                 # If we have default suggester given use it as a default and
                 # do not require further suffix specification.
                 default_suggester = None
-                if 'default_suggester' in suggester_fields[field_name]:
-                    default_suggester = \
-                        suggester_fields[field_name]['default_suggester']
+                if "default_suggester" in suggester_fields[field_name]:
+                    default_suggester = suggester_fields[field_name][
+                        "default_suggester"
+                    ]
 
-                if suggester_param is None \
-                        or suggester_param in valid_suggesters:
+                if suggester_param is None or suggester_param in valid_suggesters:
 
                     # If we have default suggester given use it as a default
                     # and do not require further suffix specification.
-                    if suggester_param is None \
-                            and default_suggester is not None:
+                    if suggester_param is None and default_suggester is not None:
                         suggester_param = str(default_suggester)
 
                     values = [
                         __value.strip()
-                        for __value
-                        in query_params.getlist(query_param)
-                        if __value.strip() != ''
+                        for __value in query_params.getlist(query_param)
+                        if __value.strip() != ""
                     ]
 
                     if values:
                         _sf = suggester_fields[field_name]
                         suggester_query_params[query_param] = {
-                            'suggester': suggester_param,
-                            'values': values,
-                            'field': suggester_fields[field_name].get(
-                                'field',
-                                field_name
+                            "suggester": suggester_param,
+                            "values": values,
+                            "field": suggester_fields[field_name].get(
+                                "field", field_name
                             ),
-                            'type': view.mapping,
+                            "type": view.mapping,
                         }
 
-                        if 'options' in _sf:
-                            if 'size' in _sf['options']:
-                                suggester_query_params[query_param].update({
-                                    'size': _sf['options']['size']
-                                })
-                            if 'skip_duplicates' in _sf['options']:
-                                suggester_query_params[query_param].update({
-                                    'skip_duplicates':
-                                        _sf['options']['skip_duplicates']
-                                })
+                        if "options" in _sf:
+                            if "size" in _sf["options"]:
+                                suggester_query_params[query_param].update(
+                                    {"size": _sf["options"]["size"]}
+                                )
+                            if "skip_duplicates" in _sf["options"]:
+                                suggester_query_params[query_param].update(
+                                    {
+                                        "skip_duplicates": _sf["options"][
+                                            "skip_duplicates"
+                                        ]
+                                    }
+                                )
 
                         if (
                             suggester_param == SUGGESTER_COMPLETION
-                            and 'completion_options' in _sf
+                            and "completion_options" in _sf
                             and (
-                                'category_filters' in _sf['completion_options']
-                                or
-                                'geo_filters' in _sf['completion_options']
+                                "category_filters" in _sf["completion_options"]
+                                or "geo_filters" in _sf["completion_options"]
                             )
                         ):
-                            suggester_query_params[query_param]['contexts'] = \
+                            suggester_query_params[query_param]["contexts"] = (
                                 self.get_suggester_context(
                                     suggester_fields[field_name],
                                     suggester_param,
                                     request,
-                                    view
+                                    view,
                                 )
+                            )
 
         return suggester_query_params
 
@@ -551,32 +530,29 @@ class SuggesterFilterBackend(BaseFilterBackend, FilterBackendMixin):
         # The ``SuggesterFilterBackend`` filter backend shall be used in
         # the ``suggest`` custom view action/route only. Usages outside of the
         # are ``suggest`` action/route are restricted.
-        if view.action != 'suggest':
+        if view.action != "suggest":
             return queryset
 
         suggester_query_params = self.get_suggester_query_params(request, view)
         for suggester_name, options in suggester_query_params.items():
             # We don't have multiple values here.
-            for value in options['values']:
+            for value in options["values"]:
                 # `term` suggester
-                if options['suggester'] == SUGGESTER_TERM:
-                    queryset = self.apply_suggester_term(suggester_name,
-                                                         queryset,
-                                                         options,
-                                                         value)
+                if options["suggester"] == SUGGESTER_TERM:
+                    queryset = self.apply_suggester_term(
+                        suggester_name, queryset, options, value
+                    )
 
                 # `phrase` suggester
-                elif options['suggester'] == SUGGESTER_PHRASE:
-                    queryset = self.apply_suggester_phrase(suggester_name,
-                                                           queryset,
-                                                           options,
-                                                           value)
+                elif options["suggester"] == SUGGESTER_PHRASE:
+                    queryset = self.apply_suggester_phrase(
+                        suggester_name, queryset, options, value
+                    )
 
                 # `completion` suggester
-                elif options['suggester'] == SUGGESTER_COMPLETION:
-                    queryset = self.apply_suggester_completion(suggester_name,
-                                                               queryset,
-                                                               options,
-                                                               value)
+                elif options["suggester"] == SUGGESTER_COMPLETION:
+                    queryset = self.apply_suggester_completion(
+                        suggester_name, queryset, options, value
+                    )
 
         return queryset

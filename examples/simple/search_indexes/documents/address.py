@@ -1,15 +1,15 @@
 from django.conf import settings
 
 from django_elasticsearch_dsl import Document, Index, fields
-from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
-from django_elasticsearch_dsl_drf.versions import ELASTICSEARCH_GTE_5_0
+from django_elasticsearch_dsl_drf_alt.compat import KeywordField, StringField
+from django_elasticsearch_dsl_drf_alt.versions import ELASTICSEARCH_GTE_5_0
 
 from books.models import Address
 
 from .analyzers import html_strip
 
 
-__all__ = ('AddressDocument',)
+__all__ = ("AddressDocument",)
 
 INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 
@@ -17,7 +17,7 @@ INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
 INDEX.settings(
     number_of_shards=1,
     number_of_replicas=1,
-    blocks={'read_only_allow_delete': False},
+    blocks={"read_only_allow_delete": False},
     # read_only_allow_delete=False
 )
 
@@ -32,21 +32,20 @@ class AddressDocument(Document):
     # functionality where all of the fields are used.
 
     # ID
-    id = fields.IntegerField(attr='id')
+    id = fields.IntegerField(attr="id")
 
     # ********************************************************************
     # *********************** Main data fields for search ****************
     # ********************************************************************
     __street_fields = {
-        'raw': KeywordField(),
-        'suggest': fields.CompletionField(),
-
+        "raw": KeywordField(),
+        "suggest": fields.CompletionField(),
     }
 
     if ELASTICSEARCH_GTE_5_0:
         __street_fields.update(
             {
-                'suggest_context': fields.CompletionField(
+                "suggest_context": fields.CompletionField(
                     contexts=[
                         {
                             "name": "loc",
@@ -58,10 +57,7 @@ class AddressDocument(Document):
                 ),
             }
         )
-    street = StringField(
-        analyzer=html_strip,
-        fields=__street_fields
-    )
+    street = StringField(analyzer=html_strip, fields=__street_fields)
 
     house_number = StringField(analyzer=html_strip)
 
@@ -70,9 +66,9 @@ class AddressDocument(Document):
     zip_code = StringField(
         analyzer=html_strip,
         fields={
-            'raw': KeywordField(),
-            'suggest': fields.CompletionField(),
-        }
+            "raw": KeywordField(),
+            "suggest": fields.CompletionField(),
+        },
     )
 
     # ********************************************************************
@@ -82,50 +78,48 @@ class AddressDocument(Document):
     # City object
     city = fields.ObjectField(
         properties={
-            'name': StringField(
+            "name": StringField(
                 analyzer=html_strip,
                 fields={
-                    'raw': KeywordField(),
-                    'suggest': fields.CompletionField(),
-                }
+                    "raw": KeywordField(),
+                    "suggest": fields.CompletionField(),
+                },
             ),
-            'info': StringField(analyzer=html_strip),
-            'location': fields.GeoPointField(attr='location_field_indexing'),
-            'country': fields.ObjectField(
+            "info": StringField(analyzer=html_strip),
+            "location": fields.GeoPointField(attr="location_field_indexing"),
+            "country": fields.ObjectField(
                 properties={
-                    'name': StringField(
+                    "name": StringField(
                         analyzer=html_strip,
                         fields={
-                            'raw': KeywordField(),
-                            'suggest': fields.CompletionField(),
-                        }
+                            "raw": KeywordField(),
+                            "suggest": fields.CompletionField(),
+                        },
                     ),
-                    'info': StringField(analyzer=html_strip),
-                    'location': fields.GeoPointField(
-                        attr='location_field_indexing'
-                    )
+                    "info": StringField(analyzer=html_strip),
+                    "location": fields.GeoPointField(attr="location_field_indexing"),
                 }
-            )
+            ),
         }
     )
 
     # Country object
     country = fields.NestedField(
-        attr='country_indexing',
+        attr="country_indexing",
         properties={
-            'name': StringField(
+            "name": StringField(
                 analyzer=html_strip,
                 fields={
-                    'raw': KeywordField(),
-                    'suggest': fields.CompletionField(),
-                }
+                    "raw": KeywordField(),
+                    "suggest": fields.CompletionField(),
+                },
             ),
-            'city': fields.ObjectField(
+            "city": fields.ObjectField(
                 properties={
-                    'name': StringField(
+                    "name": StringField(
                         analyzer=html_strip,
                         fields={
-                            'raw': KeywordField(),
+                            "raw": KeywordField(),
                         },
                     ),
                 },
@@ -135,69 +129,69 @@ class AddressDocument(Document):
 
     # Continent object
     continent = fields.NestedField(
-        attr='continent_indexing',
+        attr="continent_indexing",
         properties={
-            'id': fields.IntegerField(),
-            'name': StringField(
+            "id": fields.IntegerField(),
+            "name": StringField(
                 analyzer=html_strip,
                 fields={
-                    'raw': KeywordField(),
-                    'suggest': fields.CompletionField(),
-                }
+                    "raw": KeywordField(),
+                    "suggest": fields.CompletionField(),
+                },
             ),
-            'country': fields.NestedField(
+            "country": fields.NestedField(
                 properties={
-                    'id': fields.IntegerField(),
-                    'name': StringField(
+                    "id": fields.IntegerField(),
+                    "name": StringField(
                         analyzer=html_strip,
                         fields={
-                            'raw': KeywordField(),
-                        }
+                            "raw": KeywordField(),
+                        },
                     ),
-                    'city': fields.NestedField(
+                    "city": fields.NestedField(
                         properties={
-                            'id': fields.IntegerField(),
-                            'name': StringField(
+                            "id": fields.IntegerField(),
+                            "name": StringField(
                                 analyzer=html_strip,
                                 fields={
-                                    'raw': KeywordField(),
-                                }
-                            )
+                                    "raw": KeywordField(),
+                                },
+                            ),
                         }
-                    )
+                    ),
                 }
-            )
-        }
+            ),
+        },
     )
 
     # Galaxy object
     galaxy = fields.ObjectField(
-        attr='galaxy_indexing',
+        attr="galaxy_indexing",
         properties={
-            'id': fields.IntegerField(),
-            'name': StringField(
+            "id": fields.IntegerField(),
+            "name": StringField(
                 analyzer=html_strip,
                 fields={
-                    'raw': KeywordField(),
-                    'suggest': fields.CompletionField(),
-                }
+                    "raw": KeywordField(),
+                    "suggest": fields.CompletionField(),
+                },
             ),
-            'planet': fields.NestedField(
+            "planet": fields.NestedField(
                 properties={
-                    'id': fields.IntegerField(),
-                    'name': StringField(
+                    "id": fields.IntegerField(),
+                    "name": StringField(
                         analyzer=html_strip,
                         fields={
-                            'raw': KeywordField(),
-                        }
-                    )
+                            "raw": KeywordField(),
+                        },
+                    ),
                 }
-            )
-        }
+            ),
+        },
     )
 
     location = fields.GeoPointField(
-        attr='location_field_indexing',
+        attr="location_field_indexing",
     )
 
     class Django(object):

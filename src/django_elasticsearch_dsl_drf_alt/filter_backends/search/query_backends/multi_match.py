@@ -4,18 +4,20 @@ from elasticsearch_dsl.query import Q
 
 from .base import BaseSearchQueryBackend
 
-__title__ = 'django_elasticsearch_dsl_drf.filter_backends.search.' \
-            'query_backends.multi_match'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('MultiMatchQueryBackend',)
+__title__ = (
+    "django_elasticsearch_dsl_drf_alt.filter_backends.search."
+    "query_backends.multi_match"
+)
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("MultiMatchQueryBackend",)
 
 
 class MultiMatchQueryBackend(BaseSearchQueryBackend):
     """Multi match query backend."""
 
-    query_type = 'multi_match'
+    query_type = "multi_match"
 
     @classmethod
     def get_field(cls, field, options):
@@ -28,17 +30,15 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
         if not options:
             options = {}
 
-        field_name = options['field'] \
-            if 'field' in options \
-            else field
+        field_name = options["field"] if "field" in options else field
 
-        if 'boost' in options:
-            return '{}^{}'.format(field_name, options['boost'])
+        if "boost" in options:
+            return "{}^{}".format(field_name, options["boost"])
         return field_name
 
     @classmethod
     def get_query_options(cls, request, view, search_backend):
-        query_options = getattr(view, 'multi_match_options', {})
+        query_options = getattr(view, "multi_match_options", {})
         return query_options
 
     @classmethod
@@ -86,10 +86,8 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
         :param search_backend:
         :return:
         """
-        if hasattr(view, 'multi_match_search_fields'):
-            view_search_fields = copy.copy(
-                getattr(view, 'multi_match_search_fields')
-            )
+        if hasattr(view, "multi_match_search_fields"):
+            view_search_fields = copy.copy(getattr(view, "multi_match_search_fields"))
         else:
             view_search_fields = copy.copy(view.search_fields)
 
@@ -111,9 +109,7 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
             if __len_values > 1:
                 _field, value = __values
                 __search_term = value
-                fields = search_backend.split_lookup_complex_multiple_value(
-                    _field
-                )
+                fields = search_backend.split_lookup_complex_multiple_value(_field)
                 for field in fields:
                     if field in view_search_fields:
                         if __is_complex:
@@ -130,9 +126,7 @@ class MultiMatchQueryBackend(BaseSearchQueryBackend):
                 # It's a dict, see example 1 (complex)
                 if __is_complex:
                     for field, options in view_search_fields.items():
-                        query_fields.append(
-                            cls.get_field(field, options)
-                        )
+                        query_fields.append(cls.get_field(field, options))
 
                 # It's a list, see example 2 (simple)
                 else:

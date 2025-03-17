@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl_drf.constants import (
+from django_elasticsearch_dsl_drf_alt.constants import (
     LOOKUP_FILTER_PREFIX,
     LOOKUP_FILTER_RANGE,
     LOOKUP_FILTER_TERMS,
@@ -11,7 +11,7 @@ from django_elasticsearch_dsl_drf.constants import (
     LOOKUP_QUERY_LT,
     LOOKUP_QUERY_LTE,
 )
-from django_elasticsearch_dsl_drf.filter_backends import (
+from django_elasticsearch_dsl_drf_alt.filter_backends import (
     DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
     FilteringFilterBackend,
@@ -21,7 +21,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     PostFilterFilteringFilterBackend,
     SearchFilterBackend,
 )
-from django_elasticsearch_dsl_drf.viewsets import (
+from django_elasticsearch_dsl_drf_alt.viewsets import (
     BaseDocumentViewSet,
 )
 
@@ -30,9 +30,7 @@ from elasticsearch_dsl import DateHistogramFacet, RangeFacet, A
 from ...documents import BookDocument
 from ...serializers import BookDocumentSimpleSerializer
 
-__all__ = (
-    'BaseBookDocumentViewSet',
-)
+__all__ = ("BaseBookDocumentViewSet",)
 
 
 class BaseBookDocumentViewSet(BaseDocumentViewSet):
@@ -41,7 +39,7 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
     document = BookDocument
     # serializer_class = BookDocumentSerializer
     serializer_class = BookDocumentSimpleSerializer
-    lookup_field = 'id'
+    lookup_field = "id"
     filter_backends = [
         FilteringFilterBackend,
         PostFilterFilteringFilterBackend,
@@ -56,32 +54,27 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
     ]
     # Define search fields
     search_fields = (
-        'title',
-        'description',
-        'summary',
+        "title",
+        "description",
+        "summary",
     )
     # Define highlight fields
     highlight_fields = {
-        'title': {
-            'enabled': True,
-            'options': {
-                'pre_tags': ["<b>"],
-                'post_tags': ["</b>"],
-            }
+        "title": {
+            "enabled": True,
+            "options": {
+                "pre_tags": ["<b>"],
+                "post_tags": ["</b>"],
+            },
         },
-        'summary': {
-            'options': {
-                'fragment_size': 50,
-                'number_of_fragments': 3
-            }
-        },
-        'description': {},
+        "summary": {"options": {"fragment_size": 50, "number_of_fragments": 3}},
+        "description": {},
     }
     # Define filter fields
     filter_fields = {
-        'id': {
-            'field': 'id',
-            'lookups': [
+        "id": {
+            "field": "id",
+            "lookups": [
                 LOOKUP_FILTER_RANGE,
                 LOOKUP_QUERY_IN,
                 LOOKUP_QUERY_GT,
@@ -91,21 +84,21 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
                 LOOKUP_FILTER_TERMS,
             ],
         },
-        'title': 'title.raw',
-        'summary': 'summary',
-        'publisher': 'publisher.raw',
-        'publication_date': 'publication_date',
-        'state': 'state.raw',
-        'isbn': 'isbn.raw',
-        'price': {
-            'field': 'price.raw',
-            'lookups': [
+        "title": "title.raw",
+        "summary": "summary",
+        "publisher": "publisher.raw",
+        "publication_date": "publication_date",
+        "state": "state.raw",
+        "isbn": "isbn.raw",
+        "price": {
+            "field": "price.raw",
+            "lookups": [
                 LOOKUP_FILTER_RANGE,
             ],
         },
-        'pages': {
-            'field': 'pages',
-            'lookups': [
+        "pages": {
+            "field": "pages",
+            "lookups": [
                 LOOKUP_FILTER_RANGE,
                 LOOKUP_QUERY_GT,
                 LOOKUP_QUERY_GTE,
@@ -113,9 +106,9 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
                 LOOKUP_QUERY_LTE,
             ],
         },
-        'stock_count': {
+        "stock_count": {
             # 'field': 'stock_count',
-            'lookups': [
+            "lookups": [
                 LOOKUP_FILTER_RANGE,
                 LOOKUP_QUERY_GT,
                 LOOKUP_QUERY_GTE,
@@ -123,9 +116,9 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
                 LOOKUP_QUERY_LTE,
             ],
         },
-        'tags': {
-            'field': 'tags',
-            'lookups': [
+        "tags": {
+            "field": "tags",
+            "lookups": [
                 LOOKUP_FILTER_TERMS,
                 LOOKUP_FILTER_PREFIX,
                 LOOKUP_FILTER_WILDCARD,
@@ -134,9 +127,9 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
                 LOOKUP_QUERY_ISNULL,
             ],
         },
-        'tags.raw': {
-            'field': 'tags.raw',
-            'lookups': [
+        "tags.raw": {
+            "field": "tags.raw",
+            "lookups": [
                 LOOKUP_FILTER_TERMS,
                 LOOKUP_FILTER_PREFIX,
                 LOOKUP_FILTER_WILDCARD,
@@ -145,17 +138,17 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
             ],
         },
         # This has been added to test `exists` filter.
-        'non_existent_field': 'non_existent_field',
+        "non_existent_field": "non_existent_field",
         # This has been added to test `isnull` filter.
-        'null_field': 'null_field',
+        "null_field": "null_field",
     }
     # Post filter fields, copy filters as they are valid
     post_filter_fields = {
-        'publisher_pf': 'publisher.raw',
-        'state_pf': 'state.raw',
-        'tags_pf': {
-            'field': 'tags',
-            'lookups': [
+        "publisher_pf": "publisher.raw",
+        "state_pf": "state.raw",
+        "tags_pf": {
+            "field": "tags",
+            "lookups": [
                 LOOKUP_FILTER_TERMS,
                 LOOKUP_FILTER_PREFIX,
                 LOOKUP_FILTER_WILDCARD,
@@ -164,9 +157,9 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
                 LOOKUP_QUERY_ISNULL,
             ],
         },
-        'tags_raw_pf': {
-            'field': 'tags.raw',
-            'lookups': [
+        "tags_raw_pf": {
+            "field": "tags.raw",
+            "lookups": [
                 LOOKUP_FILTER_TERMS,
                 LOOKUP_FILTER_PREFIX,
                 LOOKUP_FILTER_WILDCARD,
@@ -177,61 +170,65 @@ class BaseBookDocumentViewSet(BaseDocumentViewSet):
     }
     # Define ordering fields
     ordering_fields = {
-        'id': 'id',
-        'title': 'title.raw',
-        'price': 'price',
-        'state': 'state.raw',
-        'publication_date': 'publication_date',
+        "id": "id",
+        "title": "title.raw",
+        "price": "price",
+        "state": "state.raw",
+        "publication_date": "publication_date",
     }
     # Specify default ordering
-    ordering = ('id', 'title', 'price',)
+    ordering = (
+        "id",
+        "title",
+        "price",
+    )
     faceted_search_fields = {
-        'state': 'state.raw',
-        'state_global': {
-            'field': 'state.raw',
+        "state": "state.raw",
+        "state_global": {
+            "field": "state.raw",
             # 'enabled': True,
-            'global': True,
+            "global": True,
         },
-        'publisher': {
-            'field': 'publisher.raw',
-            'enabled': True,
-            'global': True,
+        "publisher": {
+            "field": "publisher.raw",
+            "enabled": True,
+            "global": True,
         },
-        'publication_date': {
-            'field': 'publication_date',
-            'facet': DateHistogramFacet,
-            'options': {
-                'interval': 'year',
-            }
+        "publication_date": {
+            "field": "publication_date",
+            "facet": DateHistogramFacet,
+            "options": {
+                "interval": "year",
+            },
         },
-        'pages_count': {
-            'field': 'pages',
-            'facet': RangeFacet,
-            'options': {
-                'ranges': [
+        "pages_count": {
+            "field": "pages",
+            "facet": RangeFacet,
+            "options": {
+                "ranges": [
                     ("<10", (None, 10)),
                     ("11-20", (11, 20)),
                     ("20-50", (20, 50)),
                     (">50", (50, None)),
                 ]
-            }
+            },
         },
-        'price': {
+        "price": {
             # 'field': 'price',
-            'facet': RangeFacet,
-            'options': {
-                'ranges': [
+            "facet": RangeFacet,
+            "options": {
+                "ranges": [
                     ("<10", (None, 10)),
                     ("11-20", (11, 20)),
                     ("20-50", (20, 50)),
                     (">50", (50, None)),
                 ]
-            }
+            },
         },
-        'price_metric_max': {
+        "price_metric_max": {
             "field": "price",
-            'options': {
-                'metric': A('max', field='price'),
+            "options": {
+                "metric": A("max", field="price"),
             },
         },
     }

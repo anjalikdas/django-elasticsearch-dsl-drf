@@ -10,7 +10,7 @@ except ImportError:
     from elasticsearch_dsl.search_base import AggsProxy
 
 
-__title__ = "django_elasticsearch_dsl_drf.utils"
+__title__ = "django_elasticsearch_dsl_drf_alt.utils"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2017-2020 Artur Barseghyan"
 __license__ = "GPL 2.0/LGPL 2.1"

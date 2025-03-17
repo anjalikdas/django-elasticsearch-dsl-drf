@@ -1,6 +1,7 @@
 """
 Helpers.
 """
+
 from collections import OrderedDict
 
 from django_elasticsearch_dsl.registries import registry
@@ -13,15 +14,15 @@ from six import PY3
 
 from .versions import ELASTICSEARCH_GTE_7_0
 
-__title__ = 'django_elasticsearch_dsl_drf.helpers'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
+__title__ = "django_elasticsearch_dsl_drf_alt.helpers"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
 __all__ = (
-    'get_document_for_model',
-    'get_index_and_mapping_for_model',
-    'more_like_this',
-    'sort_by_list',
+    "get_document_for_model",
+    "get_index_and_mapping_for_model",
+    "more_like_this",
+    "sort_by_list",
 )
 
 
@@ -49,10 +50,7 @@ def get_index_and_mapping_for_model(model):
     """
     document = get_document_for_model(model)
     if document is not None:
-        return (
-            document._index._name,
-            document._doc_type.mapping.properties.name
-        )
+        return (document._index._name, document._doc_type.mapping.properties.name)
 
 
 def sort_by_list(unsorted_dict, sorted_keys):
@@ -66,10 +64,8 @@ def sort_by_list(unsorted_dict, sorted_keys):
     :rtype: collections.OrderedDict
     """
     __unsorted_dict_keys = [__key for __key in unsorted_dict.keys()]
-    __sorted_keys = (
-        tuple(sorted_keys) + tuple(
-            set(__unsorted_dict_keys) - set(sorted_keys)
-        )
+    __sorted_keys = tuple(sorted_keys) + tuple(
+        set(__unsorted_dict_keys) - set(sorted_keys)
     )
     if PY3:
         for key in __sorted_keys:
@@ -78,19 +74,19 @@ def sort_by_list(unsorted_dict, sorted_keys):
 
         return unsorted_dict
     else:
-        sorted_dict = OrderedDict(
-            (key, unsorted_dict[key]) for key in __sorted_keys
-        )
+        sorted_dict = OrderedDict((key, unsorted_dict[key]) for key in __sorted_keys)
         return sorted_dict
 
 
-def more_like_this(obj,
-                   fields,
-                   max_query_terms=25,
-                   min_term_freq=2,
-                   min_doc_freq=5,
-                   max_doc_freq=0,
-                   query=None):
+def more_like_this(
+    obj,
+    fields,
+    max_query_terms=25,
+    min_term_freq=2,
+    min_doc_freq=5,
+    max_doc_freq=0,
+    query=None,
+):
     """More like this.
 
     https://www.elastic.co/guide/en/elasticsearch/reference/current/
@@ -115,7 +111,7 @@ def more_like_this(obj,
 
     Example:
 
-        >>> from django_elasticsearch_dsl_drf.helpers import more_like_this
+        >>> from django_elasticsearch_dsl_drf_alt.helpers import more_like_this
         >>> from books.models import Book
         >>> book = Book.objects.first()
         >>> similar_books = more_like_this(
@@ -136,28 +132,22 @@ def more_like_this(obj,
     kwargs = {}
 
     if max_query_terms is not None:
-        kwargs['max_query_terms'] = max_query_terms
+        kwargs["max_query_terms"] = max_query_terms
 
     if min_term_freq is not None:
-        kwargs['min_term_freq'] = min_term_freq
+        kwargs["min_term_freq"] = min_term_freq
 
     if min_doc_freq is not None:
-        kwargs['min_doc_freq'] = min_doc_freq
+        kwargs["min_doc_freq"] = min_doc_freq
 
     if max_doc_freq is not None:
-        kwargs['max_doc_freq'] = max_doc_freq
+        kwargs["max_doc_freq"] = max_doc_freq
 
     _like_options = {
-        '_id': "{}".format(obj.pk),
-        '_index': "{}".format(_index),
+        "_id": "{}".format(obj.pk),
+        "_index": "{}".format(_index),
     }
     if not ELASTICSEARCH_GTE_7_0:
-        _like_options.update({'_type': "{}".format(_mapping)})
+        _like_options.update({"_type": "{}".format(_mapping)})
 
-    return _search.query(
-        MoreLikeThis(
-            fields=fields,
-            like=_like_options,
-            **kwargs
-        )
-    )
+    return _search.query(MoreLikeThis(fields=fields, like=_like_options, **kwargs))

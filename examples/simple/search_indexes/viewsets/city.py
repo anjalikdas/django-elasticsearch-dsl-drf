@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl_drf.constants import (
+from django_elasticsearch_dsl_drf_alt.constants import (
     LOOKUP_FILTER_GEO_DISTANCE,
     LOOKUP_FILTER_GEO_POLYGON,
     LOOKUP_FILTER_GEO_BOUNDING_BOX,
@@ -6,7 +6,7 @@ from django_elasticsearch_dsl_drf.constants import (
     # SUGGESTER_PHRASE,
     SUGGESTER_COMPLETION,
 )
-from django_elasticsearch_dsl_drf.filter_backends import (
+from django_elasticsearch_dsl_drf_alt.filter_backends import (
     CompoundSearchFilterBackend,
     FilteringFilterBackend,
     DefaultOrderingFilterBackend,
@@ -16,15 +16,15 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     GeoSpatialFilteringFilterBackend,
     GeoSpatialOrderingFilterBackend,
 )
-from django_elasticsearch_dsl_drf.pagination import LimitOffsetPagination
-from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+from django_elasticsearch_dsl_drf_alt.pagination import LimitOffsetPagination
+from django_elasticsearch_dsl_drf_alt.viewsets import DocumentViewSet
 
 from ..documents import CityDocument
 from ..serializers import CityDocumentSerializer
 
 __all__ = (
-    'CityDocumentViewSet',
-    'CityCompoundSearchBackendDocumentViewSet',
+    "CityDocumentViewSet",
+    "CityCompoundSearchBackendDocumentViewSet",
 )
 
 
@@ -33,7 +33,7 @@ class CityDocumentViewSet(DocumentViewSet):
 
     document = CityDocument
     serializer_class = CityDocumentSerializer
-    lookup_field = 'id'
+    lookup_field = "id"
     filter_backends = [
         FilteringFilterBackend,
         OrderingFilterBackend,
@@ -46,66 +46,65 @@ class CityDocumentViewSet(DocumentViewSet):
     pagination_class = LimitOffsetPagination
     # Define search fields
     search_fields = (
-        'name',
-        'info',
+        "name",
+        "info",
     )
 
     search_nested_fields = {
         # 'country': ['name'],
-        'country': {
-            'path': 'country',
-            'fields': ['name'],
+        "country": {
+            "path": "country",
+            "fields": ["name"],
         },
     }
 
     # Define filtering fields
     filter_fields = {
-        'id': None,
-        'name': 'name.raw',
-        'country': 'country.name.raw',
+        "id": None,
+        "name": "name.raw",
+        "country": "country.name.raw",
     }
     # Define geo-spatial filtering fields
     geo_spatial_filter_fields = {
-        'location': {
-            'lookups': [
+        "location": {
+            "lookups": [
                 LOOKUP_FILTER_GEO_BOUNDING_BOX,
                 LOOKUP_FILTER_GEO_DISTANCE,
                 LOOKUP_FILTER_GEO_POLYGON,
-
             ],
         },
     }
     # Define ordering fields
     ordering_fields = {
-        'id': None,
-        'name': None,
-        'country': 'country.name.raw',
+        "id": None,
+        "name": None,
+        "country": "country.name.raw",
     }
     # Define ordering fields
     geo_spatial_ordering_fields = {
-        'location': 'location',
+        "location": "location",
     }
     # Specify default ordering
     ordering = (
-        'id',
-        'name.raw',
-        'country.name.raw',
+        "id",
+        "name.raw",
+        "country.name.raw",
     )
 
     # Suggester fields
     suggester_fields = {
-        'name_suggest': {
-            'field': 'name.suggest',
-            'suggesters': [
+        "name_suggest": {
+            "field": "name.suggest",
+            "suggesters": [
                 SUGGESTER_COMPLETION,
             ],
         },
-        'country_suggest': {
-            'field': 'country.name.suggest',
-            'suggesters': [
+        "country_suggest": {
+            "field": "country.name.suggest",
+            "suggesters": [
                 SUGGESTER_COMPLETION,
             ],
-        }
+        },
     }
 
 

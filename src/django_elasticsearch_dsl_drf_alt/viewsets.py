@@ -23,16 +23,16 @@ from .pagination import PageNumberPagination
 from .utils import DictionaryProxy
 from .versions import ELASTICSEARCH_GTE_7_0
 
-__title__ = 'django_elasticsearch_dsl_drf.viewsets'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
+__title__ = "django_elasticsearch_dsl_drf_alt.viewsets"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
 __all__ = (
-    'BaseDocumentViewSet',
-    'DocumentViewSet',
-    'FunctionalSuggestMixin',
-    'MoreLikeThisMixin',
-    'SuggestMixin',
+    "BaseDocumentViewSet",
+    "DocumentViewSet",
+    "FunctionalSuggestMixin",
+    "MoreLikeThisMixin",
+    "SuggestMixin",
 )
 
 
@@ -43,11 +43,9 @@ class SuggestMixin(object):
     def suggest(self, request):
         """Suggest functionality."""
         queryset = self.filter_queryset(self.get_queryset())
-        is_suggest = getattr(queryset, '_suggest', False)
+        is_suggest = getattr(queryset, "_suggest", False)
         if not is_suggest:
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
         page = self.paginate_queryset(queryset)
         return Response(page)
@@ -64,14 +62,10 @@ class FunctionalSuggestMixin(object):
         :return:
         """
         # TODO: leave the following check or remove?
-        if 'view' in request.parser_context:
-            view = request.parser_context['view']
-            filter_backend_names = [
-                __b.__name__
-                for __b
-                in view.filter_backends
-            ]
-            if 'FunctionalSuggesterFilterBackend' not in filter_backend_names:
+        if "view" in request.parser_context:
+            view = request.parser_context["view"]
+            filter_backend_names = [__b.__name__ for __b in view.filter_backends]
+            if "FunctionalSuggesterFilterBackend" not in filter_backend_names:
                 raise ImproperlyConfigured(
                     "To use functional suggester backend you shall add "
                     "`FunctionalSuggesterFilterBackend` to the "
@@ -93,9 +87,9 @@ class MoreLikeThisMixin(object):
         :param request:
         :return:
         """
-        if 'view' in request.parser_context:
-            view = request.parser_context['view']
-            kwargs = copy.copy(getattr(view, 'more_like_this_options', {}))
+        if "view" in request.parser_context:
+            view = request.parser_context["view"]
+            kwargs = copy.copy(getattr(view, "more_like_this_options", {}))
             id_ = pk if pk else id
 
             # Use current queryset
@@ -105,7 +99,7 @@ class MoreLikeThisMixin(object):
             # used, and although some serializers could contain less fields
             # than available, this seems like the best approach. If you want to
             # fall back to ``_all`` of Elasticsearch, leave it empty.
-            fields = kwargs.pop('fields', [])
+            fields = kwargs.pop("fields", [])
             # if not fields:
             #     serializer_class = self.get_serializer_class()
             #     fields = serializer_class.Meta.fields[:]
@@ -114,24 +108,24 @@ class MoreLikeThisMixin(object):
                     MoreLikeThis(
                         fields=fields,
                         like={
-                            '_id': "{}".format(id_),
-                            '_index': "{}".format(self.index),
-                            '_type': "{}".format(self.mapping)
+                            "_id": "{}".format(id_),
+                            "_index": "{}".format(self.index),
+                            "_type": "{}".format(self.mapping),
                         },
                         **kwargs
                     )
-                ).sort('_score')
+                ).sort("_score")
             else:
                 queryset = queryset.query(
                     MoreLikeThis(
                         like={
-                            '_id': "{}".format(id_),
-                            '_index': "{}".format(self.index),
-                            '_type': "{}".format(self.mapping)
+                            "_id": "{}".format(id_),
+                            "_index": "{}".format(self.index),
+                            "_type": "{}".format(self.mapping),
                         },
                         **kwargs
                     )
-                ).sort('_score')
+                ).sort("_score")
 
             # Standard list-view implementation
             page = self.paginate_queryset(queryset)
@@ -146,7 +140,7 @@ class MoreLikeThisMixin(object):
 class BaseDocumentViewSet(ReadOnlyModelViewSet):
     """Base document ViewSet."""
 
-    document_uid_field = 'id'
+    document_uid_field = "id"
     document = None  # Re-define
     pagination_class = PageNumberPagination
     dictionary_proxy = DictionaryProxy
@@ -157,15 +151,13 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
         self.run_checks()
 
         if self.document:
-            self.client = connections.get_connection(
-                self.document._get_using()
-            )
+            self.client = connections.get_connection(self.document._get_using())
             self.index = self.document._index._name
             self.mapping = self.document._doc_type.mapping.properties.name
             self.search = Search(
                 using=self.client,
                 index=self.index,
-                doc_type=self.document._doc_type.name
+                doc_type=self.document._doc_type.name,
             )
 
         super(BaseDocumentViewSet, self).__init__(*args, **kwargs)
@@ -205,16 +197,14 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
             raise AttributeError(
                 "Expected view %s to be called with a URL keyword argument "
                 "named '%s'. Fix your URL conf, or set the `.lookup_field` "
-                "attribute on the view correctly." % (
-                    self.__class__.__name__,
-                    lookup_url_kwarg
-                )
+                "attribute on the view correctly."
+                % (self.__class__.__name__, lookup_url_kwarg)
             )
 
-        if lookup_url_kwarg == 'id':
-            get_kwargs = {'id': self.kwargs[lookup_url_kwarg]}
+        if lookup_url_kwarg == "id":
+            get_kwargs = {"id": self.kwargs[lookup_url_kwarg]}
             if self.ignore:
-                get_kwargs.update({'ignore': self.ignore})
+                get_kwargs.update({"ignore": self.ignore})
             obj = self.document.get(**get_kwargs)
 
             # May raise a permission denied
@@ -225,21 +215,19 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
             # Remark 1: Code below works fine. Do not try to do the same as
             # done in `Remark 2`.
             dictionary_proxy = self.dictionary_proxy(
-                obj.to_dict(),
-                getattr(obj, 'meta', None)
+                obj.to_dict(), getattr(obj, "meta", None)
             )
             return dictionary_proxy
         else:
             queryset = queryset.filter(
-                'term',
-                **{self.document_uid_field: self.kwargs[lookup_url_kwarg]}
+                "term", **{self.document_uid_field: self.kwargs[lookup_url_kwarg]}
             )
 
             hits = queryset.execute().hits.hits
             count = len(hits)
 
             if count == 1:
-                obj = hits[0]['_source']
+                obj = hits[0]["_source"]
 
                 # May raise a permission denied
                 self.check_object_permissions(self.request, obj)
@@ -248,13 +236,11 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
                 # conditional treatment.
                 if ELASTICSEARCH_GTE_7_0:
                     dictionary_proxy = self.dictionary_proxy(
-                        obj.to_dict(),
-                        getattr(obj, 'meta', None)
+                        obj.to_dict(), getattr(obj, "meta", None)
                     )
                 else:
                     dictionary_proxy = self.dictionary_proxy(
-                        obj,
-                        getattr(obj, 'meta', None)
+                        obj, getattr(obj, "meta", None)
                     )
 
                 return dictionary_proxy
@@ -268,7 +254,5 @@ class BaseDocumentViewSet(ReadOnlyModelViewSet):
             raise Http404("No result matches the given query.")
 
 
-class DocumentViewSet(BaseDocumentViewSet,
-                      SuggestMixin,
-                      FunctionalSuggestMixin):
+class DocumentViewSet(BaseDocumentViewSet, SuggestMixin, FunctionalSuggestMixin):
     """DocumentViewSet with suggest and functional-suggest mix-ins."""

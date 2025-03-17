@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl_drf.filter_backends import (
+from django_elasticsearch_dsl_drf_alt.filter_backends import (
     CompoundSearchFilterBackend,
     DefaultOrderingFilterBackend,
     FacetedSearchFilterBackend,
@@ -13,8 +13,8 @@ from django_elasticsearch_dsl_drf.filter_backends import (
 from .default import BookDocumentViewSet
 
 __all__ = (
-    'BookCompoundSearchBackendDocumentViewSet',
-    'BookCompoundFuzzySearchBackendDocumentViewSet',
+    "BookCompoundSearchBackendDocumentViewSet",
+    "BookCompoundFuzzySearchBackendDocumentViewSet",
 )
 
 
@@ -50,7 +50,7 @@ class BookCompoundFuzzySearchBackendDocumentViewSet(BookDocumentViewSet):
     ]
 
     search_fields = {
-        'title': {'fuzziness': 'AUTO'},
-        'description': None,
-        'summary': None,
+        "title": {"fuzziness": "AUTO"},
+        "description": None,
+        "summary": None,
     }

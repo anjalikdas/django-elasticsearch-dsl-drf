@@ -10,20 +10,18 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
 
 from django_elasticsearch_dsl import Document, Index, fields
-from django_elasticsearch_dsl_drf.compat import KeywordField, StringField
+from django_elasticsearch_dsl_drf_alt.compat import KeywordField, StringField
 
 import pytest
 
 from ..serializers import DocumentSerializer
 from .base import BaseRestFrameworkTestCase
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_serializers'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = (
-    'TestSerializers',
-)
+__title__ = "django_elasticsearch_dsl_drf_alt.tests.test_serializers"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("TestSerializers",)
 
 
 @pytest.mark.django_db
@@ -34,44 +32,41 @@ class TestSerializers(BaseRestFrameworkTestCase):
 
     def _get_user_document(self):
         """Get user document."""
-        index = Index('auth_user')
+        index = Index("auth_user")
 
         # See Elasticsearch Indices API reference for available settings
-        index.settings(
-            number_of_shards=1,
-            number_of_replicas=1
-        )
+        index.settings(number_of_shards=1, number_of_replicas=1)
 
         @index.doc_type
         class UserDocument(Document):
             """For testing purposes."""
 
-            id = fields.IntegerField(attr='id')
+            id = fields.IntegerField(attr="id")
 
             username = StringField(
                 fields={
-                    'raw': KeywordField(),
-                    'suggest': fields.CompletionField(),
+                    "raw": KeywordField(),
+                    "suggest": fields.CompletionField(),
                 }
             )
 
             first_name = StringField(
                 fields={
-                    'raw': KeywordField(),
-                    'suggest': fields.CompletionField(),
+                    "raw": KeywordField(),
+                    "suggest": fields.CompletionField(),
                 }
             )
 
             last_name = StringField(
                 fields={
-                    'raw': KeywordField(),
-                    'suggest': fields.CompletionField(),
+                    "raw": KeywordField(),
+                    "suggest": fields.CompletionField(),
                 }
             )
 
             email = StringField(
                 fields={
-                    'raw': KeywordField(),
+                    "raw": KeywordField(),
                 }
             )
 
@@ -86,10 +81,9 @@ class TestSerializers(BaseRestFrameworkTestCase):
 
         return UserDocument
 
-    def _get_user_document_serializer(self,
-                                      user_document,
-                                      with_document=True,
-                                      with_exclude=True):
+    def _get_user_document_serializer(
+        self, user_document, with_document=True, with_exclude=True
+    ):
         """Get user document serializer."""
 
         class UserDocumentSerializer(DocumentSerializer):
@@ -102,20 +96,20 @@ class TestSerializers(BaseRestFrameworkTestCase):
                     document = user_document
 
                 fields = (
-                    'id',
-                    'username',
-                    'first_name',
-                    'last_name',
-                    'email',
-                    'is_staff',
-                    'is_active',
-                    'date_joined',
+                    "id",
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "is_staff",
+                    "is_active",
+                    "date_joined",
                 )
 
                 if with_exclude:
                     exclude = (
-                        'username',
-                        'first_name',
+                        "username",
+                        "first_name",
                     )
 
             def update(self, instance, validated_data):
@@ -132,9 +126,7 @@ class TestSerializers(BaseRestFrameworkTestCase):
         """
         user_document = self._get_user_document()
         user_document_serializer = self._get_user_document_serializer(
-            user_document,
-            with_document=True,
-            with_exclude=True
+            user_document, with_document=True, with_exclude=True
         )
 
         return user_document, user_document_serializer
@@ -143,77 +135,60 @@ class TestSerializers(BaseRestFrameworkTestCase):
         """Test serializer fields and exclude."""
 
         self.assertRaises(
-            ImproperlyConfigured,
-            self._test_serializer_mix_fields_and_exclude
+            ImproperlyConfigured, self._test_serializer_mix_fields_and_exclude
         )
 
     def _test_serializer_no_document_specified(self):
         """Test serializer no document specified."""
         user_document = self._get_user_document()
         user_document_serializer = self._get_user_document_serializer(
-            user_document,
-            with_document=False,
-            with_exclude=False
+            user_document, with_document=False, with_exclude=False
         )
         return user_document, user_document_serializer()
 
     def test_serializer_no_document_specified(self):
         """Test serializer no document specified."""
         self.assertRaises(
-            ImproperlyConfigured,
-            self._test_serializer_no_document_specified
+            ImproperlyConfigured, self._test_serializer_no_document_specified
         )
 
     def _test_serializer_document_equals_to_none(self):
         """Test serializer document equals to none."""
         user_document_serializer = self._get_user_document_serializer(
-            None,
-            with_document=True,
-            with_exclude=False
+            None, with_document=True, with_exclude=False
         )
         return user_document_serializer()
 
     def test_serializer_document_equals_to_none(self):
         """Test serializer no document specified."""
         self.assertRaises(
-            ImproperlyConfigured,
-            self._test_serializer_document_equals_to_none
+            ImproperlyConfigured, self._test_serializer_document_equals_to_none
         )
 
     def _test_serializer_meta_set_attr(self):
         """Test serializer set attr."""
         user_document = self._get_user_document()
         user_document_serializer = self._get_user_document_serializer(
-            user_document,
-            with_document=True,
-            with_exclude=False
+            user_document, with_document=True, with_exclude=False
         )
-        setattr(user_document_serializer.Meta, 'test_name', 'test_value')
+        setattr(user_document_serializer.Meta, "test_name", "test_value")
 
     def test_serializer_meta_set_attr(self):
         """Test serializer set attr."""
-        self.assertRaises(
-            AttributeError,
-            self._test_serializer_meta_set_attr
-        )
+        self.assertRaises(AttributeError, self._test_serializer_meta_set_attr)
 
     def _test_serializer_meta_del_attr(self):
         """Test serializer del attr."""
         user_document = self._get_user_document()
         user_document_serializer = self._get_user_document_serializer(
-            user_document,
-            with_document=True,
-            with_exclude=False
+            user_document, with_document=True, with_exclude=False
         )
-        delattr(user_document_serializer.Meta, 'test_name')
+        delattr(user_document_serializer.Meta, "test_name")
 
     def test_serializer_meta_del_attr(self):
         """Test serializer set attr."""
-        self.assertRaises(
-            AttributeError,
-            self._test_serializer_meta_del_attr
-        )
+        self.assertRaises(AttributeError, self._test_serializer_meta_del_attr)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

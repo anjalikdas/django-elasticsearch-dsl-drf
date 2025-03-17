@@ -12,13 +12,11 @@ import pytest
 
 from ..wrappers import obj_to_dict, dict_to_obj
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_wrappers'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = (
-    'TestWrappers',
-)
+__title__ = "django_elasticsearch_dsl_drf_alt.tests.test_wrappers"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("TestWrappers",)
 
 
 @pytest.mark.django_db
@@ -28,14 +26,14 @@ class TestWrappers(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.mapping = {
-            'country': {
-                'name': 'Netherlands',
-                'province': {
-                    'name': 'North Holland',
-                    'city': {
-                        'name': 'Amsterdam',
-                    }
-                }
+            "country": {
+                "name": "Netherlands",
+                "province": {
+                    "name": "North Holland",
+                    "city": {
+                        "name": "Amsterdam",
+                    },
+                },
             }
         }
 
@@ -45,36 +43,29 @@ class TestWrappers(unittest.TestCase):
         :return:
         """
         wrapper = dict_to_obj(self.mapping)
-        self.assertEqual(
-            wrapper.country.name,
-            self.mapping['country']['name']
-        )
+        self.assertEqual(wrapper.country.name, self.mapping["country"]["name"])
 
         self.assertEqual(
-            wrapper.country.province.name,
-            self.mapping['country']['province']['name']
+            wrapper.country.province.name, self.mapping["country"]["province"]["name"]
         )
 
         self.assertEqual(
             wrapper.country.province.city.name,
-            self.mapping['country']['province']['city']['name']
+            self.mapping["country"]["province"]["city"]["name"],
         )
 
         # See if original ``mapping`` is same as ``as_dict``
-        self.assertEqual(
-            wrapper.as_dict,
-            self.mapping
-        )
+        self.assertEqual(wrapper.as_dict, self.mapping)
 
         # Since we don't know for sure which one will be, we need to make
         # sure it's one of the items.
         self.assertIn(
             str(wrapper),
             (
-                self.mapping['country']['name'],
-                self.mapping['country']['province']['name'],
-                self.mapping['country']['province']['city']['name'],
-            )
+                self.mapping["country"]["name"],
+                self.mapping["country"]["province"]["name"],
+                self.mapping["country"]["province"]["city"]["name"],
+            ),
         )
 
     def test_dict_to_obj(self):
@@ -98,5 +89,5 @@ class TestWrappers(unittest.TestCase):
                 '"name": "North Holland", '
                 '"city": {'
                 '"name": "Amsterdam"}}}}'
-            )
+            ),
         )

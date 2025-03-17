@@ -31,11 +31,11 @@ from rest_framework.filters import BaseFilterBackend
 from ...versions import ELASTICSEARCH_LTE_6_0
 from ..mixins import FilterBackendMixin
 
-__title__ = 'django_elasticsearch_dsl_drf.filter_backends.filtering.ids'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('IdsFilterBackend',)
+__title__ = "django_elasticsearch_dsl_drf_alt.filter_backends.filtering.ids"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("IdsFilterBackend",)
 
 
 class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
@@ -43,10 +43,10 @@ class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
 
     Example:
 
-        >>> from django_elasticsearch_dsl_drf.filter_backends import (
+        >>> from django_elasticsearch_dsl_drf_alt.filter_backends import (
         >>>     IdsFilterBackend
         >>> )
-        >>> from django_elasticsearch_dsl_drf.viewsets import (
+        >>> from django_elasticsearch_dsl_drf_alt.viewsets import (
         >>>     BaseDocumentViewSet,
         >>> )
         >>>
@@ -63,7 +63,7 @@ class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
         >>>     filter_backends = [IdsFilterBackend]
     """
 
-    ids_query_param = 'ids'
+    ids_query_param = "ids"
 
     def get_ids_query_params(self, request):
         """Get search query params.
@@ -110,16 +110,13 @@ class IdsFilterBackend(BaseFilterBackend, FilterBackendMixin):
         __ids = self.get_ids_values(request, view)
         if __ids:
             _ids = [_i for _i in __ids if _i]
-            _qs_kwargs = {'values': _ids}
+            _qs_kwargs = {"values": _ids}
             # Prior 7.x ``type`` argument was accepted. Starting from 7.x
             # it has been deprecated. As long as 6.x is supported, this
             # should stay.
             if ELASTICSEARCH_LTE_6_0:
-                _qs_kwargs.update({'type': view.mapping})
+                _qs_kwargs.update({"type": view.mapping})
 
-            queryset = queryset.query(
-                'ids',
-                **_qs_kwargs
-            )
+            queryset = queryset.query("ids", **_qs_kwargs)
 
         return queryset

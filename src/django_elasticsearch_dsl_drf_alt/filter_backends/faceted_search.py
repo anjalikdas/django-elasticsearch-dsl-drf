@@ -1,6 +1,7 @@
 """
 Faceted search backend.
 """
+
 import copy
 from collections import defaultdict
 
@@ -11,13 +12,15 @@ from rest_framework.filters import BaseFilterBackend
 
 from six import string_types, iteritems
 
-__title__ = 'django_elasticsearch_dsl_drf.faceted_search'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = ('FacetedSearchFilterBackend', 'FacetedFilterSearchFilterBackend')
+__title__ = "django_elasticsearch_dsl_drf_alt.faceted_search"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("FacetedSearchFilterBackend", "FacetedFilterSearchFilterBackend")
 
-from django_elasticsearch_dsl_drf.filter_backends.filtering import FilteringFilterBackend
+from django_elasticsearch_dsl_drf_alt.filter_backends.filtering import (
+    FilteringFilterBackend,
+)
 
 
 class FacetedSearchFilterBackend(BaseFilterBackend):
@@ -25,11 +28,11 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
 
     Example:
 
-        >>> from django_elasticsearch_dsl_drf.filter_backends import (
+        >>> from django_elasticsearch_dsl_drf_alt.filter_backends import (
         >>>     FacetedSearchFilterBackend
         >>> )
         >>> from elasticsearch_dsl import TermsFacet, DateHistogramFacet
-        >>> from django_elasticsearch_dsl_drf.viewsets import (
+        >>> from django_elasticsearch_dsl_drf_alt.viewsets import (
         >>>     BaseDocumentViewSet,
         >>> )
         >>>
@@ -72,7 +75,7 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
     `?facet=state&facet=date_published`.
     """
 
-    faceted_search_param = 'facet'
+    faceted_search_param = "facet"
 
     @classmethod
     def prepare_faceted_search_fields(cls, view):
@@ -105,23 +108,22 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
 
         for field, options in faceted_search_fields.items():
             if options is None or isinstance(options, string_types):
-                faceted_search_fields[field] = {
-                    'field': options or field
-                }
-            elif 'field' not in faceted_search_fields[field]:
-                faceted_search_fields[field]['field'] = field
+                faceted_search_fields[field] = {"field": options or field}
+            elif "field" not in faceted_search_fields[field]:
+                faceted_search_fields[field]["field"] = field
 
-            if 'enabled' not in faceted_search_fields[field]:
-                faceted_search_fields[field]['enabled'] = False
+            if "enabled" not in faceted_search_fields[field]:
+                faceted_search_fields[field]["enabled"] = False
 
-            if 'facet' not in faceted_search_fields[field]:
-                faceted_search_fields[field]['facet'] = TermsFacet
+            if "facet" not in faceted_search_fields[field]:
+                faceted_search_fields[field]["facet"] = TermsFacet
 
-            if 'options' not in faceted_search_fields[field]:
-                faceted_search_fields[field]['options'] = {}
+            if "options" not in faceted_search_fields[field]:
+                faceted_search_fields[field]["options"] = {}
 
-            faceted_search_fields[field]['global'] = \
-                faceted_search_fields[field].get('global', False)
+            faceted_search_fields[field]["global"] = faceted_search_fields[field].get(
+                "global", False
+            )
 
         return faceted_search_fields
 
@@ -168,20 +170,18 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
             >>> }
         """
         __facets = {}
-        faceted_search_query_params = self.get_faceted_search_query_params(
-            request
-        )
+        faceted_search_query_params = self.get_faceted_search_query_params(request)
         faceted_search_fields = self.prepare_faceted_search_fields(view)
         for __field, __options in faceted_search_fields.items():
-            if __field in faceted_search_query_params or __options['enabled']:
+            if __field in faceted_search_query_params or __options["enabled"]:
                 __facets.update(
                     {
                         __field: {
-                            'facet': faceted_search_fields[__field]['facet'](
-                                field=faceted_search_fields[__field]['field'],
-                                **faceted_search_fields[__field]['options']
+                            "facet": faceted_search_fields[__field]["facet"](
+                                field=faceted_search_fields[__field]["field"],
+                                **faceted_search_fields[__field]["options"]
                             ),
-                            'global': faceted_search_fields[__field]['global'],
+                            "global": faceted_search_fields[__field]["global"],
                         }
                     }
                 )
@@ -197,8 +197,8 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
         """
         __facets = self.construct_facets(request, view)
         for __field, __facet in iteritems(__facets):
-            agg = __facet['facet'].get_aggregation()
-            agg_filter = Q('match_all')
+            agg = __facet["facet"].get_aggregation()
+            agg_filter = Q("match_all")
 
             # TODO: Implement
             # for __filter_field, __filter in iteritems(self._filters):
@@ -206,16 +206,13 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
             #         continue
             #     agg_filter &= __filter
 
-            if __facet['global']:
-                queryset.aggs.bucket(
-                    '_filter_' + __field,
-                    'global'
-                ).bucket(__field, agg)
+            if __facet["global"]:
+                queryset.aggs.bucket("_filter_" + __field, "global").bucket(
+                    __field, agg
+                )
             else:
                 queryset.aggs.bucket(
-                    '_filter_' + __field,
-                    'filter',
-                    filter=agg_filter
+                    "_filter_" + __field, "filter", filter=agg_filter
                 ).bucket(__field, agg)
 
         return queryset
@@ -235,8 +232,10 @@ class FacetedSearchFilterBackend(BaseFilterBackend):
         return self.aggregate(request, queryset, view)
 
 
-class FacetedFilterSearchFilterBackend(FilteringFilterBackend, FacetedSearchFilterBackend):
-    """ Combined faceting and filtering backend similar to elasticsearch-dsl's FacetedSearch class.
+class FacetedFilterSearchFilterBackend(
+    FilteringFilterBackend, FacetedSearchFilterBackend
+):
+    """Combined faceting and filtering backend similar to elasticsearch-dsl's FacetedSearch class.
     It combines the functionality of FilteringFilterBackend and FacetedSearchFilterBackend to take filters into
     account when creating facets.
 
@@ -250,11 +249,14 @@ class FacetedFilterSearchFilterBackend(FilteringFilterBackend, FacetedSearchFilt
     When creating a facet, filters for faceted fields other than for the current facet are applied. Filters
     for faceted fields are then applied as post_filters. Filters on non-faceted fields are applied as normal filters.
     """
+
     def filter_queryset(self, request, queryset, view):
         # the fact that apply_filter is a classmethod means we can't store state on self,
         # so we hitch it onto queryset
         queryset._facets = self.construct_facets(request, view)
-        queryset._faceted_fields = set(f['facet']._params['field'] for f in queryset._facets.values())
+        queryset._faceted_fields = set(
+            f["facet"]._params["field"] for f in queryset._facets.values()
+        )
         queryset._filters = defaultdict(list)
 
         # apply filters
@@ -275,12 +277,12 @@ class FacetedFilterSearchFilterBackend(FilteringFilterBackend, FacetedSearchFilt
         filters = queryset._filters
 
         # if this field is faceted, then apply it as a post-filter
-        if options['field'] in faceted_fields:
+        if options["field"] in faceted_fields:
             queryset = queryset.post_filter(*args, **kwargs)
         else:
             queryset = queryset.filter(*args, **kwargs)
 
-        filters[options['field']].append(Q(*args, **kwargs))
+        filters[options["field"]].append(Q(*args, **kwargs))
 
         # ensure the new queryset object retains the helper variables
         queryset._facets = facets
@@ -294,16 +296,13 @@ class FacetedFilterSearchFilterBackend(FilteringFilterBackend, FacetedSearchFilt
         filters = queryset._filters
 
         for field, facet in facets.items():
-            agg = facet['facet'].get_aggregation()
+            agg = facet["facet"].get_aggregation()
 
-            if facet['global']:
-                queryset.aggs.bucket(
-                    '_filter_' + field,
-                    'global'
-                ).bucket(field, agg)
+            if facet["global"]:
+                queryset.aggs.bucket("_filter_" + field, "global").bucket(field, agg)
                 continue
 
-            agg_filter = Q('match_all')
+            agg_filter = Q("match_all")
             for f, _filter in filters.items():
                 # apply filters for that are applicable for facets other than this one
                 if agg.field == f or f not in faceted_fields:
@@ -315,9 +314,7 @@ class FacetedFilterSearchFilterBackend(FilteringFilterBackend, FacetedSearchFilt
                 agg_filter &= q
 
             queryset.aggs.bucket(
-                '_filter_' + field,
-                'filter',
-                filter=agg_filter
+                "_filter_" + field, "filter", filter=agg_filter
             ).bucket(field, agg)
 
         return queryset

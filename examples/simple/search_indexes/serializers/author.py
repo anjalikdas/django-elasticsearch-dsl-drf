@@ -1,9 +1,9 @@
 from rest_framework import serializers
-from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
+from django_elasticsearch_dsl_drf_alt.serializers import DocumentSerializer
 
 from ..documents import AuthorDocument
 
-__all__ = ('AuthorDocumentSimpleSerializer',)
+__all__ = ("AuthorDocumentSimpleSerializer",)
 
 
 class AuthorDocumentSimpleSerializer(DocumentSerializer):
@@ -21,13 +21,11 @@ class AuthorDocumentSimpleSerializer(DocumentSerializer):
         #     'email',
         #     'salutation',
         # )
-        exclude = (
-            'headshot',
-        )
+        exclude = ("headshot",)
         ignore_fields = (
-            'biography',
-            'phone_number',
-            'website',
+            "biography",
+            "phone_number",
+            "website",
         )
 
     def get_source(self, obj):

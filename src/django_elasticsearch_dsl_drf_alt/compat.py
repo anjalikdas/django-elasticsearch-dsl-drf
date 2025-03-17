@@ -25,16 +25,16 @@ except ImportError:
 # except ImportError:
 #     _get_count = None
 
-__title__ = 'django_elasticsearch_dsl_drf.compat'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
+__title__ = "django_elasticsearch_dsl_drf_alt.compat"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
 __all__ = (
-    'coreapi',
-    'coreschema',
+    "coreapi",
+    "coreschema",
     # 'get_count',
-    'KeywordField',
-    'StringField',
+    "KeywordField",
+    "StringField",
 )
 
 
@@ -60,7 +60,7 @@ def string_field(**kwargs):
     :param kwargs:
     :return:
     """
-    kwargs.setdefault('fielddata', True)
+    kwargs.setdefault("fielddata", True)
     return fields.TextField(**kwargs)
 
 
@@ -78,13 +78,13 @@ def nested_sort_entry(path, split_path=True):
     """
     version = get_elasticsearch_version()
     if version[0] < 6 or (version[0] == 6 and version[1] < 1):
-        return {'nested_path': path}
+        return {"nested_path": path}
     nested_path = {}
-    path_list = path.split('.') if split_path else [path]
+    path_list = path.split(".") if split_path else [path]
     for _ in reversed(path_list):
         if nested_path:
-            nested_path = {'path': '.'.join(path_list), 'nested': nested_path}
+            nested_path = {"path": ".".join(path_list), "nested": nested_path}
         else:
-            nested_path = {'path': '.'.join(path_list)}
+            nested_path = {"path": ".".join(path_list)}
         path_list.pop()
-    return {'nested': nested_path}
+    return {"nested": nested_path}

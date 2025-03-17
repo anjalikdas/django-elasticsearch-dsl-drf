@@ -11,13 +11,13 @@ from ...compat import coreapi
 from ...compat import coreschema
 from ...compat import nested_sort_entry
 
-__title__ = 'django_elasticsearch_dsl_drf.filter_backends.ordering.common'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
+__title__ = "django_elasticsearch_dsl_drf_alt.filter_backends.ordering.common"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
 __all__ = (
-    'DefaultOrderingFilterBackend',
-    'OrderingFilterBackend',
+    "DefaultOrderingFilterBackend",
+    "OrderingFilterBackend",
 )
 
 
@@ -34,11 +34,9 @@ class OrderingMixin(object):
         ordering_fields = view.ordering_fields.copy()
         for field, options in ordering_fields.items():
             if options is None or isinstance(options, string_types):
-                ordering_fields[field] = {
-                    'field': options or field
-                }
-            elif 'field' not in ordering_fields[field]:
-                ordering_fields[field]['field'] = field
+                ordering_fields[field] = {"field": options or field}
+            elif "field" not in ordering_fields[field]:
+                ordering_fields[field]["field"] = field
         return ordering_fields
 
     @classmethod
@@ -55,18 +53,19 @@ class OrderingMixin(object):
         """
         _ordering_params = []
         for ordering_param in ordering_params:
-            key = ordering_param.lstrip('-')
-            direction = 'desc' if ordering_param.startswith('-') else 'asc'
+            key = ordering_param.lstrip("-")
+            direction = "desc" if ordering_param.startswith("-") else "asc"
             if key in ordering_fields:
                 field = ordering_fields[key]
                 entry = {
-                    field['field']: {
-                        'order': direction,
+                    field["field"]: {
+                        "order": direction,
                     }
                 }
-                if 'path' in field:
-                    entry[field['field']].update(
-                        nested_sort_entry(field['path'], field.get('split_path', True)))
+                if "path" in field:
+                    entry[field["field"]].update(
+                        nested_sort_entry(field["path"], field.get("split_path", True))
+                    )
                 _ordering_params.append(entry)
         return _ordering_params
 
@@ -76,10 +75,10 @@ class OrderingFilterBackend(BaseFilterBackend, OrderingMixin):
 
     Example:
 
-        >>> from django_elasticsearch_dsl_drf.filter_backends import (
+        >>> from django_elasticsearch_dsl_drf_alt.filter_backends import (
         >>>     OrderingFilterBackend
         >>> )
-        >>> from django_elasticsearch_dsl_drf.viewsets import (
+        >>> from django_elasticsearch_dsl_drf_alt.viewsets import (
         >>>     BaseDocumentViewSet,
         >>> )
         >>>
@@ -138,8 +137,7 @@ class OrderingFilterBackend(BaseFilterBackend, OrderingMixin):
         # if not __ordering_params:
         #     return self.get_default_ordering_params(view)
 
-        return self.transform_ordering_params(ordering_query_params,
-                                              ordering_fields)
+        return self.transform_ordering_params(ordering_query_params, ordering_fields)
 
     # @classmethod
     # def get_default_ordering_params(cls, view):
@@ -175,20 +173,21 @@ class OrderingFilterBackend(BaseFilterBackend, OrderingMixin):
         return queryset
 
     def get_schema_fields(self, view):
-        assert coreapi is not None, 'coreapi must be installed to ' \
-                                    'use `get_schema_fields()`'
-        assert coreschema is not None, 'coreschema must be installed to ' \
-                                       'use `get_schema_fields()`'
+        assert coreapi is not None, (
+            "coreapi must be installed to " "use `get_schema_fields()`"
+        )
+        assert coreschema is not None, (
+            "coreschema must be installed to " "use `get_schema_fields()`"
+        )
         return [
             coreapi.Field(
                 name=self.ordering_param,
                 required=False,
-                location='query',
+                location="query",
                 schema=coreschema.String(
-                    title='Ordering',
-                    description='Which field from to use when ordering the '
-                                'results.'
-                )
+                    title="Ordering",
+                    description="Which field from to use when ordering the " "results.",
+                ),
             )
         ]
 
@@ -200,11 +199,11 @@ class DefaultOrderingFilterBackend(BaseFilterBackend, OrderingMixin):
 
     Example:
 
-        >>> from django_elasticsearch_dsl_drf.filter_backends import (
+        >>> from django_elasticsearch_dsl_drf_alt.filter_backends import (
         >>>     DefaultOrderingFilterBackend,
         >>>     OrderingFilterBackend
         >>> )
-        >>> from django_elasticsearch_dsl_drf.viewsets import (
+        >>> from django_elasticsearch_dsl_drf_alt.viewsets import (
         >>>     BaseDocumentViewSet,
         >>> )
         >>>
@@ -259,7 +258,7 @@ class DefaultOrderingFilterBackend(BaseFilterBackend, OrderingMixin):
         ordering_params_present = False
         # Remove invalid ordering query params
         for query_param in ordering_query_params:
-            __key = query_param.lstrip('-')
+            __key = query_param.lstrip("-")
             if __key in view.ordering_fields:
                 ordering_params_present = True
                 break
@@ -279,20 +278,20 @@ class DefaultOrderingFilterBackend(BaseFilterBackend, OrderingMixin):
         :return: Ordering params to be used for ordering.
         :rtype: list
         """
-        ordering = getattr(view, 'ordering', None)
+        ordering = getattr(view, "ordering", None)
         if isinstance(ordering, string_types):
             ordering = [ordering]
         # For backwards compatibility require
         # default ordering to be keys in ordering_fields not field value
         # in order to be properly transformed
-        if ordering is not None \
-                and hasattr(view, 'ordering_fields') \
-                and view.ordering_fields is not None \
-                and all(field.lstrip('-') in view.ordering_fields
-                        for field in ordering):
+        if (
+            ordering is not None
+            and hasattr(view, "ordering_fields")
+            and view.ordering_fields is not None
+            and all(field.lstrip("-") in view.ordering_fields for field in ordering)
+        ):
             return cls.transform_ordering_params(
-                ordering,
-                cls.prepare_ordering_fields(view)
+                ordering, cls.prepare_ordering_fields(view)
             )
         return ordering
 

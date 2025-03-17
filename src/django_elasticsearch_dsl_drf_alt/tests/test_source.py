@@ -17,13 +17,11 @@ import factories
 
 from .base import BaseRestFrameworkTestCase
 
-__title__ = 'django_elasticsearch_dsl_drf.tests.test_source'
-__author__ = 'Artur Barseghyan <artur.barseghyan@gmail.com>'
-__copyright__ = '2017-2020 Artur Barseghyan'
-__license__ = 'GPL 2.0/LGPL 2.1'
-__all__ = (
-    'TestSource',
-)
+__title__ = "django_elasticsearch_dsl_drf_alt.tests.test_source"
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2017-2020 Artur Barseghyan"
+__license__ = "GPL 2.0/LGPL 2.1"
+__all__ = ("TestSource",)
 
 
 @pytest.mark.django_db
@@ -44,7 +42,7 @@ class TestSource(BaseRestFrameworkTestCase):
         cls.special_books_count = 10
         cls.special_books = factories.BookFactory.create_batch(
             cls.books_count,
-            title='Twenty Thousand Leagues Under the Sea',
+            title="Twenty Thousand Leagues Under the Sea",
             description="""
             The title refers to the distance traveled while under the sea and
             not to a depth, as twenty thousand leagues is over six times the
@@ -58,39 +56,30 @@ class TestSource(BaseRestFrameworkTestCase):
         cls.all_books_count = cls.special_books_count + cls.books_count
 
         cls.sleep()
-        call_command('search_index', '--rebuild', '-f')
+        call_command("search_index", "--rebuild", "-f")
 
     def _list_results(self):
         """List results."""
         self.authenticate()
 
-        url = reverse('bookdocument_source-list', kwargs={}) + '?search=twenty'
+        url = reverse("bookdocument_source-list", kwargs={}) + "?search=twenty"
 
         # Make request
         response = self.client.get(url, {})
-        self.assertEqual(
-            response.status_code,
-            status.HTTP_200_OK
-        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # Should contain 10 results
-        self.assertEqual(
-            len(response.data['results']),
-            self.special_books_count
-        )
+        self.assertEqual(len(response.data["results"]), self.special_books_count)
 
-        expected_keys = {'id', 'title'}
+        expected_keys = {"id", "title"}
         # Should only contain 'id' and 'title'.
-        for result in response.data['results']:
-            self.assertEqual(
-                expected_keys,
-                set(result.keys())
-            )
+        for result in response.data["results"]:
+            self.assertEqual(expected_keys, set(result.keys()))
 
     def test_list_results(self):
         """Test list results."""
         return self._list_results()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
