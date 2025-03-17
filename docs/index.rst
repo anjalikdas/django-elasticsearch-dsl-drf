@@ -236,7 +236,7 @@ For any issues contact me at the e-mail given in the `Author`_ section.
 
 Author
 ======
-Artur Barseghyan <artur.barseghyan@gmail.com>
+Anjali K <anjallikdas@gmail.com>
 
 Project documentation
 =====================

@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = "0.22.5.1"
+version = "0.22.6"
 
 DOCS_TRANSFORMATIONS = (
     (
@@ -177,9 +177,9 @@ tests_require = [
 ]
 
 setup(
-    name="django-elasticsearch-dsl-drf-faya",
+    name="django-elasticsearch-dsl-drf-alt",
     version=version,
-    description="Integrate Elasticsearch DSL with Django REST framework.",
+    description="Custom version of django-elasticsearch-dsl-drf.",
     long_description=readme,
     classifiers=[
         "Programming Language :: Python :: 3.6",

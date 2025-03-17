@@ -1,6 +1,14 @@
 ============================
 django-elasticsearch-dsl-drf
 ============================
+An alternative version of django-elasticsearch-dsl-drf with various improvements and fixes.
+
+What's New in This Version?
+
+🔧 Bug Fixes & Improvements:
+Fixed aggsproxy import error to ensure proper aggregation functionality.
+Resolved compatibility issues with elasticsearch-dsl 8.x.
+
 Integrate `Elasticsearch DSL
 <https://pypi.python.org/pypi/elasticsearch-dsl>`_ with
 `Django REST framework <https://pypi.python.org/pypi/djangorestframework>`_ in
