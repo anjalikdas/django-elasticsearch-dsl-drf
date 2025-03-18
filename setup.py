@@ -2,7 +2,7 @@ import os
 
 from setuptools import find_packages, setup
 
-version = "0.22.8"
+version = "0.22.9"
 
 DOCS_TRANSFORMATIONS = (
     (
@@ -177,7 +177,7 @@ tests_require = [
 ]
 
 setup(
-    name="django-elasticsearch-dsl-drf-alt",
+    name="django_elasticsearch_dsl_drf_alt",
     version=version,
     description="Custom version of django-elasticsearch-dsl-drf.",
     long_description=readme,
